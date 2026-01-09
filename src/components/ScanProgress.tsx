@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 interface ScanProgressProps {
   status: 'pending' | 'scanning' | 'completed' | 'failed';
   url: string;
+  isCompleting?: boolean;
 }
 
 const scanSteps = [
@@ -17,11 +18,22 @@ const scanSteps = [
   { id: 'files', label: 'Comprobando archivos sensibles', icon: Shield },
 ];
 
-export function ScanProgress({ status, url }: ScanProgressProps) {
+export function ScanProgress({ status, url, isCompleting = false }: ScanProgressProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [progress, setProgress] = useState(0);
 
+  // Handle completing animation - animate to 100%
   useEffect(() => {
+    if (isCompleting) {
+      setCurrentStep(scanSteps.length);
+      setProgress(100);
+    }
+  }, [isCompleting]);
+
+  useEffect(() => {
+    // Don't run normal animation if completing
+    if (isCompleting) return;
+
     // Start animation for both pending and scanning status
     if (status === 'scanning' || status === 'pending') {
       // Simulate step progression
@@ -52,7 +64,7 @@ export function ScanProgress({ status, url }: ScanProgressProps) {
       setCurrentStep(scanSteps.length);
       setProgress(100);
     }
-  }, [status]);
+  }, [status, isCompleting]);
 
   return (
     <div className="w-full max-w-xl mx-auto">
@@ -62,10 +74,20 @@ export function ScanProgress({ status, url }: ScanProgressProps) {
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-3 px-4 py-2 bg-cyan-500/10 border border-cyan-500/20 rounded-full mb-4"
+          className={`inline-flex items-center gap-3 px-4 py-2 rounded-full mb-4 ${
+            isCompleting
+              ? 'bg-green-500/10 border border-green-500/20'
+              : 'bg-cyan-500/10 border border-cyan-500/20'
+          }`}
         >
-          <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
-          <span className="text-cyan-400 text-sm font-medium">Escaneando</span>
+          {isCompleting ? (
+            <Check className="w-4 h-4 text-green-400" />
+          ) : (
+            <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
+          )}
+          <span className={`text-sm font-medium ${isCompleting ? 'text-green-400' : 'text-cyan-400'}`}>
+            {isCompleting ? 'Completado' : 'Escaneando'}
+          </span>
         </motion.div>
 
         <h2
@@ -96,8 +118,8 @@ export function ScanProgress({ status, url }: ScanProgressProps) {
       <div className="space-y-3">
         <AnimatePresence mode="wait">
           {scanSteps.map((step, index) => {
-            const isCompleted = index < currentStep;
-            const isCurrent = index === currentStep && (status === 'scanning' || status === 'pending');
+            const isStepCompleted = isCompleting || index < currentStep;
+            const isCurrent = !isCompleting && index === currentStep && (status === 'scanning' || status === 'pending');
             const Icon = step.icon;
 
             return (
@@ -107,7 +129,7 @@ export function ScanProgress({ status, url }: ScanProgressProps) {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.1 }}
                 className={`flex items-center gap-4 p-4 rounded-xl border transition-all duration-300 ${
-                  isCompleted
+                  isStepCompleted
                     ? 'bg-cyan-500/5 border-cyan-500/20'
                     : isCurrent
                     ? 'bg-[#12121a] border-cyan-500/30 glow-cyan-subtle'
@@ -117,14 +139,14 @@ export function ScanProgress({ status, url }: ScanProgressProps) {
                 {/* Icon */}
                 <div
                   className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${
-                    isCompleted
+                    isStepCompleted
                       ? 'bg-cyan-500/20 text-cyan-400'
                       : isCurrent
                       ? 'bg-cyan-500/10 text-cyan-400'
                       : 'bg-white/5 text-gray-500'
                   }`}
                 >
-                  {isCompleted ? (
+                  {isStepCompleted ? (
                     <Check className="w-5 h-5" />
                   ) : isCurrent ? (
                     <Loader2 className="w-5 h-5 animate-spin" />
@@ -136,7 +158,7 @@ export function ScanProgress({ status, url }: ScanProgressProps) {
                 {/* Label */}
                 <span
                   className={`font-medium transition-colors ${
-                    isCompleted || isCurrent ? 'text-white' : 'text-gray-500'
+                    isStepCompleted || isCurrent ? 'text-white' : 'text-gray-500'
                   }`}
                 >
                   {step.label}
@@ -158,9 +180,9 @@ export function ScanProgress({ status, url }: ScanProgressProps) {
         </AnimatePresence>
       </div>
 
-      {/* Estimated time */}
+      {/* Estimated time / Completing message */}
       <p className="text-center text-gray-500 text-sm mt-6">
-        Tiempo estimado: ~30 segundos
+        {isCompleting ? 'Generando resultados...' : 'Tiempo estimado: ~30 segundos'}
       </p>
     </div>
   );

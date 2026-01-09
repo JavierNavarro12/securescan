@@ -153,6 +153,7 @@ export default function ScanResultsPage() {
   const [results, setResults] = useState<ScanResults | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [showCompletingAnimation, setShowCompletingAnimation] = useState(false);
 
   const isSuccess = searchParams.get('success') === 'true';
   const isCanceled = searchParams.get('canceled') === 'true';
@@ -245,7 +246,11 @@ Mi stack tecnologico es: [COMPLETA CON TU STACK]`;
         if (data.results.status === 'pending' || data.results.status === 'scanning') {
           setTimeout(fetchResults, 2000);
         } else {
-          setLoading(false);
+          // Scan completed - show completing animation before showing results
+          setShowCompletingAnimation(true);
+          setTimeout(() => {
+            setLoading(false);
+          }, 1500); // Wait for progress to reach 100%
         }
       } catch (err) {
         setError('Error de conexión');
@@ -275,6 +280,7 @@ Mi stack tecnologico es: [COMPLETA CON TU STACK]`;
           <ScanProgress
             status={results?.status || 'scanning'}
             url={results?.url || 'Cargando...'}
+            isCompleting={showCompletingAnimation}
           />
         </main>
       </div>
@@ -463,7 +469,15 @@ Mi stack tecnologico es: [COMPLETA CON TU STACK]`;
                         Desbloquea para ver los detalles
                       </p>
                       <button
-                        onClick={() => document.getElementById('paywall')?.scrollIntoView({ behavior: 'smooth' })}
+                        onClick={() => {
+                          const element = document.getElementById('paywall');
+                          if (element) {
+                            const headerOffset = 80;
+                            const elementPosition = element.getBoundingClientRect().top;
+                            const offsetPosition = elementPosition + window.scrollY - headerOffset;
+                            window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                          }
+                        }}
                         className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-sm font-medium rounded-lg hover:from-cyan-400 hover:to-blue-400 transition-all"
                       >
                         Desbloquear
