@@ -135,11 +135,12 @@ export class SecurityScanner {
 
     if (IS_PRODUCTION) {
       // Vercel serverless - usar @sparticuz/chromium
+      const executablePath = await chromium.executablePath();
       this.browser = await puppeteerCore.launch({
         args: chromium.args,
         defaultViewport: { width: 1920, height: 1080 },
-        executablePath: await chromium.executablePath(),
-        headless: chromium.headless as boolean,
+        executablePath,
+        headless: true,
       });
     } else {
       // Desarrollo local - usar Chrome instalado
