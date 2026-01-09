@@ -421,22 +421,8 @@ const s3 = new AWS.S3({
     },
   },
 
-  // Heroku API Key
-  {
-    name: 'Clave API de Heroku',
-    provider: 'Heroku',
-    pattern: /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/g,
-    severity: 'high',
-    description: 'Posible clave API de Heroku (formato UUID). Puede permitir gestionar apps y acceder a configuracion.',
-    remediation: {
-      steps: [
-        'Verifica si es una clave de Heroku',
-        'Regenera la clave en Heroku Dashboard',
-        'Usa variables de entorno para CI/CD',
-      ],
-      revokeUrl: 'https://dashboard.heroku.com/account',
-    },
-  },
+  // Nota: Heroku usa UUIDs genéricos sin prefijo distintivo,
+  // por lo que no se pueden detectar de forma fiable.
 
   // DigitalOcean Token
   {
@@ -455,23 +441,8 @@ const s3 = new AWS.S3({
     },
   },
 
-  // Algolia API Key
-  {
-    name: 'Clave API de Algolia',
-    provider: 'Algolia',
-    pattern: /[a-f0-9]{32}/g,
-    severity: 'medium',
-    description: 'Posible clave de Algolia. Si es la Admin API Key, permite acceso completo al indice de busqueda.',
-    remediation: {
-      steps: [
-        'Verifica si es la Admin Key o Search-Only Key',
-        'Las Search-Only keys son seguras para el frontend',
-        'Las Admin keys NUNCA deben estar en codigo cliente',
-        'Rota la clave si es la Admin Key',
-      ],
-      revokeUrl: 'https://dashboard.algolia.com/account/api-keys/',
-    },
-  },
+  // Nota: Algolia usa hex strings genéricos de 32 chars sin prefijo,
+  // no se pueden detectar de forma fiable.
 
   // Cloudinary URL
   {
@@ -610,22 +581,7 @@ const s3 = new AWS.S3({
     },
   },
 
-  // Airtable API Key
-  {
-    name: 'Clave API de Airtable',
-    provider: 'Airtable',
-    pattern: /key[a-zA-Z0-9]{14}/g,
-    severity: 'high',
-    description: 'Clave API de Airtable expuesta. Permite acceso a todas tus bases de Airtable.',
-    remediation: {
-      steps: [
-        'Regenera tu clave API en Airtable',
-        'Usa tokens de acceso personal con permisos limitados',
-        'Implementa la API desde el backend',
-      ],
-      revokeUrl: 'https://airtable.com/account',
-    },
-  },
+  // Nota: Airtable usa "key" + 14 chars, pero "key" es muy genérico.
 
   // Shopify API Key
   {
@@ -711,38 +667,8 @@ const s3 = new AWS.S3({
     },
   },
 
-  // Postmark API Token
-  {
-    name: 'Token de Postmark',
-    provider: 'Postmark',
-    pattern: /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/g,
-    severity: 'high',
-    description: 'Posible token de Postmark (formato UUID). Permite enviar emails.',
-    remediation: {
-      steps: [
-        'Verifica si es un token de Postmark',
-        'Rota el token si es necesario',
-        'Usa variables de entorno en el servidor',
-      ],
-    },
-  },
-
-  // Pusher Keys
-  {
-    name: 'Clave secreta de Pusher',
-    provider: 'Pusher',
-    pattern: /[a-f0-9]{20}/g,
-    severity: 'medium',
-    description: 'Posible clave de Pusher. La app key es publica, pero el secret debe ser privado.',
-    remediation: {
-      steps: [
-        'Verifica si es el app_secret (no app_key)',
-        'El app_secret NUNCA debe estar en codigo cliente',
-        'Rota credenciales en Pusher Dashboard',
-      ],
-      revokeUrl: 'https://dashboard.pusher.com/',
-    },
-  },
+  // Nota: Postmark usa UUIDs genéricos, Pusher usa hex de 20 chars.
+  // Ambos generan demasiados falsos positivos.
 
   // Replicate API Token
   {
