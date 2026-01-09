@@ -211,6 +211,153 @@
     "referrer": "Referrer-Policy manquant",
     "permissions": "Permissions-Policy manquant"
   },
+  "vulnerabilities": {
+    "openai": {
+      "title": "Clé API OpenAI Exposée",
+      "description": "Clé API OpenAI exposée. N'importe qui peut faire des appels API et les frais seront facturés sur votre compte. Cela peut entraîner des factures de milliers d'euros.",
+      "steps": ["Allez IMMÉDIATEMENT sur platform.openai.com et révoquez cette clé", "Vérifiez l'historique d'utilisation pour détecter une consommation non autorisée", "Créez une nouvelle clé API", "Stockez la nouvelle clé dans les variables d'environnement du serveur (jamais dans le frontend)", "Créez un endpoint backend qui fait proxy pour les requêtes vers OpenAI"]
+    },
+    "anthropic": {
+      "title": "Clé API Anthropic Exposée",
+      "description": "Clé API Anthropic (Claude) exposée. Permet un accès non autorisé à l'API Claude avec des frais sur votre compte.",
+      "steps": ["Allez sur console.anthropic.com et révoquez cette clé immédiatement", "Générez une nouvelle clé API", "Stockez-la uniquement dans les variables d'environnement du serveur", "Créez un endpoint backend pour gérer les requêtes vers Claude"]
+    },
+    "stripe_live": {
+      "title": "Clé Secrète Stripe (PRODUCTION) Exposée",
+      "description": "URGENT: Clé secrète Stripe en PRODUCTION exposée. Un attaquant peut effectuer des paiements, des remboursements, voir les données clients et accéder à toutes vos informations de paiement.",
+      "steps": ["URGENT: Faites une rotation de cette clé MAINTENANT dans le Dashboard Stripe", "C'est une clé de PRODUCTION - vérifiez les transactions non autorisées", "Les clés secrètes (sk_) ne doivent JAMAIS être dans le frontend", "Utilisez uniquement les clés publiables (pk_) côté client", "Implémentez des webhooks pour vérifier les paiements de manière sécurisée"]
+    },
+    "stripe_test": {
+      "title": "Clé Secrète Stripe (Test) Exposée",
+      "description": "Clé secrète Stripe en mode test exposée. Bien que ce soit le mode test, cela révèle la structure de votre API et de mauvaises pratiques de sécurité.",
+      "steps": ["Faites une rotation de cette clé dans le Dashboard Stripe", "Déplacez-la vers les variables d'environnement du serveur", "N'exposez jamais les clés secrètes dans le code client"]
+    },
+    "aws": {
+      "title": "AWS Access Key ID Exposée",
+      "description": "AWS Access Key ID exposée. Combinée avec la clé secrète, elle permet un accès complet à vos services AWS. Les attaquants peuvent créer des ressources, voler des données ou miner des cryptomonnaies à vos frais.",
+      "steps": ["Désactivez cette clé IMMÉDIATEMENT dans la console IAM", "Vérifiez CloudTrail pour détecter une utilisation non autorisée", "Créez de nouvelles informations d'identification avec les permissions minimales nécessaires", "Utilisez des rôles IAM au lieu des access keys quand c'est possible", "Ne stockez jamais les credentials AWS dans le code client"]
+    },
+    "google_firebase": {
+      "title": "Clé API Google/Firebase Exposée",
+      "description": "Clé API Google/Firebase exposée. Si elle n'est pas restreinte, elle peut permettre une utilisation non autorisée des APIs Google avec des frais sur votre compte.",
+      "steps": ["Restreignez cette clé dans Google Cloud Console", "Configurez des restrictions par HTTP referrer (votre domaine)", "Limitez la clé uniquement aux APIs dont vous avez besoin", "Envisagez d'utiliser Firebase App Check pour une meilleure sécurité"]
+    },
+    "github_pat": {
+      "title": "Token Personnel GitHub Exposé",
+      "description": "Token personnel GitHub exposé. Permet l'accès à vos dépôts, peut créer des commits, supprimer des repos et accéder aux informations privées.",
+      "steps": ["Révoquez ce token IMMÉDIATEMENT dans les paramètres GitHub", "Vérifiez l'activité récente de votre compte", "Créez un nouveau token avec les permissions minimales nécessaires", "Utilisez GitHub Apps ou fine-grained tokens pour une meilleure sécurité", "Ne stockez jamais de tokens dans les dépôts"]
+    },
+    "bearer_token": {
+      "title": "Bearer Token Exposé dans une Requête Réseau",
+      "description": "Un Bearer token est envoyé depuis le frontend. Ce token est visible dans les outils de développement du navigateur et peut être volé.",
+      "steps": ["Déplacez l'authentification côté serveur (API routes)", "Utilisez des cookies httpOnly au lieu des headers Authorization", "Implémentez un proxy backend pour les requêtes authentifiées", "Ne stockez ou n'envoyez jamais de tokens depuis JavaScript côté client"]
+    },
+    "sensitive_param_high": {
+      "title": "Paramètre sensible dans l'URL",
+      "description": "Une valeur sensible est passée dans les paramètres URL. Les URLs sont sauvegardées dans l'historique du navigateur, les logs serveur et divulguées via les headers Referer.",
+      "steps": ["Ne passez jamais de données sensibles dans les paramètres URL", "Utilisez des requêtes POST avec les données dans le body", "Déplacez l'authentification côté serveur", "Utilisez des headers sécurisés pour l'authentification"]
+    },
+    "sensitive_param_medium": {
+      "title": "Paramètre potentiellement sensible dans l'URL",
+      "description": "Un paramètre potentiellement sensible a été détecté dans l'URL. Il pourrait s'agir d'une clé client publique (acceptable) ou d'une clé secrète (dangereux). Vérifiez si cette clé devrait être publique.",
+      "steps": ["Vérifiez s'il s'agit d'une clé client publique (acceptable) ou d'une clé secrète (dangereux)", "Les clés publiques pour les APIs frontend peuvent être exposées en toute sécurité", "Les clés secrètes ne doivent JAMAIS être dans les URLs - utilisez des requêtes serveur", "Si c'est une clé secrète, déplacez l'appel API vers votre backend"]
+    },
+    "content_security_policy": {
+      "title": "En-tête Content-Security-Policy manquant",
+      "description": "L'en-tête Content-Security-Policy (CSP) est manquant. Cet en-tête prévient les attaques XSS en contrôlant quelles ressources votre page peut charger.",
+      "steps": ["Ajoutez l'en-tête Content-Security-Policy. Exemple basique: \"default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'\""]
+    },
+    "x_frame_options": {
+      "title": "En-tête X-Frame-Options manquant",
+      "description": "L'en-tête X-Frame-Options est manquant. Sans lui, votre site peut être intégré dans un iframe malveillant pour des attaques de clickjacking.",
+      "steps": ["Ajoutez l'en-tête X-Frame-Options avec la valeur \"DENY\" ou \"SAMEORIGIN\" pour empêcher votre site d'être intégré dans des iframes d'autres domaines."]
+    },
+    "x_content_type_options": {
+      "title": "En-tête X-Content-Type-Options manquant",
+      "description": "L'en-tête X-Content-Type-Options est manquant. Empêche le navigateur de \"deviner\" le type de contenu, ce qui peut mener à des vulnérabilités.",
+      "steps": ["Ajoutez l'en-tête X-Content-Type-Options avec la valeur \"nosniff\"."]
+    },
+    "strict_transport_security": {
+      "title": "En-tête HSTS manquant",
+      "description": "L'en-tête HSTS (Strict-Transport-Security) est manquant. Cet en-tête force le navigateur à toujours utiliser HTTPS, prévenant les attaques man-in-the-middle.",
+      "steps": ["Ajoutez l'en-tête Strict-Transport-Security avec un max-age d'au moins 31536000 (1 an). Exemple: \"max-age=31536000; includeSubDomains\""]
+    },
+    "x_xss_protection": {
+      "title": "En-tête X-XSS-Protection manquant",
+      "description": "L'en-tête X-XSS-Protection est manquant. Bien que les navigateurs modernes utilisent CSP, cet en-tête fournit une protection pour les anciens navigateurs.",
+      "steps": ["Ajoutez l'en-tête X-XSS-Protection avec la valeur \"1; mode=block\"."]
+    },
+    "referrer_policy": {
+      "title": "En-tête Referrer-Policy manquant",
+      "description": "L'en-tête Referrer-Policy est manquant. Contrôle la quantité d'informations referrer partagées lors de la navigation vers d'autres sites.",
+      "steps": ["Ajoutez l'en-tête Referrer-Policy avec la valeur \"strict-origin-when-cross-origin\" ou plus restrictif."]
+    },
+    "permissions_policy": {
+      "title": "En-tête Permissions-Policy manquant",
+      "description": "L'en-tête Permissions-Policy est manquant. Contrôle quelles fonctionnalités du navigateur votre site peut utiliser (caméra, microphone, géolocalisation, etc.).",
+      "steps": ["Ajoutez l'en-tête Permissions-Policy pour restreindre les fonctionnalités inutiles. Exemple: \"camera=(), microphone=(), geolocation=()\""]
+    },
+    "cors_wildcard": {
+      "title": "CORS Critique: Wildcard avec Credentials",
+      "description": "Votre API autorise les credentials (cookies, auth headers) depuis n'importe quelle origine. C'est EXTRÊMEMENT dangereux et permet le vol de sessions.",
+      "steps": ["N'utilisez JAMAIS Access-Control-Allow-Origin: * avec credentials", "Spécifiez des domaines exacts lors de l'utilisation de credentials", "Révisez votre configuration CORS immédiatement"]
+    },
+    "source_map": {
+      "title": "Source Maps Exposés",
+      "description": "Des source maps accessibles publiquement ont été trouvés. Les source maps révèlent votre code source original, y compris les commentaires, noms de variables et logique métier.",
+      "steps": ["Désactivez la génération de source maps en production", "Dans Next.js: productionBrowserSourceMaps: false dans next.config.js", "Dans Webpack: devtool: false pour la production", "Si vous avez besoin de source maps pour le débogage, utilisez source-map-loader avec authentification"]
+    },
+    "env_file": {
+      "title": "Fichier .env Exposé",
+      "description": "Le fichier de variables d'environnement est accessible publiquement. Il peut contenir des secrets, clés API et identifiants de base de données.",
+      "steps": ["Bloquez l'accès au fichier dans la configuration du serveur", "Ajoutez au .gitignore et supprimez du contrôle de version", "Utilisez des variables d'environnement au lieu de fichiers de configuration", "Configurez votre plateforme d'hébergement pour refuser l'accès aux fichiers sensibles"]
+    },
+    "git_exposed": {
+      "title": "Dépôt Git Exposé",
+      "description": "Le répertoire .git est accessible publiquement. Il peut révéler tout l'historique du code, y compris les secrets qui ont été supprimés.",
+      "steps": ["Bloquez l'accès au répertoire .git dans la configuration du serveur", "Vérifiez l'historique git pour les secrets exposés", "Envisagez d'utiliser des outils comme git-secrets pour empêcher les commits de secrets"]
+    },
+    "admin_panel": {
+      "title": "Panneau d'Administration Accessible",
+      "description": "Un panneau d'administration accessible publiquement a été détecté. Cela peut permettre aux attaquants de tenter d'accéder aux zones restreintes.",
+      "steps": ["Restreignez l'accès au panneau admin par IP", "Implémentez l'authentification à deux facteurs", "Utilisez des URLs imprévisibles pour le panneau admin", "Envisagez de placer le panneau admin sur un sous-domaine séparé"]
+    },
+    "debug_endpoint": {
+      "title": "Endpoint de Debug Accessible",
+      "description": "Un endpoint de debug ou phpinfo accessible publiquement a été détecté. Il révèle des informations sensibles sur la configuration du serveur.",
+      "steps": ["Supprimez ou désactivez les endpoints de debug en production", "Bloquez l'accès à phpinfo et fichiers similaires", "Configurez le serveur pour ne pas exposer les informations de configuration"]
+    },
+    "database_exposed": {
+      "title": "Base de Données Accessible",
+      "description": "Un fichier ou interface de base de données accessible publiquement a été détecté. Cela peut entraîner le vol ou la perte totale des données.",
+      "steps": ["Bloquez immédiatement l'accès au fichier de base de données", "Déplacez la base de données hors du répertoire public", "Utilisez une authentification forte pour les interfaces d'administration de BD", "Vérifiez les données pour d'éventuels accès non autorisés"]
+    },
+    "backup_exposed": {
+      "title": "Backup Accessible",
+      "description": "Un fichier de backup accessible publiquement a été détecté. Les backups contiennent souvent tout le code source et les données sensibles.",
+      "steps": ["Supprimez immédiatement le backup du serveur public", "Stockez les backups dans des emplacements sécurisés hors du webroot", "Configurez le serveur pour bloquer l'accès aux fichiers .zip, .tar, .sql"]
+    },
+    "log_exposed": {
+      "title": "Fichier de Log Accessible",
+      "description": "Un fichier de log accessible publiquement a été détecté. Les logs peuvent contenir des informations sensibles, erreurs et traces de pile.",
+      "steps": ["Bloquez l'accès aux fichiers de log", "Stockez les logs hors du répertoire public", "Configurez le serveur pour refuser l'accès aux fichiers .log"]
+    },
+    "config_file": {
+      "title": "Fichier de Configuration Exposé",
+      "description": "Un fichier de configuration accessible publiquement a été détecté. Il peut contenir des identifiants et une configuration sensible.",
+      "steps": ["Bloquez l'accès au fichier dans la configuration du serveur", "Déplacez les fichiers de configuration hors du répertoire public", "Utilisez des variables d'environnement au lieu de fichiers de configuration"]
+    },
+    "http_insecure": {
+      "title": "Site utilisant HTTP au lieu de HTTPS",
+      "description": "Votre site est accessible via HTTP, ce qui transmet les données non chiffrées.",
+      "steps": ["Obtenez un certificat SSL (gratuit avec Let's Encrypt)", "Configurez votre serveur pour rediriger HTTP vers HTTPS", "Ajoutez l'en-tête HSTS pour forcer HTTPS"]
+    },
+    "mixed_content": {
+      "title": "Contenu Mixte Détecté",
+      "description": "Votre page HTTPS charge des ressources via HTTP, qui peuvent être interceptées.",
+      "steps": ["Mettez à jour toutes les URLs de ressources pour utiliser HTTPS", "Utilisez des URLs relatives au protocole (//) où approprié", "Activez upgrade-insecure-requests dans CSP"]
+    }
+  },
   "legal": {
     "common": {
       "back": "Retour",

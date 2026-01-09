@@ -288,6 +288,7 @@ export class SecurityScanner {
               severity: 'critical',
               title: 'Bearer Token Exposed in Network Request',
               description: `A Bearer token is being sent from the frontend. This token is visible in browser dev tools and can be stolen.`,
+              patternKey: 'bearer_token',
               location: req.url,
               foundValue: sanitizeKey(token),
               fullValue: token,
@@ -328,6 +329,7 @@ export class SecurityScanner {
               description: isHighRisk
                 ? `Se esta pasando un valor sensible en los parametros de la URL. Las URLs se guardan en el historial del navegador, logs del servidor y se filtran via cabeceras Referer.`
                 : `Se detecto un parametro potencialmente sensible en la URL. Podria ser una clave publica de cliente (aceptable) o una clave secreta (peligroso). Verifica si esta clave deberia ser publica.`,
+              patternKey: isHighRisk ? 'sensitive_param_high' : 'sensitive_param_medium',
               location: req.url.split('?')[0],
               foundValue: `${param}=${sanitizeKey(value)}`,
               fullValue: `${param}=${value}`,
@@ -353,12 +355,14 @@ export class SecurityScanner {
           pattern.pattern.lastIndex = 0;
           const match = pattern.pattern.exec(req.url);
           if (match && isLikelyRealKey(match[0], pattern)) {
+            const patternKey = pattern.patternKey || pattern.provider.toLowerCase().replace(/\s+/g, '_');
             this.addVulnerability({
               id: uuidv4(),
               type: 'api_key_in_url',
               severity: 'critical',
               title: `${pattern.name} in Network Request URL`,
               description: `${pattern.description} Found in a request URL made by your application.`,
+              patternKey,
               location: req.url.split('?')[0],
               foundValue: sanitizeKey(match[0]),
               fullValue: match[0],
@@ -376,12 +380,14 @@ export class SecurityScanner {
           pattern.pattern.lastIndex = 0;
           const match = pattern.pattern.exec(req.postData);
           if (match && isLikelyRealKey(match[0], pattern)) {
+            const patternKey = pattern.patternKey || pattern.provider.toLowerCase().replace(/\s+/g, '_');
             this.addVulnerability({
               id: uuidv4(),
               type: 'api_key_in_request',
               severity: 'critical',
               title: `${pattern.name} in Request Body`,
               description: `${pattern.description} Found in a POST request body sent from your frontend.`,
+              patternKey,
               location: req.url,
               foundValue: sanitizeKey(match[0]),
               fullValue: match[0],
@@ -419,12 +425,16 @@ export class SecurityScanner {
         const beforeMatch = content.substring(0, match.index);
         const lineNumber = (beforeMatch.match(/\n/g) || []).length + 1;
 
+        // Derive patternKey from provider or use explicit patternKey
+        const patternKey = pattern.patternKey || pattern.provider.toLowerCase().replace(/\s+/g, '_');
+
         this.addVulnerability({
           id: uuidv4(),
           type: 'api_key_exposed',
           severity: pattern.severity,
           title: `${pattern.name} Exposed`,
           description: pattern.description,
+          patternKey,
           location,
           lineNumber,
           foundValue: sanitizeKey(foundKey),
@@ -441,12 +451,16 @@ export class SecurityScanner {
     for (const header of SECURITY_HEADERS) {
       const headerLower = header.name.toLowerCase();
       if (!headers.includes(headerLower)) {
+        // Derive patternKey from header name
+        const patternKey = header.patternKey || header.name.toLowerCase().replace(/-/g, '_');
+
         this.addVulnerability({
           id: uuidv4(),
           type: 'missing_security_header',
           severity: header.importance,
           title: `Missing ${header.name} Header`,
           description: header.description,
+          patternKey,
           remediation: {
             steps: [header.recommendation],
           },
@@ -468,6 +482,7 @@ export class SecurityScanner {
         severity: 'critical',
         title: 'CORS Critico: Wildcard con Credentials',
         description: 'Tu API permite credenciales (cookies, auth headers) desde cualquier origen. Esto es EXTREMADAMENTE peligroso y permite robo de sesiones.',
+        patternKey: 'cors_wildcard',
         remediation: {
           steps: [
             'NUNCA uses Access-Control-Allow-Origin: * con credentials',
@@ -547,6 +562,7 @@ export class SecurityScanner {
         severity: 'medium',
         title: 'Source Maps Expuestos',
         description: `Se encontraron ${exposedMaps.length} source map(s) accesibles publicamente. Los source maps revelan tu codigo fuente original, incluyendo comentarios, nombres de variables y logica de negocio.`,
+        patternKey: 'source_map',
         location: exposedMaps[0].url,
         remediation: {
           steps: [
@@ -599,26 +615,34 @@ export class SecurityScanner {
             // Determine vulnerability type based on file
             let vulnType: VulnerabilityType = 'config_exposed';
             let title = `Archivo sensible accesible: ${file.path}`;
+            let patternKey = 'config_file';
 
             if (file.path.includes('.env')) {
               vulnType = 'env_file_exposed';
+              patternKey = 'env_file';
             } else if (file.path.includes('.git')) {
               vulnType = 'git_exposed';
+              patternKey = 'git_exposed';
             } else if (file.path.includes('admin') || file.path.includes('phpmyadmin') || file.path.includes('cpanel')) {
               vulnType = 'admin_panel_exposed';
               title = `Panel de admin accesible: ${file.path}`;
+              patternKey = 'admin_panel';
             } else if (file.path.includes('debug') || file.path.includes('phpinfo')) {
               vulnType = 'debug_endpoint_exposed';
               title = `Endpoint de debug accesible: ${file.path}`;
+              patternKey = 'debug_endpoint';
             } else if (file.path.includes('.sql') || file.path.includes('database') || file.path.includes('.sqlite')) {
               vulnType = 'database_exposed';
               title = `Base de datos accesible: ${file.path}`;
+              patternKey = 'database_exposed';
             } else if (file.path.includes('backup') || file.path.includes('.zip') || file.path.includes('.tar')) {
               vulnType = 'backup_exposed';
               title = `Backup accesible: ${file.path}`;
+              patternKey = 'backup_exposed';
             } else if (file.path.includes('.log') || file.path.includes('log/')) {
               vulnType = 'log_exposed';
               title = `Log accesible: ${file.path}`;
+              patternKey = 'log_exposed';
             }
 
             this.addVulnerability({
@@ -627,6 +651,7 @@ export class SecurityScanner {
               severity: file.severity,
               title,
               description: `${file.description} esta accesible publicamente.`,
+              patternKey,
               location: fileUrl,
               remediation: {
                 steps: [
@@ -661,6 +686,7 @@ export class SecurityScanner {
         severity: 'medium',
         title: 'Site Using HTTP Instead of HTTPS',
         description: 'Your site is accessible via HTTP, which transmits data unencrypted.',
+        patternKey: 'http_insecure',
         remediation: {
           steps: [
             'Obtain an SSL certificate (free from Let\'s Encrypt)',
@@ -683,6 +709,7 @@ export class SecurityScanner {
           severity: 'low',
           title: 'Mixed Content Detected',
           description: 'Your HTTPS page loads resources over HTTP, which can be intercepted.',
+          patternKey: 'mixed_content',
           remediation: {
             steps: [
               'Update all resource URLs to use HTTPS',

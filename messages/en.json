@@ -211,6 +211,153 @@
     "referrer": "Missing Referrer-Policy",
     "permissions": "Missing Permissions-Policy"
   },
+  "vulnerabilities": {
+    "openai": {
+      "title": "Exposed OpenAI API Key",
+      "description": "Exposed OpenAI API key. Anyone can make API calls and charges will go to your account. This can result in bills of thousands of dollars.",
+      "steps": ["Go IMMEDIATELY to platform.openai.com and revoke this key", "Review usage history for unauthorized consumption", "Create a new API key", "Store the new key in server environment variables (never in frontend)", "Create a backend endpoint that proxies requests to OpenAI"]
+    },
+    "anthropic": {
+      "title": "Exposed Anthropic API Key",
+      "description": "Exposed Anthropic (Claude) API key. Allows unauthorized access to Claude API with charges to your account.",
+      "steps": ["Go to console.anthropic.com and revoke this key immediately", "Generate a new API key", "Store it only in server environment variables", "Create a backend endpoint to handle requests to Claude"]
+    },
+    "stripe_live": {
+      "title": "Exposed Stripe Secret Key (PRODUCTION)",
+      "description": "URGENT: Stripe PRODUCTION secret key exposed. An attacker can make charges, refunds, view customer data and access all your payment information.",
+      "steps": ["URGENT: Rotate this key NOW in the Stripe Dashboard", "This is a PRODUCTION key - review unauthorized transactions", "Secret keys (sk_) should NEVER be in the frontend", "Use only publishable keys (pk_) on the client side", "Implement webhooks to verify payments securely"]
+    },
+    "stripe_test": {
+      "title": "Exposed Stripe Secret Key (Test)",
+      "description": "Stripe test mode secret key exposed. While it's test mode, it reveals your API structure and poor security practices.",
+      "steps": ["Rotate this key in the Stripe Dashboard", "Move it to server environment variables", "Never expose secret keys in client code"]
+    },
+    "aws": {
+      "title": "Exposed AWS Access Key ID",
+      "description": "Exposed AWS Access Key ID. Combined with the secret key, it allows full access to your AWS services. Attackers can create resources, steal data or mine cryptocurrency at your expense.",
+      "steps": ["Deactivate this key IMMEDIATELY in the IAM console", "Review CloudTrail for unauthorized usage", "Create new credentials with minimum necessary permissions", "Use IAM roles instead of access keys when possible", "Never store AWS credentials in client code"]
+    },
+    "google_firebase": {
+      "title": "Exposed Google/Firebase API Key",
+      "description": "Exposed Google/Firebase API key. If not restricted, it can allow unauthorized use of Google APIs with charges to your account.",
+      "steps": ["Restrict this key in Google Cloud Console", "Configure HTTP referrer restrictions (your domain)", "Limit the key to only the APIs you need", "Consider using Firebase App Check for better security"]
+    },
+    "github_pat": {
+      "title": "Exposed GitHub Personal Token",
+      "description": "Exposed GitHub personal token. Allows access to your repositories, can create commits, delete repos and access private information.",
+      "steps": ["Revoke this token IMMEDIATELY in GitHub Settings", "Review recent account activity", "Create a new token with minimum necessary permissions", "Use GitHub Apps or fine-grained tokens for better security", "Never store tokens in repositories"]
+    },
+    "bearer_token": {
+      "title": "Bearer Token Exposed in Network Request",
+      "description": "A Bearer token is being sent from the frontend. This token is visible in browser dev tools and can be stolen.",
+      "steps": ["Move authentication to server-side (API routes)", "Use httpOnly cookies instead of Authorization headers", "Implement a backend proxy for authenticated requests", "Never store or send tokens from client-side JavaScript"]
+    },
+    "sensitive_param_high": {
+      "title": "Sensitive parameter in URL",
+      "description": "A sensitive value is being passed in URL parameters. URLs are saved in browser history, server logs and leaked via Referer headers.",
+      "steps": ["Never pass sensitive data in URL parameters", "Use POST requests with data in the body", "Move authentication to server-side", "Use secure headers for authentication"]
+    },
+    "sensitive_param_medium": {
+      "title": "Potentially sensitive parameter in URL",
+      "description": "A potentially sensitive parameter was detected in the URL. It could be a public client key (acceptable) or a secret key (dangerous). Verify if this key should be public.",
+      "steps": ["Verify if it's a public client key (acceptable) or a secret key (dangerous)", "Public keys for frontend APIs are safe to expose", "Secret keys should NEVER be in URLs - use server requests", "If it's a secret key, move the API call to your backend"]
+    },
+    "content_security_policy": {
+      "title": "Missing Content-Security-Policy header",
+      "description": "Missing Content-Security-Policy (CSP) header. This header prevents XSS attacks by controlling which resources your page can load.",
+      "steps": ["Add the Content-Security-Policy header. Basic example: \"default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'\""]
+    },
+    "x_frame_options": {
+      "title": "Missing X-Frame-Options header",
+      "description": "Missing X-Frame-Options header. Without it, your site can be embedded in a malicious iframe for clickjacking attacks.",
+      "steps": ["Add the X-Frame-Options header with value \"DENY\" or \"SAMEORIGIN\" to prevent your site from being embedded in iframes from other domains."]
+    },
+    "x_content_type_options": {
+      "title": "Missing X-Content-Type-Options header",
+      "description": "Missing X-Content-Type-Options header. Prevents the browser from \"guessing\" the content type, which can lead to vulnerabilities.",
+      "steps": ["Add the X-Content-Type-Options header with value \"nosniff\"."]
+    },
+    "strict_transport_security": {
+      "title": "Missing HSTS header",
+      "description": "Missing HSTS (Strict-Transport-Security) header. This header forces the browser to always use HTTPS, preventing man-in-the-middle attacks.",
+      "steps": ["Add the Strict-Transport-Security header with max-age of at least 31536000 (1 year). Example: \"max-age=31536000; includeSubDomains\""]
+    },
+    "x_xss_protection": {
+      "title": "Missing X-XSS-Protection header",
+      "description": "Missing X-XSS-Protection header. While modern browsers use CSP, this header provides protection for older browsers.",
+      "steps": ["Add the X-XSS-Protection header with value \"1; mode=block\"."]
+    },
+    "referrer_policy": {
+      "title": "Missing Referrer-Policy header",
+      "description": "Missing Referrer-Policy header. Controls how much referrer information is shared when navigating to other sites.",
+      "steps": ["Add the Referrer-Policy header with value \"strict-origin-when-cross-origin\" or more restrictive."]
+    },
+    "permissions_policy": {
+      "title": "Missing Permissions-Policy header",
+      "description": "Missing Permissions-Policy header. Controls which browser features your site can use (camera, microphone, geolocation, etc.).",
+      "steps": ["Add the Permissions-Policy header to restrict unnecessary features. Example: \"camera=(), microphone=(), geolocation=()\""]
+    },
+    "cors_wildcard": {
+      "title": "Critical CORS: Wildcard with Credentials",
+      "description": "Your API allows credentials (cookies, auth headers) from any origin. This is EXTREMELY dangerous and allows session theft.",
+      "steps": ["NEVER use Access-Control-Allow-Origin: * with credentials", "Specify exact domains when using credentials", "Review your CORS configuration immediately"]
+    },
+    "source_map": {
+      "title": "Exposed Source Maps",
+      "description": "Publicly accessible source maps were found. Source maps reveal your original source code, including comments, variable names and business logic.",
+      "steps": ["Disable source map generation in production", "In Next.js: productionBrowserSourceMaps: false in next.config.js", "In Webpack: devtool: false for production", "If you need source maps for debugging, use source-map-loader with authentication"]
+    },
+    "env_file": {
+      "title": "Exposed .env File",
+      "description": "The environment variables file is publicly accessible. It may contain secrets, API keys and database credentials.",
+      "steps": ["Block access to the file in server configuration", "Add to .gitignore and remove from version control", "Use environment variables instead of configuration files", "Configure your hosting platform to deny access to sensitive files"]
+    },
+    "git_exposed": {
+      "title": "Exposed Git Repository",
+      "description": "The .git directory is publicly accessible. It can reveal the entire code history, including secrets that were deleted.",
+      "steps": ["Block access to the .git directory in server configuration", "Review git history for exposed secrets", "Consider using tools like git-secrets to prevent committing secrets"]
+    },
+    "admin_panel": {
+      "title": "Accessible Admin Panel",
+      "description": "A publicly accessible admin panel was detected. This can allow attackers to attempt accessing restricted areas.",
+      "steps": ["Restrict admin panel access by IP", "Implement two-factor authentication", "Use unpredictable URLs for the admin panel", "Consider placing the admin panel on a separate subdomain"]
+    },
+    "debug_endpoint": {
+      "title": "Accessible Debug Endpoint",
+      "description": "A publicly accessible debug or phpinfo endpoint was detected. It reveals sensitive information about the server configuration.",
+      "steps": ["Remove or disable debug endpoints in production", "Block access to phpinfo and similar files", "Configure the server not to expose configuration information"]
+    },
+    "database_exposed": {
+      "title": "Accessible Database",
+      "description": "A publicly accessible database file or interface was detected. This can result in theft or total loss of data.",
+      "steps": ["Immediately block access to the database file", "Move the database outside the public directory", "Use strong authentication for database administration interfaces", "Review data for possible unauthorized access"]
+    },
+    "backup_exposed": {
+      "title": "Accessible Backup",
+      "description": "A publicly accessible backup file was detected. Backups often contain the entire source code and sensitive data.",
+      "steps": ["Immediately remove the backup from the public server", "Store backups in secure locations outside the webroot", "Configure the server to block access to .zip, .tar, .sql files"]
+    },
+    "log_exposed": {
+      "title": "Accessible Log File",
+      "description": "A publicly accessible log file was detected. Logs can contain sensitive information, errors and stack traces.",
+      "steps": ["Block access to log files", "Store logs outside the public directory", "Configure the server to deny access to .log files"]
+    },
+    "config_file": {
+      "title": "Exposed Configuration File",
+      "description": "A publicly accessible configuration file was detected. It may contain credentials and sensitive configuration.",
+      "steps": ["Block access to the file in server configuration", "Move configuration files outside the public directory", "Use environment variables instead of configuration files"]
+    },
+    "http_insecure": {
+      "title": "Site using HTTP instead of HTTPS",
+      "description": "Your site is accessible via HTTP, which transmits data unencrypted.",
+      "steps": ["Obtain an SSL certificate (free from Let's Encrypt)", "Configure your server to redirect HTTP to HTTPS", "Add the HSTS header to enforce HTTPS"]
+    },
+    "mixed_content": {
+      "title": "Mixed Content Detected",
+      "description": "Your HTTPS page loads resources over HTTP, which can be intercepted.",
+      "steps": ["Update all resource URLs to use HTTPS", "Use protocol-relative URLs (//) where appropriate", "Enable upgrade-insecure-requests in CSP"]
+    }
+  },
   "legal": {
     "common": {
       "back": "Back",

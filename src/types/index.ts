@@ -31,6 +31,7 @@ export interface Vulnerability {
   severity: Severity;
   title: string;
   description: string;
+  patternKey?: string; // Key for i18n translations (e.g., "openai", "stripe_live", "header_csp")
   location?: string;
   lineNumber?: number;
   foundValue?: string; // Sanitized value (partial)
@@ -113,6 +114,7 @@ export interface CheckoutResponse {
 export interface ApiKeyPattern {
   name: string;
   provider: string;
+  patternKey?: string; // Key for i18n translations (derived from provider if not specified)
   pattern: RegExp;
   severity: Severity;
   description: string;
@@ -129,6 +131,7 @@ export interface ApiKeyPattern {
 // Security header check
 export interface SecurityHeader {
   name: string;
+  patternKey?: string; // Key for i18n translations (derived from name if not specified)
   importance: Severity;
   description: string;
   recommendation: string;

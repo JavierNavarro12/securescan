@@ -211,6 +211,153 @@
     "referrer": "Falta Referrer-Policy",
     "permissions": "Falta Permissions-Policy"
   },
+  "vulnerabilities": {
+    "openai": {
+      "title": "Clave API de OpenAI Expuesta",
+      "description": "Clave API de OpenAI expuesta. Cualquier persona puede hacer llamadas a la API y los cargos irán a tu cuenta. Esto puede resultar en facturas de miles de euros.",
+      "steps": ["Ve INMEDIATAMENTE a platform.openai.com y revoca esta clave", "Revisa el historial de uso para detectar consumo no autorizado", "Crea una nueva clave API", "Guarda la nueva clave en variables de entorno del servidor (nunca en el frontend)", "Crea un endpoint en tu backend que haga de proxy para las peticiones a OpenAI"]
+    },
+    "anthropic": {
+      "title": "Clave API de Anthropic Expuesta",
+      "description": "Clave API de Anthropic (Claude) expuesta. Permite acceso no autorizado a la API de Claude con cargos a tu cuenta.",
+      "steps": ["Ve a console.anthropic.com y revoca esta clave inmediatamente", "Genera una nueva clave API", "Guárdala solo en variables de entorno del servidor", "Crea un endpoint backend para manejar las peticiones a Claude"]
+    },
+    "stripe_live": {
+      "title": "Clave Secreta de Stripe (PRODUCCIÓN) Expuesta",
+      "description": "URGENTE: Clave secreta de Stripe en PRODUCCIÓN expuesta. Un atacante puede realizar cobros, reembolsos, ver datos de clientes y acceder a toda tu información de pagos.",
+      "steps": ["URGENTE: Rota esta clave AHORA en el Dashboard de Stripe", "Es una clave de PRODUCCIÓN - revisa transacciones no autorizadas", "Las claves secretas (sk_) NUNCA deben estar en el frontend", "Usa solo claves publicables (pk_) en el lado del cliente", "Implementa webhooks para verificar pagos de forma segura"]
+    },
+    "stripe_test": {
+      "title": "Clave Secreta de Stripe (Test) Expuesta",
+      "description": "Clave secreta de Stripe en modo test expuesta. Aunque es modo prueba, revela la estructura de tu API y malas prácticas de seguridad.",
+      "steps": ["Rota esta clave en el Dashboard de Stripe", "Muévela a variables de entorno del servidor", "Nunca expongas claves secretas en código del cliente"]
+    },
+    "aws": {
+      "title": "AWS Access Key ID Expuesta",
+      "description": "AWS Access Key ID expuesta. Combinada con la clave secreta, permite acceso completo a tus servicios de AWS. Atacantes pueden crear recursos, robar datos o minar criptomonedas a tu costa.",
+      "steps": ["Desactiva esta clave INMEDIATAMENTE en la consola de IAM", "Revisa CloudTrail para detectar uso no autorizado", "Crea nuevas credenciales con permisos mínimos necesarios", "Usa IAM roles en vez de access keys cuando sea posible", "Nunca guardes credenciales AWS en código del cliente"]
+    },
+    "google_firebase": {
+      "title": "Clave API de Google/Firebase Expuesta",
+      "description": "Clave API de Google/Firebase expuesta. Si no está restringida, puede permitir uso no autorizado de APIs de Google con cargos a tu cuenta.",
+      "steps": ["Restringe esta clave en Google Cloud Console", "Configura restricciones por HTTP referrer (tu dominio)", "Limita la clave solo a las APIs que necesitas", "Considera usar Firebase App Check para mayor seguridad"]
+    },
+    "github_pat": {
+      "title": "Token Personal de GitHub Expuesto",
+      "description": "Token personal de GitHub expuesto. Permite acceso a tus repositorios, puede crear commits, borrar repos y acceder a información privada.",
+      "steps": ["Revoca este token INMEDIATAMENTE en GitHub Settings", "Revisa la actividad reciente de tu cuenta", "Crea un nuevo token con los permisos mínimos necesarios", "Usa GitHub Apps o fine-grained tokens para mejor seguridad", "Nunca guardes tokens en repositorios"]
+    },
+    "bearer_token": {
+      "title": "Bearer Token Expuesto en Petición de Red",
+      "description": "Se está enviando un Bearer token desde el frontend. Este token es visible en las herramientas de desarrollo del navegador y puede ser robado.",
+      "steps": ["Mueve la autenticación al lado del servidor (API routes)", "Usa cookies httpOnly en lugar de headers Authorization", "Implementa un proxy backend para peticiones autenticadas", "Nunca almacenes ni envíes tokens desde JavaScript del cliente"]
+    },
+    "sensitive_param_high": {
+      "title": "Parámetro sensible en URL",
+      "description": "Se está pasando un valor sensible en los parámetros de la URL. Las URLs se guardan en el historial del navegador, logs del servidor y se filtran vía cabeceras Referer.",
+      "steps": ["Nunca pases datos sensibles en parámetros de URL", "Usa peticiones POST con datos en el body", "Mueve la autenticación al lado del servidor", "Usa cabeceras seguras para autenticación"]
+    },
+    "sensitive_param_medium": {
+      "title": "Parámetro potencialmente sensible en URL",
+      "description": "Se detectó un parámetro potencialmente sensible en la URL. Podría ser una clave pública de cliente (aceptable) o una clave secreta (peligroso). Verifica si esta clave debería ser pública.",
+      "steps": ["Verifica si es una clave pública de cliente (aceptable) o una clave secreta (peligroso)", "Las claves públicas para APIs de frontend son seguras de exponer", "Las claves secretas NUNCA deben estar en URLs - usa peticiones del servidor", "Si es una clave secreta, mueve la llamada a la API a tu backend"]
+    },
+    "content_security_policy": {
+      "title": "Falta la cabecera Content-Security-Policy",
+      "description": "Falta la cabecera Content-Security-Policy (CSP). Esta cabecera previene ataques XSS controlando qué recursos puede cargar tu página.",
+      "steps": ["Añade la cabecera Content-Security-Policy. Ejemplo básico: \"default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'\""]
+    },
+    "x_frame_options": {
+      "title": "Falta la cabecera X-Frame-Options",
+      "description": "Falta la cabecera X-Frame-Options. Sin ella, tu sitio puede ser embebido en un iframe malicioso para ataques de clickjacking.",
+      "steps": ["Añade la cabecera X-Frame-Options con valor \"DENY\" o \"SAMEORIGIN\" para prevenir que tu sitio sea embebido en iframes de otros dominios."]
+    },
+    "x_content_type_options": {
+      "title": "Falta la cabecera X-Content-Type-Options",
+      "description": "Falta la cabecera X-Content-Type-Options. Previene que el navegador \"adivine\" el tipo de contenido, lo que puede llevar a vulnerabilidades.",
+      "steps": ["Añade la cabecera X-Content-Type-Options con valor \"nosniff\"."]
+    },
+    "strict_transport_security": {
+      "title": "Falta la cabecera HSTS",
+      "description": "Falta la cabecera HSTS (Strict-Transport-Security). Esta cabecera fuerza al navegador a usar siempre HTTPS, previniendo ataques man-in-the-middle.",
+      "steps": ["Añade la cabecera Strict-Transport-Security con max-age de al menos 31536000 (1 año). Ejemplo: \"max-age=31536000; includeSubDomains\""]
+    },
+    "x_xss_protection": {
+      "title": "Falta la cabecera X-XSS-Protection",
+      "description": "Falta la cabecera X-XSS-Protection. Aunque los navegadores modernos usan CSP, esta cabecera proporciona protección para navegadores antiguos.",
+      "steps": ["Añade la cabecera X-XSS-Protection con valor \"1; mode=block\"."]
+    },
+    "referrer_policy": {
+      "title": "Falta la cabecera Referrer-Policy",
+      "description": "Falta la cabecera Referrer-Policy. Controla cuánta información del referrer se comparte al navegar a otros sitios.",
+      "steps": ["Añade la cabecera Referrer-Policy con valor \"strict-origin-when-cross-origin\" o más restrictivo."]
+    },
+    "permissions_policy": {
+      "title": "Falta la cabecera Permissions-Policy",
+      "description": "Falta la cabecera Permissions-Policy. Controla qué funciones del navegador puede usar tu sitio (cámara, micrófono, geolocalización, etc.).",
+      "steps": ["Añade la cabecera Permissions-Policy para restringir funciones innecesarias. Ejemplo: \"camera=(), microphone=(), geolocation=()\""]
+    },
+    "cors_wildcard": {
+      "title": "CORS Crítico: Wildcard con Credentials",
+      "description": "Tu API permite credenciales (cookies, auth headers) desde cualquier origen. Esto es EXTREMADAMENTE peligroso y permite robo de sesiones.",
+      "steps": ["NUNCA uses Access-Control-Allow-Origin: * con credentials", "Especifica dominios exactos cuando uses credentials", "Revisa tu configuración de CORS inmediatamente"]
+    },
+    "source_map": {
+      "title": "Source Maps Expuestos",
+      "description": "Se encontraron source maps accesibles públicamente. Los source maps revelan tu código fuente original, incluyendo comentarios, nombres de variables y lógica de negocio.",
+      "steps": ["Deshabilita la generación de source maps en producción", "En Next.js: productionBrowserSourceMaps: false en next.config.js", "En Webpack: devtool: false para producción", "Si necesitas source maps para debugging, usa source-map-loader con autenticación"]
+    },
+    "env_file": {
+      "title": "Archivo .env Expuesto",
+      "description": "El archivo de variables de entorno está accesible públicamente. Puede contener secretos, claves API y credenciales de base de datos.",
+      "steps": ["Bloquea el acceso al archivo en la configuración del servidor", "Añade a .gitignore y elimina del control de versiones", "Usa variables de entorno en lugar de archivos de configuración", "Configura tu plataforma de hosting para denegar acceso a archivos sensibles"]
+    },
+    "git_exposed": {
+      "title": "Repositorio Git Expuesto",
+      "description": "El directorio .git está accesible públicamente. Puede revelar todo el historial del código, incluyendo secretos que fueron eliminados.",
+      "steps": ["Bloquea el acceso al directorio .git en la configuración del servidor", "Revisa el historial de git por secretos expuestos", "Considera usar herramientas como git-secrets para prevenir commits de secretos"]
+    },
+    "admin_panel": {
+      "title": "Panel de Administración Accesible",
+      "description": "Se detectó un panel de administración accesible públicamente. Esto puede permitir a atacantes intentar acceder a áreas restringidas.",
+      "steps": ["Restringe el acceso al panel de admin por IP", "Implementa autenticación de dos factores", "Usa URLs no predecibles para el panel de admin", "Considera colocar el panel de admin en un subdominio separado"]
+    },
+    "debug_endpoint": {
+      "title": "Endpoint de Debug Accesible",
+      "description": "Se detectó un endpoint de debug o phpinfo accesible públicamente. Revela información sensible sobre la configuración del servidor.",
+      "steps": ["Elimina o desactiva endpoints de debug en producción", "Bloquea el acceso a phpinfo y archivos similares", "Configura el servidor para no exponer información de configuración"]
+    },
+    "database_exposed": {
+      "title": "Base de Datos Accesible",
+      "description": "Se detectó un archivo o interfaz de base de datos accesible públicamente. Esto puede resultar en robo o pérdida total de datos.",
+      "steps": ["Bloquea inmediatamente el acceso al archivo de base de datos", "Mueve la base de datos fuera del directorio público", "Usa autenticación fuerte para interfaces de administración de BD", "Revisa los datos por posibles accesos no autorizados"]
+    },
+    "backup_exposed": {
+      "title": "Backup Accesible",
+      "description": "Se detectó un archivo de backup accesible públicamente. Los backups a menudo contienen todo el código fuente y datos sensibles.",
+      "steps": ["Elimina inmediatamente el backup del servidor público", "Almacena backups en ubicaciones seguras fuera del webroot", "Configura el servidor para bloquear acceso a archivos .zip, .tar, .sql"]
+    },
+    "log_exposed": {
+      "title": "Archivo de Log Accesible",
+      "description": "Se detectó un archivo de log accesible públicamente. Los logs pueden contener información sensible, errores y trazas de stack.",
+      "steps": ["Bloquea el acceso a archivos de log", "Almacena logs fuera del directorio público", "Configura el servidor para denegar acceso a archivos .log"]
+    },
+    "config_file": {
+      "title": "Archivo de Configuración Expuesto",
+      "description": "Se detectó un archivo de configuración accesible públicamente. Puede contener credenciales y configuración sensible.",
+      "steps": ["Bloquea el acceso al archivo en la configuración del servidor", "Mueve archivos de configuración fuera del directorio público", "Usa variables de entorno en lugar de archivos de configuración"]
+    },
+    "http_insecure": {
+      "title": "Sitio usando HTTP en lugar de HTTPS",
+      "description": "Tu sitio es accesible via HTTP, lo que transmite datos sin cifrar.",
+      "steps": ["Obtén un certificado SSL (gratis con Let's Encrypt)", "Configura tu servidor para redirigir HTTP a HTTPS", "Añade la cabecera HSTS para forzar HTTPS"]
+    },
+    "mixed_content": {
+      "title": "Contenido Mixto Detectado",
+      "description": "Tu página HTTPS carga recursos sobre HTTP, los cuales pueden ser interceptados.",
+      "steps": ["Actualiza todas las URLs de recursos para usar HTTPS", "Usa URLs relativas al protocolo (//) donde sea apropiado", "Habilita upgrade-insecure-requests en CSP"]
+    }
+  },
   "legal": {
     "common": {
       "back": "Volver",

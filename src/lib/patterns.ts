@@ -6,6 +6,7 @@ export const API_KEY_PATTERNS: ApiKeyPattern[] = [
   {
     name: 'Clave API de OpenAI',
     provider: 'OpenAI',
+    patternKey: 'openai',
     pattern: /sk-[a-zA-Z0-9]{48,}/g,
     severity: 'critical',
     description: 'Clave API de OpenAI expuesta. Cualquier persona puede hacer llamadas a la API y los cargos irán a tu cuenta. Esto puede resultar en facturas de miles de euros.',
@@ -43,6 +44,7 @@ export default async function handler(req, res) {
   {
     name: 'Clave API de Anthropic',
     provider: 'Anthropic',
+    patternKey: 'anthropic',
     pattern: /sk-ant-[a-zA-Z0-9-_]{40,}/g,
     severity: 'critical',
     description: 'Clave API de Anthropic (Claude) expuesta. Permite acceso no autorizado a la API de Claude con cargos a tu cuenta.',
@@ -66,6 +68,7 @@ const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });`,
   {
     name: 'Clave Secreta de Stripe (PRODUCCION)',
     provider: 'Stripe',
+    patternKey: 'stripe_live',
     pattern: /sk_live_[a-zA-Z0-9]{24,}/g,
     severity: 'critical',
     description: 'URGENTE: Clave secreta de Stripe en PRODUCCION expuesta. Un atacante puede realizar cobros, reembolsos, ver datos de clientes y acceder a toda tu informacion de pagos.',
@@ -93,6 +96,7 @@ const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
   {
     name: 'Clave Secreta de Stripe (Test)',
     provider: 'Stripe',
+    patternKey: 'stripe_test',
     pattern: /sk_test_[a-zA-Z0-9]{24,}/g,
     severity: 'high',
     description: 'Clave secreta de Stripe en modo test expuesta. Aunque es modo prueba, revela la estructura de tu API y malas practicas de seguridad.',
@@ -114,6 +118,7 @@ const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
   {
     name: 'AWS Access Key ID',
     provider: 'AWS',
+    patternKey: 'aws',
     pattern: /AKIA[0-9A-Z]{16}/g,
     severity: 'critical',
     description: 'AWS Access Key ID expuesta. Combinada con la clave secreta, permite acceso completo a tus servicios de AWS. Atacantes pueden crear recursos, robar datos o minar criptomonedas a tu costa.',
@@ -142,6 +147,7 @@ const s3 = new AWS.S3({
   {
     name: 'Clave API de Google/Firebase',
     provider: 'Google',
+    patternKey: 'google_firebase',
     pattern: /AIza[0-9A-Za-z-_]{35}/g,
     severity: 'medium',
     description: 'Clave API de Google/Firebase expuesta. Si no esta restringida, puede permitir uso no autorizado de APIs de Google con cargos a tu cuenta.',
@@ -166,6 +172,7 @@ const s3 = new AWS.S3({
   {
     name: 'Token Personal de GitHub',
     provider: 'GitHub',
+    patternKey: 'github_pat',
     pattern: /ghp_[a-zA-Z0-9]{36}/g,
     severity: 'critical',
     description: 'Token personal de GitHub expuesto. Permite acceso a tus repositorios, puede crear commits, borrar repos y acceder a informacion privada.',

@@ -211,6 +211,153 @@
     "referrer": "Referrer-Policy fehlt",
     "permissions": "Permissions-Policy fehlt"
   },
+  "vulnerabilities": {
+    "openai": {
+      "title": "Exponierter OpenAI API-Schlüssel",
+      "description": "Exponierter OpenAI API-Schlüssel. Jeder kann API-Aufrufe machen und die Kosten gehen auf Ihr Konto. Dies kann zu Rechnungen von Tausenden von Euro führen.",
+      "steps": ["Gehen Sie SOFORT zu platform.openai.com und widerrufen Sie diesen Schlüssel", "Überprüfen Sie den Nutzungsverlauf auf unbefugte Nutzung", "Erstellen Sie einen neuen API-Schlüssel", "Speichern Sie den neuen Schlüssel in Server-Umgebungsvariablen (niemals im Frontend)", "Erstellen Sie einen Backend-Endpoint als Proxy für OpenAI-Anfragen"]
+    },
+    "anthropic": {
+      "title": "Exponierter Anthropic API-Schlüssel",
+      "description": "Exponierter Anthropic (Claude) API-Schlüssel. Ermöglicht unbefugten Zugriff auf die Claude API mit Kosten auf Ihrem Konto.",
+      "steps": ["Gehen Sie zu console.anthropic.com und widerrufen Sie diesen Schlüssel sofort", "Generieren Sie einen neuen API-Schlüssel", "Speichern Sie ihn nur in Server-Umgebungsvariablen", "Erstellen Sie einen Backend-Endpoint für Claude-Anfragen"]
+    },
+    "stripe_live": {
+      "title": "Exponierter Stripe Secret Key (PRODUKTION)",
+      "description": "DRINGEND: Stripe PRODUKTIONS-Geheimschlüssel exponiert. Ein Angreifer kann Zahlungen durchführen, Rückerstattungen machen, Kundendaten einsehen und auf alle Zahlungsinformationen zugreifen.",
+      "steps": ["DRINGEND: Rotieren Sie diesen Schlüssel JETZT im Stripe Dashboard", "Dies ist ein PRODUKTIONS-Schlüssel - überprüfen Sie unbefugte Transaktionen", "Geheimschlüssel (sk_) dürfen NIEMALS im Frontend sein", "Verwenden Sie nur veröffentlichbare Schlüssel (pk_) clientseitig", "Implementieren Sie Webhooks zur sicheren Zahlungsverifizierung"]
+    },
+    "stripe_test": {
+      "title": "Exponierter Stripe Secret Key (Test)",
+      "description": "Stripe Test-Geheimschlüssel exponiert. Obwohl es Testmodus ist, offenbart es Ihre API-Struktur und schlechte Sicherheitspraktiken.",
+      "steps": ["Rotieren Sie diesen Schlüssel im Stripe Dashboard", "Verschieben Sie ihn in Server-Umgebungsvariablen", "Exponieren Sie niemals Geheimschlüssel im Client-Code"]
+    },
+    "aws": {
+      "title": "Exponierte AWS Access Key ID",
+      "description": "Exponierte AWS Access Key ID. Kombiniert mit dem Geheimschlüssel ermöglicht sie vollen Zugriff auf Ihre AWS-Services. Angreifer können Ressourcen erstellen, Daten stehlen oder Kryptowährung auf Ihre Kosten minen.",
+      "steps": ["Deaktivieren Sie diesen Schlüssel SOFORT in der IAM-Konsole", "Überprüfen Sie CloudTrail auf unbefugte Nutzung", "Erstellen Sie neue Zugangsdaten mit minimalen Berechtigungen", "Verwenden Sie IAM-Rollen statt Access Keys wenn möglich", "Speichern Sie niemals AWS-Zugangsdaten im Client-Code"]
+    },
+    "google_firebase": {
+      "title": "Exponierter Google/Firebase API-Schlüssel",
+      "description": "Exponierter Google/Firebase API-Schlüssel. Wenn nicht eingeschränkt, kann er unbefugte Nutzung von Google APIs mit Kosten auf Ihrem Konto ermöglichen.",
+      "steps": ["Schränken Sie diesen Schlüssel in der Google Cloud Console ein", "Konfigurieren Sie HTTP-Referrer-Einschränkungen (Ihre Domain)", "Beschränken Sie den Schlüssel nur auf benötigte APIs", "Erwägen Sie Firebase App Check für bessere Sicherheit"]
+    },
+    "github_pat": {
+      "title": "Exponiertes GitHub Personal Token",
+      "description": "Exponiertes GitHub Personal Token. Ermöglicht Zugriff auf Ihre Repositories, kann Commits erstellen, Repos löschen und auf private Informationen zugreifen.",
+      "steps": ["Widerrufen Sie dieses Token SOFORT in den GitHub-Einstellungen", "Überprüfen Sie die kürzliche Kontoaktivität", "Erstellen Sie ein neues Token mit minimalen Berechtigungen", "Verwenden Sie GitHub Apps oder fine-grained Tokens für bessere Sicherheit", "Speichern Sie niemals Tokens in Repositories"]
+    },
+    "bearer_token": {
+      "title": "Bearer Token in Netzwerkanfrage exponiert",
+      "description": "Ein Bearer Token wird vom Frontend gesendet. Dieses Token ist in Browser-Entwicklertools sichtbar und kann gestohlen werden.",
+      "steps": ["Verschieben Sie die Authentifizierung serverseitig (API-Routes)", "Verwenden Sie httpOnly Cookies statt Authorization-Header", "Implementieren Sie einen Backend-Proxy für authentifizierte Anfragen", "Speichern oder senden Sie niemals Tokens von clientseitigem JavaScript"]
+    },
+    "sensitive_param_high": {
+      "title": "Sensibler Parameter in URL",
+      "description": "Ein sensibler Wert wird in URL-Parametern übergeben. URLs werden im Browserverlauf, Server-Logs gespeichert und über Referer-Header weitergegeben.",
+      "steps": ["Übergeben Sie niemals sensible Daten in URL-Parametern", "Verwenden Sie POST-Anfragen mit Daten im Body", "Verschieben Sie die Authentifizierung serverseitig", "Verwenden Sie sichere Header für die Authentifizierung"]
+    },
+    "sensitive_param_medium": {
+      "title": "Potenziell sensibler Parameter in URL",
+      "description": "Ein potenziell sensibler Parameter wurde in der URL erkannt. Es könnte ein öffentlicher Client-Schlüssel (akzeptabel) oder ein geheimer Schlüssel (gefährlich) sein. Überprüfen Sie, ob dieser Schlüssel öffentlich sein sollte.",
+      "steps": ["Überprüfen Sie, ob es ein öffentlicher Client-Schlüssel (akzeptabel) oder geheimer Schlüssel (gefährlich) ist", "Öffentliche Schlüssel für Frontend-APIs können sicher exponiert werden", "Geheime Schlüssel sollten NIEMALS in URLs sein - verwenden Sie Server-Anfragen", "Wenn es ein geheimer Schlüssel ist, verschieben Sie den API-Aufruf in Ihr Backend"]
+    },
+    "content_security_policy": {
+      "title": "Content-Security-Policy Header fehlt",
+      "description": "Content-Security-Policy (CSP) Header fehlt. Dieser Header verhindert XSS-Angriffe, indem er kontrolliert, welche Ressourcen Ihre Seite laden kann.",
+      "steps": ["Fügen Sie den Content-Security-Policy Header hinzu. Basis-Beispiel: \"default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'\""]
+    },
+    "x_frame_options": {
+      "title": "X-Frame-Options Header fehlt",
+      "description": "X-Frame-Options Header fehlt. Ohne ihn kann Ihre Seite in einem bösartigen iframe für Clickjacking-Angriffe eingebettet werden.",
+      "steps": ["Fügen Sie den X-Frame-Options Header mit Wert \"DENY\" oder \"SAMEORIGIN\" hinzu, um zu verhindern, dass Ihre Seite in iframes anderer Domains eingebettet wird."]
+    },
+    "x_content_type_options": {
+      "title": "X-Content-Type-Options Header fehlt",
+      "description": "X-Content-Type-Options Header fehlt. Verhindert, dass der Browser den Inhaltstyp \"errät\", was zu Schwachstellen führen kann.",
+      "steps": ["Fügen Sie den X-Content-Type-Options Header mit Wert \"nosniff\" hinzu."]
+    },
+    "strict_transport_security": {
+      "title": "HSTS Header fehlt",
+      "description": "HSTS (Strict-Transport-Security) Header fehlt. Dieser Header zwingt den Browser, immer HTTPS zu verwenden, und verhindert Man-in-the-Middle-Angriffe.",
+      "steps": ["Fügen Sie den Strict-Transport-Security Header mit max-age von mindestens 31536000 (1 Jahr) hinzu. Beispiel: \"max-age=31536000; includeSubDomains\""]
+    },
+    "x_xss_protection": {
+      "title": "X-XSS-Protection Header fehlt",
+      "description": "X-XSS-Protection Header fehlt. Obwohl moderne Browser CSP verwenden, bietet dieser Header Schutz für ältere Browser.",
+      "steps": ["Fügen Sie den X-XSS-Protection Header mit Wert \"1; mode=block\" hinzu."]
+    },
+    "referrer_policy": {
+      "title": "Referrer-Policy Header fehlt",
+      "description": "Referrer-Policy Header fehlt. Kontrolliert, wie viel Referrer-Information beim Navigieren zu anderen Seiten geteilt wird.",
+      "steps": ["Fügen Sie den Referrer-Policy Header mit Wert \"strict-origin-when-cross-origin\" oder restriktiver hinzu."]
+    },
+    "permissions_policy": {
+      "title": "Permissions-Policy Header fehlt",
+      "description": "Permissions-Policy Header fehlt. Kontrolliert, welche Browser-Funktionen Ihre Seite nutzen kann (Kamera, Mikrofon, Geolocation, etc.).",
+      "steps": ["Fügen Sie den Permissions-Policy Header hinzu, um unnötige Funktionen einzuschränken. Beispiel: \"camera=(), microphone=(), geolocation=()\""]
+    },
+    "cors_wildcard": {
+      "title": "Kritisches CORS: Wildcard mit Credentials",
+      "description": "Ihre API erlaubt Credentials (Cookies, Auth-Header) von jeder Origin. Dies ist EXTREM gefährlich und ermöglicht Session-Diebstahl.",
+      "steps": ["Verwenden Sie NIEMALS Access-Control-Allow-Origin: * mit Credentials", "Geben Sie exakte Domains an wenn Sie Credentials verwenden", "Überprüfen Sie Ihre CORS-Konfiguration sofort"]
+    },
+    "source_map": {
+      "title": "Exponierte Source Maps",
+      "description": "Öffentlich zugängliche Source Maps wurden gefunden. Source Maps offenbaren Ihren Original-Quellcode, einschließlich Kommentare, Variablennamen und Geschäftslogik.",
+      "steps": ["Deaktivieren Sie Source Map Generierung in Produktion", "In Next.js: productionBrowserSourceMaps: false in next.config.js", "In Webpack: devtool: false für Produktion", "Wenn Sie Source Maps für Debugging brauchen, verwenden Sie source-map-loader mit Authentifizierung"]
+    },
+    "env_file": {
+      "title": "Exponierte .env Datei",
+      "description": "Die Umgebungsvariablen-Datei ist öffentlich zugänglich. Sie kann Secrets, API-Schlüssel und Datenbank-Zugangsdaten enthalten.",
+      "steps": ["Blockieren Sie den Zugriff auf die Datei in der Server-Konfiguration", "Fügen Sie zu .gitignore hinzu und entfernen Sie aus der Versionskontrolle", "Verwenden Sie Umgebungsvariablen statt Konfigurationsdateien", "Konfigurieren Sie Ihre Hosting-Plattform, um Zugriff auf sensible Dateien zu verweigern"]
+    },
+    "git_exposed": {
+      "title": "Exponiertes Git Repository",
+      "description": "Das .git Verzeichnis ist öffentlich zugänglich. Es kann den gesamten Code-Verlauf offenbaren, einschließlich gelöschter Secrets.",
+      "steps": ["Blockieren Sie den Zugriff auf das .git Verzeichnis in der Server-Konfiguration", "Überprüfen Sie den Git-Verlauf auf exponierte Secrets", "Erwägen Sie Tools wie git-secrets um Secret-Commits zu verhindern"]
+    },
+    "admin_panel": {
+      "title": "Zugängliches Admin-Panel",
+      "description": "Ein öffentlich zugängliches Admin-Panel wurde erkannt. Dies kann Angreifern ermöglichen, auf eingeschränkte Bereiche zuzugreifen.",
+      "steps": ["Beschränken Sie Admin-Panel-Zugriff nach IP", "Implementieren Sie Zwei-Faktor-Authentifizierung", "Verwenden Sie unvorhersehbare URLs für das Admin-Panel", "Erwägen Sie das Admin-Panel auf einer separaten Subdomain zu platzieren"]
+    },
+    "debug_endpoint": {
+      "title": "Zugänglicher Debug-Endpoint",
+      "description": "Ein öffentlich zugänglicher Debug- oder phpinfo-Endpoint wurde erkannt. Er offenbart sensible Informationen über die Server-Konfiguration.",
+      "steps": ["Entfernen oder deaktivieren Sie Debug-Endpoints in Produktion", "Blockieren Sie Zugriff auf phpinfo und ähnliche Dateien", "Konfigurieren Sie den Server, keine Konfigurationsinformationen zu exponieren"]
+    },
+    "database_exposed": {
+      "title": "Zugängliche Datenbank",
+      "description": "Eine öffentlich zugängliche Datenbankdatei oder -schnittstelle wurde erkannt. Dies kann zu Diebstahl oder totalem Datenverlust führen.",
+      "steps": ["Blockieren Sie sofort den Zugriff auf die Datenbankdatei", "Verschieben Sie die Datenbank außerhalb des öffentlichen Verzeichnisses", "Verwenden Sie starke Authentifizierung für Datenbank-Admin-Schnittstellen", "Überprüfen Sie Daten auf möglichen unbefugten Zugriff"]
+    },
+    "backup_exposed": {
+      "title": "Zugängliches Backup",
+      "description": "Eine öffentlich zugängliche Backup-Datei wurde erkannt. Backups enthalten oft den gesamten Quellcode und sensible Daten.",
+      "steps": ["Entfernen Sie das Backup sofort vom öffentlichen Server", "Speichern Sie Backups an sicheren Orten außerhalb des Webroots", "Konfigurieren Sie den Server, Zugriff auf .zip, .tar, .sql Dateien zu blockieren"]
+    },
+    "log_exposed": {
+      "title": "Zugängliche Log-Datei",
+      "description": "Eine öffentlich zugängliche Log-Datei wurde erkannt. Logs können sensible Informationen, Fehler und Stack-Traces enthalten.",
+      "steps": ["Blockieren Sie Zugriff auf Log-Dateien", "Speichern Sie Logs außerhalb des öffentlichen Verzeichnisses", "Konfigurieren Sie den Server, Zugriff auf .log Dateien zu verweigern"]
+    },
+    "config_file": {
+      "title": "Exponierte Konfigurationsdatei",
+      "description": "Eine öffentlich zugängliche Konfigurationsdatei wurde erkannt. Sie kann Zugangsdaten und sensible Konfiguration enthalten.",
+      "steps": ["Blockieren Sie Zugriff auf die Datei in der Server-Konfiguration", "Verschieben Sie Konfigurationsdateien außerhalb des öffentlichen Verzeichnisses", "Verwenden Sie Umgebungsvariablen statt Konfigurationsdateien"]
+    },
+    "http_insecure": {
+      "title": "Seite verwendet HTTP statt HTTPS",
+      "description": "Ihre Seite ist über HTTP zugänglich, was Daten unverschlüsselt überträgt.",
+      "steps": ["Besorgen Sie ein SSL-Zertifikat (kostenlos von Let's Encrypt)", "Konfigurieren Sie Ihren Server, HTTP auf HTTPS umzuleiten", "Fügen Sie den HSTS-Header hinzu um HTTPS zu erzwingen"]
+    },
+    "mixed_content": {
+      "title": "Gemischte Inhalte erkannt",
+      "description": "Ihre HTTPS-Seite lädt Ressourcen über HTTP, die abgefangen werden können.",
+      "steps": ["Aktualisieren Sie alle Ressourcen-URLs auf HTTPS", "Verwenden Sie protokoll-relative URLs (//) wo angemessen", "Aktivieren Sie upgrade-insecure-requests in CSP"]
+    }
+  },
   "legal": {
     "common": {
       "back": "Zurück",
