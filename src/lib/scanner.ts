@@ -303,26 +303,39 @@ export class SecurityScanner {
         const urlObj = new URL(req.url);
         const params = urlObj.searchParams;
 
-        const sensitiveParams = ['api_key', 'apikey', 'key', 'token', 'secret', 'password', 'auth', 'access_token'];
+        // High-risk params (definitely sensitive)
+        const highRiskParams = ['secret', 'password', 'private_key', 'privatekey'];
+        // Medium-risk params (might be public client keys)
+        const mediumRiskParams = ['api_key', 'apikey', 'key', 'token', 'auth', 'access_token'];
 
         for (const [param, value] of params) {
           const paramLower = param.toLowerCase();
-          if (sensitiveParams.some(s => paramLower.includes(s)) && value.length > 10) {
+          const isHighRisk = highRiskParams.some(s => paramLower.includes(s));
+          const isMediumRisk = mediumRiskParams.some(s => paramLower.includes(s));
+
+          if ((isHighRisk || isMediumRisk) && value.length > 10) {
             this.addVulnerability({
               id: uuidv4(),
               type: 'credential_in_url',
-              severity: 'critical',
+              severity: isHighRisk ? 'critical' : 'medium',
               title: `Sensitive Parameter "${param}" in URL`,
-              description: `A sensitive value is passed in URL query parameters. URLs are logged in browser history, server logs, and leaked via Referer headers.`,
+              description: isHighRisk
+                ? `A sensitive value is passed in URL query parameters. URLs are logged in browser history, server logs, and leaked via Referer headers.`
+                : `A potentially sensitive value is passed in URL query parameters. This might be a public client-side API key (which is acceptable) or a secret key (which is dangerous). Verify if this key should be public.`,
               location: req.url.split('?')[0],
               foundValue: `${param}=${sanitizeKey(value)}`,
               fullValue: `${param}=${value}`,
               remediation: {
-                steps: [
+                steps: isHighRisk ? [
                   'Never pass sensitive data in URL query parameters',
                   'Use POST requests with body data instead',
                   'Move authentication to server-side',
                   'Use secure headers for authentication',
+                ] : [
+                  'Verify if this is a public client-side key (acceptable) or a secret key (dangerous)',
+                  'Public keys for frontend APIs are okay to expose',
+                  'Secret keys should NEVER be in URLs - use server-side requests instead',
+                  'If this is a secret, move the API call to your backend',
                 ],
               },
             });
