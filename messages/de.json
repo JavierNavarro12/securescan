@@ -210,5 +210,89 @@
     "xcontent": "X-Content-Type-Options fehlt",
     "referrer": "Referrer-Policy fehlt",
     "permissions": "Permissions-Policy fehlt"
+  },
+  "legal": {
+    "common": {
+      "back": "Zurück",
+      "lastUpdated": "Letzte Aktualisierung"
+    },
+    "privacy": {
+      "title": "Datenschutzrichtlinie",
+      "section1": {
+        "title": "1. Informationen, die wir sammeln",
+        "intro": "SecureScan sammelt die folgenden Informationen, wenn Sie unseren Service nutzen:",
+        "item1": "URLs der Websites, die Sie scannen",
+        "item2": "Ergebnisse der Sicherheitsanalyse",
+        "item3": "Zahlungsinformationen, die sicher von Stripe verarbeitet werden",
+        "item4": "E-Mail-Adresse (wenn Sie einen Kauf tätigen)"
+      },
+      "section2": {
+        "title": "2. Wie wir Ihre Informationen verwenden",
+        "intro": "Wir verwenden die gesammelten Informationen, um:",
+        "item1": "Den Sicherheits-Scan-Service bereitzustellen",
+        "item2": "Zahlungen sicher zu verarbeiten",
+        "item3": "Unseren Service und Erkennungsalgorithmen zu verbessern",
+        "item4": "Mit Ihnen über Ihren Kauf zu kommunizieren"
+      },
+      "section3": {
+        "title": "3. Datensicherheit",
+        "content": "Wir implementieren technische und organisatorische Sicherheitsmaßnahmen zum Schutz Ihrer Informationen. Zahlungen werden sicher von Stripe verarbeitet und wir speichern niemals Kreditkartendaten auf unseren Servern."
+      },
+      "section4": {
+        "title": "4. Datenspeicherung",
+        "content": "Scan-Ergebnisse werden 30 Tage lang gespeichert, damit Sie darauf zugreifen können. Nach diesem Zeitraum werden die Daten automatisch gelöscht."
+      },
+      "section5": {
+        "title": "5. Ihre Rechte",
+        "intro": "Sie haben das Recht:",
+        "item1": "Auf Ihre persönlichen Daten zuzugreifen",
+        "item2": "Die Löschung Ihrer Daten zu beantragen",
+        "item3": "Der Verarbeitung Ihrer Daten zu widersprechen",
+        "item4": "Datenportabilität zu beantragen"
+      },
+      "section6": {
+        "title": "6. Kontakt",
+        "content": "Wenn Sie Fragen zu dieser Datenschutzrichtlinie haben, können Sie uns kontaktieren unter:"
+      }
+    },
+    "terms": {
+      "title": "Allgemeine Geschäftsbedingungen",
+      "section1": {
+        "title": "1. Annahme der Bedingungen",
+        "content": "Durch die Nutzung von SecureScan akzeptieren Sie diese Geschäftsbedingungen vollständig. Wenn Sie mit einem Teil dieser Bedingungen nicht einverstanden sind, dürfen Sie unseren Service nicht nutzen."
+      },
+      "section2": {
+        "title": "2. Servicebeschreibung",
+        "content": "SecureScan ist ein Web-Sicherheitsanalysedienst, der Websites auf häufige Schwachstellen, exponierte API-Schlüssel, fehlende Sicherheits-Header und andere Sicherheitsprobleme überprüft."
+      },
+      "section3": {
+        "title": "3. Erlaubte Nutzung",
+        "intro": "Sie dürfen SecureScan nur verwenden, um:",
+        "item1": "Websites zu scannen, die Ihnen gehören",
+        "item2": "Websites zu scannen, für die Sie eine ausdrückliche Genehmigung haben",
+        "item3": "Bildungs- und Sicherheitsforschungszwecke",
+        "warning": "Die Nutzung des Dienstes für böswillige oder illegale Aktivitäten ist verboten."
+      },
+      "section4": {
+        "title": "4. Haftungsbeschränkung",
+        "content": "SecureScan wird \"wie besehen\" ohne jegliche Garantien bereitgestellt. Wir garantieren nicht, dass das Scannen alle vorhandenen Schwachstellen erkennt. Der Benutzer ist dafür verantwortlich, die Ergebnisse zu überprüfen und entsprechende Sicherheitsmaßnahmen zu ergreifen."
+      },
+      "section5": {
+        "title": "5. Zahlungen und Rückerstattungen",
+        "content": "Zahlungen werden sicher über Stripe verarbeitet. Sobald die Zahlung erfolgt ist und der Bericht freigeschaltet wurde, werden keine Rückerstattungen vorgenommen, da der Service vollständig erbracht wurde."
+      },
+      "section6": {
+        "title": "6. Geistiges Eigentum",
+        "content": "Alle Inhalte, das Design und der Code von SecureScan sind Eigentum seiner Ersteller. Das Kopieren, Modifizieren oder Verbreiten des Dienstes ohne Genehmigung ist nicht gestattet."
+      },
+      "section7": {
+        "title": "7. Änderungen",
+        "content": "Wir behalten uns das Recht vor, diese Bedingungen jederzeit zu ändern. Änderungen treten sofort nach Veröffentlichung auf der Website in Kraft."
+      },
+      "section8": {
+        "title": "8. Kontakt",
+        "content": "Wenn Sie Fragen zu diesen Bedingungen haben, können Sie uns kontaktieren unter:"
+      }
+    }
   }
 }

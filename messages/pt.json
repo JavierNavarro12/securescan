@@ -210,5 +210,89 @@
     "xcontent": "X-Content-Type-Options ausente",
     "referrer": "Referrer-Policy ausente",
     "permissions": "Permissions-Policy ausente"
+  },
+  "legal": {
+    "common": {
+      "back": "Voltar",
+      "lastUpdated": "Última atualização"
+    },
+    "privacy": {
+      "title": "Política de Privacidade",
+      "section1": {
+        "title": "1. Informações que coletamos",
+        "intro": "O SecureScan coleta as seguintes informações quando você usa nosso serviço:",
+        "item1": "URLs dos sites que você escaneia",
+        "item2": "Resultados da análise de segurança",
+        "item3": "Informações de pagamento processadas de forma segura pelo Stripe",
+        "item4": "Endereço de e-mail (se você fizer uma compra)"
+      },
+      "section2": {
+        "title": "2. Como usamos suas informações",
+        "intro": "Usamos as informações coletadas para:",
+        "item1": "Fornecer o serviço de escaneamento de segurança",
+        "item2": "Processar pagamentos de forma segura",
+        "item3": "Melhorar nosso serviço e algoritmos de detecção",
+        "item4": "Comunicar com você sobre sua compra"
+      },
+      "section3": {
+        "title": "3. Segurança dos dados",
+        "content": "Implementamos medidas de segurança técnicas e organizacionais para proteger suas informações. Os pagamentos são processados de forma segura pelo Stripe e nunca armazenamos dados de cartão de crédito em nossos servidores."
+      },
+      "section4": {
+        "title": "4. Retenção de dados",
+        "content": "Os resultados dos escaneamentos são armazenados por 30 dias para que você possa acessá-los. Após este período, os dados são automaticamente excluídos."
+      },
+      "section5": {
+        "title": "5. Seus direitos",
+        "intro": "Você tem o direito de:",
+        "item1": "Acessar seus dados pessoais",
+        "item2": "Solicitar a exclusão de seus dados",
+        "item3": "Opor-se ao processamento de seus dados",
+        "item4": "Solicitar a portabilidade de seus dados"
+      },
+      "section6": {
+        "title": "6. Contato",
+        "content": "Se você tiver perguntas sobre esta política de privacidade, pode nos contatar em:"
+      }
+    },
+    "terms": {
+      "title": "Termos e Condições",
+      "section1": {
+        "title": "1. Aceitação dos termos",
+        "content": "Ao usar o SecureScan, você aceita estes termos e condições na íntegra. Se você não concordar com qualquer parte destes termos, não deve usar nosso serviço."
+      },
+      "section2": {
+        "title": "2. Descrição do serviço",
+        "content": "O SecureScan é um serviço de análise de segurança web que escaneia sites em busca de vulnerabilidades comuns, chaves API expostas, cabeçalhos de segurança ausentes e outros problemas de segurança."
+      },
+      "section3": {
+        "title": "3. Uso permitido",
+        "intro": "Você só pode usar o SecureScan para:",
+        "item1": "Escanear sites de sua propriedade",
+        "item2": "Escanear sites para os quais você tem autorização expressa",
+        "item3": "Fins educacionais e de pesquisa de segurança",
+        "warning": "O uso do serviço para atividades maliciosas ou ilegais é proibido."
+      },
+      "section4": {
+        "title": "4. Limitação de responsabilidade",
+        "content": "O SecureScan é fornecido \"como está\" sem garantias de qualquer tipo. Não garantimos que o escaneamento detectará todas as vulnerabilidades existentes. O usuário é responsável por verificar os resultados e tomar as medidas de segurança apropriadas."
+      },
+      "section5": {
+        "title": "5. Pagamentos e reembolsos",
+        "content": "Os pagamentos são processados de forma segura através do Stripe. Uma vez feito o pagamento e o relatório desbloqueado, nenhum reembolso será emitido, pois o serviço foi totalmente entregue."
+      },
+      "section6": {
+        "title": "6. Propriedade intelectual",
+        "content": "Todo o conteúdo, design e código do SecureScan é propriedade de seus criadores. Copiar, modificar ou distribuir o serviço sem autorização não é permitido."
+      },
+      "section7": {
+        "title": "7. Modificações",
+        "content": "Reservamo-nos o direito de modificar estes termos a qualquer momento. As alterações entrarão em vigor imediatamente após a publicação no site."
+      },
+      "section8": {
+        "title": "8. Contato",
+        "content": "Se você tiver perguntas sobre estes termos, pode nos contatar em:"
+      }
+    }
   }
 }

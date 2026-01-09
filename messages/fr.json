@@ -210,5 +210,89 @@
     "xcontent": "X-Content-Type-Options manquant",
     "referrer": "Referrer-Policy manquant",
     "permissions": "Permissions-Policy manquant"
+  },
+  "legal": {
+    "common": {
+      "back": "Retour",
+      "lastUpdated": "Dernière mise à jour"
+    },
+    "privacy": {
+      "title": "Politique de Confidentialité",
+      "section1": {
+        "title": "1. Informations que nous collectons",
+        "intro": "SecureScan collecte les informations suivantes lorsque vous utilisez notre service :",
+        "item1": "URLs des sites web que vous analysez",
+        "item2": "Résultats de l'analyse de sécurité",
+        "item3": "Informations de paiement traitées de manière sécurisée par Stripe",
+        "item4": "Adresse e-mail (si vous effectuez un achat)"
+      },
+      "section2": {
+        "title": "2. Comment nous utilisons vos informations",
+        "intro": "Nous utilisons les informations collectées pour :",
+        "item1": "Fournir le service d'analyse de sécurité",
+        "item2": "Traiter les paiements de manière sécurisée",
+        "item3": "Améliorer notre service et nos algorithmes de détection",
+        "item4": "Communiquer avec vous concernant votre achat"
+      },
+      "section3": {
+        "title": "3. Sécurité des données",
+        "content": "Nous mettons en œuvre des mesures de sécurité techniques et organisationnelles pour protéger vos informations. Les paiements sont traités de manière sécurisée par Stripe et nous ne stockons jamais les données de carte de crédit sur nos serveurs."
+      },
+      "section4": {
+        "title": "4. Conservation des données",
+        "content": "Les résultats des analyses sont stockés pendant 30 jours pour que vous puissiez y accéder. Après cette période, les données sont automatiquement supprimées."
+      },
+      "section5": {
+        "title": "5. Vos droits",
+        "intro": "Vous avez le droit de :",
+        "item1": "Accéder à vos données personnelles",
+        "item2": "Demander la suppression de vos données",
+        "item3": "Vous opposer au traitement de vos données",
+        "item4": "Demander la portabilité de vos données"
+      },
+      "section6": {
+        "title": "6. Contact",
+        "content": "Si vous avez des questions sur cette politique de confidentialité, vous pouvez nous contacter à :"
+      }
+    },
+    "terms": {
+      "title": "Conditions Générales",
+      "section1": {
+        "title": "1. Acceptation des conditions",
+        "content": "En utilisant SecureScan, vous acceptez ces conditions générales dans leur intégralité. Si vous n'êtes pas d'accord avec une partie de ces conditions, vous ne devez pas utiliser notre service."
+      },
+      "section2": {
+        "title": "2. Description du service",
+        "content": "SecureScan est un service d'analyse de sécurité web qui analyse les sites web à la recherche de vulnérabilités courantes, de clés API exposées, d'en-têtes de sécurité manquants et d'autres problèmes de sécurité."
+      },
+      "section3": {
+        "title": "3. Utilisation autorisée",
+        "intro": "Vous ne pouvez utiliser SecureScan que pour :",
+        "item1": "Analyser des sites web dont vous êtes propriétaire",
+        "item2": "Analyser des sites web pour lesquels vous avez une autorisation expresse",
+        "item3": "Des fins éducatives et de recherche en sécurité",
+        "warning": "L'utilisation du service pour des activités malveillantes ou illégales est interdite."
+      },
+      "section4": {
+        "title": "4. Limitation de responsabilité",
+        "content": "SecureScan est fourni \"tel quel\" sans garanties d'aucune sorte. Nous ne garantissons pas que l'analyse détectera toutes les vulnérabilités existantes. L'utilisateur est responsable de vérifier les résultats et de prendre les mesures de sécurité appropriées."
+      },
+      "section5": {
+        "title": "5. Paiements et remboursements",
+        "content": "Les paiements sont traités de manière sécurisée via Stripe. Une fois le paiement effectué et le rapport débloqué, aucun remboursement ne sera effectué car le service a été entièrement fourni."
+      },
+      "section6": {
+        "title": "6. Propriété intellectuelle",
+        "content": "Tout le contenu, le design et le code de SecureScan sont la propriété de ses créateurs. Il est interdit de copier, modifier ou distribuer le service sans autorisation."
+      },
+      "section7": {
+        "title": "7. Modifications",
+        "content": "Nous nous réservons le droit de modifier ces conditions à tout moment. Les modifications entreront en vigueur immédiatement après leur publication sur le site web."
+      },
+      "section8": {
+        "title": "8. Contact",
+        "content": "Si vous avez des questions sur ces conditions, vous pouvez nous contacter à :"
+      }
+    }
   }
 }

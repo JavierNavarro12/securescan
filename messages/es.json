@@ -210,5 +210,89 @@
     "xcontent": "Falta X-Content-Type-Options",
     "referrer": "Falta Referrer-Policy",
     "permissions": "Falta Permissions-Policy"
+  },
+  "legal": {
+    "common": {
+      "back": "Volver",
+      "lastUpdated": "Última actualización"
+    },
+    "privacy": {
+      "title": "Política de Privacidad",
+      "section1": {
+        "title": "1. Información que recopilamos",
+        "intro": "SecureScan recopila la siguiente información cuando utilizas nuestro servicio:",
+        "item1": "URLs de los sitios web que escaneas",
+        "item2": "Resultados del análisis de seguridad",
+        "item3": "Información de pago procesada de forma segura por Stripe",
+        "item4": "Dirección de correo electrónico (si realizas una compra)"
+      },
+      "section2": {
+        "title": "2. Cómo usamos tu información",
+        "intro": "Utilizamos la información recopilada para:",
+        "item1": "Proporcionar el servicio de escaneo de seguridad",
+        "item2": "Procesar pagos de forma segura",
+        "item3": "Mejorar nuestro servicio y algoritmos de detección",
+        "item4": "Comunicarnos contigo sobre tu compra"
+      },
+      "section3": {
+        "title": "3. Seguridad de los datos",
+        "content": "Implementamos medidas de seguridad técnicas y organizativas para proteger tu información. Los pagos son procesados de forma segura por Stripe y nunca almacenamos datos de tarjetas de crédito en nuestros servidores."
+      },
+      "section4": {
+        "title": "4. Retención de datos",
+        "content": "Los resultados de los escaneos se almacenan durante 30 días para que puedas acceder a ellos. Después de este periodo, los datos son eliminados automáticamente."
+      },
+      "section5": {
+        "title": "5. Tus derechos",
+        "intro": "Tienes derecho a:",
+        "item1": "Acceder a tus datos personales",
+        "item2": "Solicitar la eliminación de tus datos",
+        "item3": "Oponerte al procesamiento de tus datos",
+        "item4": "Solicitar la portabilidad de tus datos"
+      },
+      "section6": {
+        "title": "6. Contacto",
+        "content": "Si tienes preguntas sobre esta política de privacidad, puedes contactarnos en:"
+      }
+    },
+    "terms": {
+      "title": "Términos y Condiciones",
+      "section1": {
+        "title": "1. Aceptación de los términos",
+        "content": "Al utilizar SecureScan, aceptas estos términos y condiciones en su totalidad. Si no estás de acuerdo con alguna parte de estos términos, no debes utilizar nuestro servicio."
+      },
+      "section2": {
+        "title": "2. Descripción del servicio",
+        "content": "SecureScan es un servicio de análisis de seguridad web que escanea sitios web en busca de vulnerabilidades comunes, claves API expuestas, cabeceras de seguridad faltantes y otros problemas de seguridad."
+      },
+      "section3": {
+        "title": "3. Uso permitido",
+        "intro": "Solo puedes utilizar SecureScan para:",
+        "item1": "Escanear sitios web de tu propiedad",
+        "item2": "Escanear sitios web para los que tengas autorización expresa",
+        "item3": "Fines educativos y de investigación de seguridad",
+        "warning": "Queda prohibido utilizar el servicio para actividades maliciosas o ilegales."
+      },
+      "section4": {
+        "title": "4. Limitación de responsabilidad",
+        "content": "SecureScan se proporciona \"tal cual\" sin garantías de ningún tipo. No garantizamos que el escaneo detecte todas las vulnerabilidades existentes. El usuario es responsable de verificar los resultados y tomar las medidas de seguridad apropiadas."
+      },
+      "section5": {
+        "title": "5. Pagos y reembolsos",
+        "content": "Los pagos se procesan de forma segura a través de Stripe. Una vez realizado el pago y desbloqueado el reporte, no se realizarán reembolsos ya que el servicio ha sido completamente entregado."
+      },
+      "section6": {
+        "title": "6. Propiedad intelectual",
+        "content": "Todo el contenido, diseño y código de SecureScan es propiedad de sus creadores. No está permitido copiar, modificar o distribuir el servicio sin autorización."
+      },
+      "section7": {
+        "title": "7. Modificaciones",
+        "content": "Nos reservamos el derecho de modificar estos términos en cualquier momento. Los cambios entrarán en vigor inmediatamente después de su publicación en el sitio web."
+      },
+      "section8": {
+        "title": "8. Contacto",
+        "content": "Si tienes preguntas sobre estos términos, puedes contactarnos en:"
+      }
+    }
   }
 }
