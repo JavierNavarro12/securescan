@@ -1,23 +1,47 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import type { DbScan, DbPayment } from '@/types';
 
+// Lazy initialization to avoid build-time errors
+let _supabase: SupabaseClient | null = null;
+let _supabaseAdmin: SupabaseClient | null = null;
+
+function getSupabaseUrl(): string {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  if (!url) throw new Error('NEXT_PUBLIC_SUPABASE_URL is not configured');
+  return url;
+}
+
 // Client-side Supabase client (limited permissions)
-export const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+export function getSupabase(): SupabaseClient {
+  if (!_supabase) {
+    _supabase = createClient(
+      getSupabaseUrl(),
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
+  }
+  return _supabase;
+}
 
 // Server-side Supabase client (full permissions)
-export const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+export function getSupabaseAdmin(): SupabaseClient {
+  if (!_supabaseAdmin) {
+    _supabaseAdmin = createClient(
+      getSupabaseUrl(),
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
+  }
+  return _supabaseAdmin;
+}
+
+// Legacy exports for compatibility
+export const supabase = { get client() { return getSupabase(); } };
+export const supabaseAdmin = { get client() { return getSupabaseAdmin(); } };
 
 // Database helper functions
 export const db = {
   // Create a new scan
   async createScan(url: string, ipAddress?: string): Promise<DbScan | null> {
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await getSupabaseAdmin()
       .from('scans')
       .insert({
         url,
@@ -36,7 +60,7 @@ export const db = {
 
   // Get scan by ID
   async getScan(id: string): Promise<DbScan | null> {
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await getSupabaseAdmin()
       .from('scans')
       .select('*')
       .eq('id', id)
@@ -54,7 +78,7 @@ export const db = {
     id: string,
     updates: Partial<Omit<DbScan, 'id' | 'created_at'>>
   ): Promise<DbScan | null> {
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await getSupabaseAdmin()
       .from('scans')
       .update(updates)
       .eq('id', id)
@@ -72,7 +96,7 @@ export const db = {
   async getRecentScan(url: string): Promise<DbScan | null> {
     const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
 
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await getSupabaseAdmin()
       .from('scans')
       .select('*')
       .eq('url', url)
@@ -92,7 +116,7 @@ export const db = {
   async countRecentScans(ipAddress: string): Promise<number> {
     const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
 
-    const { count, error } = await supabaseAdmin
+    const { count, error } = await getSupabaseAdmin()
       .from('scans')
       .select('*', { count: 'exact', head: true })
       .eq('ip_address', ipAddress)
@@ -107,7 +131,7 @@ export const db = {
 
   // Mark scan as paid
   async markScanAsPaid(scanId: string, stripeSessionId: string): Promise<boolean> {
-    const { error } = await supabaseAdmin
+    const { error } = await getSupabaseAdmin()
       .from('scans')
       .update({
         is_paid: true,
@@ -125,7 +149,7 @@ export const db = {
     amount: number,
     status: 'pending' | 'completed' | 'failed'
   ): Promise<DbPayment | null> {
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await getSupabaseAdmin()
       .from('payments')
       .insert({
         scan_id: scanId,
@@ -145,7 +169,7 @@ export const db = {
 
   // Get total scans count (for social proof)
   async getTotalScansCount(): Promise<number> {
-    const { count, error } = await supabaseAdmin
+    const { count, error } = await getSupabaseAdmin()
       .from('scans')
       .select('*', { count: 'exact', head: true })
       .eq('status', 'completed');
@@ -158,7 +182,7 @@ export const db = {
 
   // Get total vulnerabilities found (for social proof)
   async getTotalVulnerabilitiesCount(): Promise<number> {
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await getSupabaseAdmin()
       .from('scans')
       .select('results')
       .eq('status', 'completed')
