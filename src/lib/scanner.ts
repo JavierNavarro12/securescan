@@ -12,8 +12,8 @@ import {
 } from './patterns';
 import { calculateScore } from './scoring';
 
-const TOTAL_SCAN_TIMEOUT = 60000;
-const PAGE_LOAD_TIMEOUT = 30000;
+const TOTAL_SCAN_TIMEOUT = 55000; // 55 segundos max (Vercel Pro permite hasta 60s)
+const PAGE_LOAD_TIMEOUT = 15000; // 15 segundos para cargar la página
 const IS_PRODUCTION = process.env.NODE_ENV === 'production' || process.env.VERCEL === '1';
 
 interface NetworkRequest {
@@ -238,26 +238,21 @@ export class SecurityScanner {
     console.log('[Scanner] Loading page:', this.ctx.url);
 
     try {
-      // First load with networkidle0 (stricter - waits for 0 connections for 500ms)
+      // Load page with networkidle2 (more permissive - waits for max 2 connections)
       await page.goto(this.ctx.url, {
-        waitUntil: 'networkidle0',
+        waitUntil: 'networkidle2',
         timeout: PAGE_LOAD_TIMEOUT,
       });
 
-      // Wait for any lazy-loaded content and JS execution
-      await new Promise(resolve => setTimeout(resolve, 5000));
-
-      // Scroll to trigger lazy loading
-      await page.evaluate(() => {
-        window.scrollTo(0, document.body.scrollHeight);
-      });
+      // Brief wait for JS execution (reduced for serverless)
       await new Promise(resolve => setTimeout(resolve, 2000));
 
-      // Scroll back to top
+      // Quick scroll to trigger lazy loading
       await page.evaluate(() => {
+        window.scrollTo(0, document.body.scrollHeight);
         window.scrollTo(0, 0);
       });
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 500));
 
       // Get final HTML
       this.ctx.htmlContent = await page.content();
