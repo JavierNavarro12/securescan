@@ -60,7 +60,7 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="hero-title font-display text-5xl md:text-7xl mb-6 leading-[1.1] tracking-tight"
+            className="hero-title font-display text-4xl md:text-5xl lg:text-6xl mb-6 leading-[1.15] tracking-tight"
           >
             Tu app está filtrando{' '}
             <span className="gradient-text">API keys</span>
