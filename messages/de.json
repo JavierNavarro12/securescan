@@ -1,0 +1,214 @@
+{
+  "common": {
+    "scan": "Scannen",
+    "scanning": "Scanne...",
+    "loading": "Laden...",
+    "error": "Fehler",
+    "success": "Erfolg",
+    "cancel": "Abbrechen",
+    "close": "Schließen",
+    "copy": "Kopieren",
+    "copied": "Kopiert!",
+    "download": "Herunterladen",
+    "unlock": "Freischalten",
+    "learnMore": "Mehr erfahren",
+    "scanAnother": "Andere Seite scannen"
+  },
+  "nav": {
+    "howItWorks": "So funktioniert's",
+    "faq": "FAQ",
+    "newScan": "Neuer Scan"
+  },
+  "hero": {
+    "badge": "73% der Apps leaken sensible Zugangsdaten",
+    "title1": "Deine App leakt",
+    "titleHighlight": "API-Schlüssel",
+    "title2": "Finde es vor einem Hacker heraus.",
+    "subtitle": "Wir scannen deine Website nach exponierten API-Schlüsseln, sensiblen Dateien und unsicheren Konfigurationen.",
+    "subtitleHighlight": "Kostenlos in 30 Sekunden.",
+    "inputPlaceholder": "deineapp.vercel.app",
+    "inputHelper": "Gib die URL deiner Website oder Anwendung ein",
+    "trust1": "Keine Registrierung",
+    "trust2": "Sofortige Ergebnisse",
+    "trust3": "100% privat"
+  },
+  "providers": {
+    "title": "Wir erkennen Schlüssel von führenden Anbietern"
+  },
+  "stats": {
+    "scans": "Durchgeführte Scans",
+    "keysFound": "API-Schlüssel erkannt",
+    "providers": "Unterstützte Anbieter"
+  },
+  "features": {
+    "badge": "Einfach und schnell",
+    "title": "So funktioniert's",
+    "subtitle": "Von der URL zum Sicherheitsbericht in unter einer Minute",
+    "step1Title": "URL eingeben",
+    "step1Desc": "Füge die URL deiner Website oder Anwendung ein",
+    "step2Title": "Automatische Analyse",
+    "step2Desc": "Wir scannen Quellcode, Skripte und Netzwerkanfragen",
+    "step3Title": "Detaillierter Bericht",
+    "step3Desc": "Erhalte einen Bericht mit Schwachstellen und Lösungen"
+  },
+  "detection": {
+    "badge": "+40 Arten von Schwachstellen",
+    "title": "Was wir erkennen",
+    "subtitle": "Eine vollständige Analyse deiner Frontend-Sicherheit",
+    "apiKeys": {
+      "title": "Exponierte API-Schlüssel",
+      "items": ["OpenAI, Anthropic, Cohere", "Stripe (live/test)", "AWS, Firebase, Google", "GitHub, Supabase, Vercel"]
+    },
+    "files": {
+      "title": "Sensible Dateien",
+      "items": [".env, .git exponiert", "config.js, settings.json", "credentials, secrets", "Datenbank-Konfigurationen"]
+    },
+    "headers": {
+      "title": "Sicherheits-Header",
+      "items": ["Content-Security-Policy", "X-Frame-Options", "Strict-Transport-Security", "X-Content-Type-Options"]
+    },
+    "other": {
+      "title": "Andere Schwachstellen",
+      "items": ["Exponierte Source Maps", "Falsch konfiguriertes CORS", "Tokens in URLs", "Gemischte HTTP-Inhalte"]
+    }
+  },
+  "cta": {
+    "title": "Bereit, deine App zu schützen?",
+    "subtitle": "Warte nicht, bis jemand deine Schwachstellen entdeckt. Scanne jetzt.",
+    "button": "Meine Seite kostenlos scannen"
+  },
+  "faq": {
+    "title": "Häufig gestellte Fragen",
+    "subtitle": "Alles, was du über SecureScan wissen musst",
+    "q1": "Ist es sicher, meine Seite zu scannen?",
+    "a1": "Ja, absolut. Wir analysieren nur den öffentlichen Inhalt deiner Website, wie es jeder Besucher tun würde. Wir speichern keine gefundenen Zugangsdaten.",
+    "q2": "Welche Arten von API-Schlüsseln erkennt ihr?",
+    "a2": "Wir erkennen über 40 Arten von Schlüsseln: OpenAI, Stripe, AWS, Firebase, GitHub, Supabase und viele mehr. Wir identifizieren auch generische Token- und Secret-Muster.",
+    "q3": "Warum ist es kostenlos?",
+    "a3": "Die Basisversion ist kostenlos, um der Entwickler-Community zu helfen. Wir bieten Premium-Funktionen wie geplante Scans und kontinuierliche Überwachung.",
+    "q4": "Was mache ich, wenn Schwachstellen gefunden werden?",
+    "a4": "Wir stellen detaillierte Anleitungen für jedes Problem bereit. Am wichtigsten: Rotiere sofort exponierte Schlüssel und verschiebe sie in Server-Umgebungsvariablen."
+  },
+  "footer": {
+    "privacy": "Datenschutz",
+    "terms": "AGB",
+    "contact": "Kontakt",
+    "copyright": "© 2026 SecureScan. Alle Rechte vorbehalten.",
+    "tagline": "Deinen Code schützen, einen API-Schlüssel nach dem anderen."
+  },
+  "scan": {
+    "progress": {
+      "title": "Scanne",
+      "completed": "Abgeschlossen",
+      "progress": "Fortschritt",
+      "inProgress": "in Bearbeitung...",
+      "estimatedTime": "Geschätzte Zeit: ~30 Sekunden",
+      "generating": "Ergebnisse werden generiert...",
+      "step1": "Lade Webseite",
+      "step2": "Analysiere Quellcode",
+      "step3": "Suche nach exponierten API-Schlüsseln",
+      "step4": "Prüfe Sicherheits-Header",
+      "step5": "Prüfe sensible Dateien"
+    },
+    "error": {
+      "invalidUrl": "Gib eine URL zum Scannen ein",
+      "connectionError": "Verbindungsfehler. Bitte erneut versuchen.",
+      "scanError": "Fehler beim Starten des Scans"
+    }
+  },
+  "results": {
+    "title": "Ergebnisse für",
+    "score": "von 100",
+    "scoreExcellent": "Ausgezeichnet",
+    "scoreGood": "Gut",
+    "scoreFair": "Mittelmäßig",
+    "scorePoor": "Schlecht",
+    "scoreModerate": "Mäßig",
+    "scoreAtRisk": "Gefährdet",
+    "scoreCritical": "Kritisch",
+    "problemsFound": "Wir haben {count} Probleme gefunden",
+    "noProblems": "Keine Schwachstellen gefunden",
+    "vulnerabilities": "Gefundene Schwachstellen",
+    "downloadPdf": "PDF herunterladen",
+    "severity": {
+      "critical": "Kritisch",
+      "high": "Hoch",
+      "medium": "Mittel",
+      "low": "Niedrig"
+    },
+    "labels": {
+      "critical": "Kritisch",
+      "high": "Hoch",
+      "medium": "Mittel",
+      "low": "Niedrig"
+    },
+    "vulnerability": {
+      "location": "Ort",
+      "foundValue": "Gefundener Wert",
+      "howToFix": "So beheben Sie es",
+      "line": "Zeile {number}",
+      "unlockForSolution": "Vollständigen Bericht freischalten, um die Lösung zu sehen",
+      "incorrect": "Falsch",
+      "correct": "Richtig"
+    },
+    "paywall": {
+      "recommended": "EMPFOHLEN",
+      "title": "Vollständigen Bericht Freischalten",
+      "subtitle": "Erhalte alle Details zur Behebung jeder Schwachstelle",
+      "feature1": "Jede Schwachstelle im Detail anzeigen",
+      "feature2": "Genauer Ort des Problems",
+      "feature3": "Schritt-für-Schritt-Anleitung zur Behebung",
+      "feature4": "Code-Beispiele für jede Lösung",
+      "price": "0,99",
+      "currency": "€",
+      "priceNote": "einmalige Zahlung",
+      "button": "Jetzt Freischalten",
+      "processing": "Verarbeitung...",
+      "securePayment": "Sichere Zahlung mit Stripe",
+      "errorPayment": "Fehler bei der Zahlungsverarbeitung",
+      "errorConnection": "Verbindungsfehler"
+    },
+    "ai": {
+      "title": "Alles mit KI beheben",
+      "subtitle": "Kopiere diesen Prompt und füge ihn in Claude oder ChatGPT ein",
+      "copyButton": "Prompt für KI kopieren",
+      "promptHeader": "# Sicherheitsanalyse - {url}",
+      "promptScore": "Punktzahl: {score}/100",
+      "promptVulns": "Schwachstellen: {total} gesamt ({critical} kritisch, {high} hoch)",
+      "promptDetected": "## Erkannte Schwachstellen:",
+      "promptNeed": "## Ich brauche:",
+      "promptNeed1": "1. Genauen Code oder Konfiguration zur Behebung jeder Schwachstelle",
+      "promptNeed2": "2. Beispiele für meine Plattform (Vercel, Netlify, Apache, Nginx, etc.)",
+      "promptNeed3": "3. Kurze Erklärung, warum jede Lösung funktioniert",
+      "promptPriority": "Priorisiere kritische und hohe Schwachstellen."
+    },
+    "blurred": {
+      "moreVulnerabilities": "+{count} weitere Schwachstellen",
+      "unlockToSee": "Freischalten, um alle Details zu sehen"
+    },
+    "loading": "Ergebnisse werden geladen..."
+  },
+  "patterns": {
+    "openai": "OpenAI API-Schlüssel",
+    "anthropic": "Anthropic API-Schlüssel",
+    "stripe_secret": "Stripe Geheimer Schlüssel",
+    "stripe_publishable": "Stripe Öffentlicher Schlüssel",
+    "aws_access": "AWS Zugriffsschlüssel",
+    "github": "GitHub Zugriffstoken",
+    "google_api": "Google API-Schlüssel",
+    "firebase": "Firebase API-Schlüssel",
+    "supabase": "Supabase API-Schlüssel",
+    "jwt": "Exponierter JWT-Token",
+    "private_key": "Exponierter Privater Schlüssel",
+    "password": "Hardcodiertes Passwort",
+    "database_url": "Datenbank-URL mit Zugangsdaten"
+  },
+  "headers": {
+    "csp": "Content-Security-Policy fehlt",
+    "xframe": "X-Frame-Options fehlt",
+    "hsts": "Strict-Transport-Security fehlt",
+    "xcontent": "X-Content-Type-Options fehlt",
+    "referrer": "Referrer-Policy fehlt",
+    "permissions": "Permissions-Policy fehlt"
+  }
+}

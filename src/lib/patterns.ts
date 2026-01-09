@@ -530,23 +530,6 @@ const s3 = new AWS.S3({
     },
   },
 
-  // Datadog API Key
-  {
-    name: 'Clave API de Datadog',
-    provider: 'Datadog',
-    pattern: /dd[a-f0-9]{32}/g,
-    severity: 'high',
-    description: 'Clave API de Datadog expuesta. Permite enviar metricas y eventos a tu cuenta.',
-    remediation: {
-      steps: [
-        'Rota esta clave en Datadog',
-        'Usa variables de entorno',
-        'Las claves de Datadog deben estar solo en el backend',
-      ],
-      revokeUrl: 'https://app.datadoghq.com/organization-settings/api-keys',
-    },
-  },
-
   // Linear API Key
   {
     name: 'Clave API de Linear',

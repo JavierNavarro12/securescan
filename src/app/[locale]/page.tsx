@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Shield, AlertTriangle, Check, ArrowRight, Sparkles } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import {
   Logo,
   ScanInput,
@@ -10,9 +11,12 @@ import {
   FAQ,
   ProviderLogos,
   Footer,
+  LanguageSelector,
 } from '@/components';
 
 export default function HomePage() {
+  const t = useTranslations();
+
   return (
     <div className="relative">
       {/* Background effects */}
@@ -23,19 +27,20 @@ export default function HomePage() {
       <header className="sticky top-0 z-50 py-4 px-4 glass border-b border-white/5">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <Logo />
-          <nav className="flex items-center gap-6">
+          <nav className="flex items-center gap-4 sm:gap-6">
             <a
               href="#features"
               className="text-sm text-zinc-400 hover:text-white transition-colors hidden sm:block"
             >
-              Cómo funciona
+              {t('nav.howItWorks')}
             </a>
             <a
               href="#faq"
               className="text-sm text-zinc-400 hover:text-white transition-colors"
             >
-              FAQ
+              {t('nav.faq')}
             </a>
+            <LanguageSelector />
           </nav>
         </div>
       </header>
@@ -51,7 +56,7 @@ export default function HomePage() {
           >
             <AlertTriangle className="w-4 h-4 text-red-400" />
             <span className="text-sm text-red-300 font-medium">
-              El 73% de las apps filtran credenciales sensibles
+              {t('hero.badge')}
             </span>
           </motion.div>
 
@@ -62,11 +67,11 @@ export default function HomePage() {
             transition={{ delay: 0.1 }}
             className="hero-title font-display text-4xl md:text-5xl lg:text-6xl mb-6 leading-[1.15] tracking-tight"
           >
-            Tu app está filtrando{' '}
-            <span className="gradient-text">API keys</span>
+            {t('hero.title1')}{' '}
+            <span className="gradient-text">{t('hero.titleHighlight')}</span>
             <span className="text-emerald-400">.</span>
             <br />
-            <span className="text-zinc-500 italic">Descúbrelo antes que un hacker.</span>
+            <span className="text-zinc-500 italic">{t('hero.title2')}</span>
           </motion.h1>
 
           {/* Subheadline */}
@@ -76,9 +81,8 @@ export default function HomePage() {
             transition={{ delay: 0.2 }}
             className="text-lg md:text-xl text-zinc-400 mb-12 max-w-2xl mx-auto leading-relaxed"
           >
-            Escaneamos tu sitio web en busca de API keys expuestas, archivos sensibles
-            y configuraciones inseguras.{' '}
-            <span className="text-white font-medium">Gratis en 30 segundos.</span>
+            {t('hero.subtitle')}{' '}
+            <span className="text-white font-medium">{t('hero.subtitleHighlight')}</span>
           </motion.p>
 
           {/* Scan input */}
@@ -99,15 +103,15 @@ export default function HomePage() {
           >
             <div className="flex items-center gap-2">
               <Check className="w-4 h-4 text-emerald-500" />
-              <span>Sin registro</span>
+              <span>{t('hero.trust1')}</span>
             </div>
             <div className="flex items-center gap-2">
               <Check className="w-4 h-4 text-emerald-500" />
-              <span>Resultados inmediatos</span>
+              <span>{t('hero.trust2')}</span>
             </div>
             <div className="flex items-center gap-2">
               <Check className="w-4 h-4 text-emerald-500" />
-              <span>100% privado</span>
+              <span>{t('hero.trust3')}</span>
             </div>
           </motion.div>
         </div>
@@ -138,11 +142,11 @@ export default function HomePage() {
           >
             <span className="badge badge-accent mb-4 inline-block">
               <Sparkles className="w-3 h-3 inline mr-1" />
-              Simple y rápido
+              {t('features.badge')}
             </span>
-            <h2 className="font-display text-4xl md:text-5xl mb-4">Cómo funciona</h2>
+            <h2 className="font-display text-4xl md:text-5xl mb-4">{t('features.title')}</h2>
             <p className="text-zinc-400 text-lg max-w-xl mx-auto">
-              De URL a reporte de seguridad en menos de un minuto
+              {t('features.subtitle')}
             </p>
           </motion.div>
 
@@ -161,39 +165,39 @@ export default function HomePage() {
           >
             <span className="badge badge-warning mb-4 inline-block">
               <AlertTriangle className="w-3 h-3 inline mr-1" />
-              +40 tipos de vulnerabilidades
+              {t('detection.badge')}
             </span>
-            <h2 className="font-display text-4xl md:text-5xl mb-4">Qué detectamos</h2>
+            <h2 className="font-display text-4xl md:text-5xl mb-4">{t('detection.title')}</h2>
             <p className="text-zinc-400 text-lg max-w-xl mx-auto">
-              Un análisis completo de tu seguridad frontend
+              {t('detection.subtitle')}
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {[
               {
-                title: 'API Keys Expuestas',
-                items: ['OpenAI, Anthropic, Cohere', 'Stripe (live/test)', 'AWS, Firebase, Google', 'GitHub, Supabase, Vercel'],
+                titleKey: 'detection.apiKeys.title',
+                itemsKey: 'detection.apiKeys.items',
                 severity: 'critical',
               },
               {
-                title: 'Archivos Sensibles',
-                items: ['.env, .git expuestos', 'config.js, settings.json', 'credentials, secrets', 'database configs'],
+                titleKey: 'detection.files.title',
+                itemsKey: 'detection.files.items',
                 severity: 'high',
               },
               {
-                title: 'Headers de Seguridad',
-                items: ['Content-Security-Policy', 'X-Frame-Options', 'Strict-Transport-Security', 'X-Content-Type-Options'],
+                titleKey: 'detection.headers.title',
+                itemsKey: 'detection.headers.items',
                 severity: 'medium',
               },
               {
-                title: 'Otras Vulnerabilidades',
-                items: ['Source maps expuestos', 'CORS mal configurado', 'Tokens en URLs', 'Mixed content HTTP'],
+                titleKey: 'detection.other.title',
+                itemsKey: 'detection.other.items',
                 severity: 'low',
               },
             ].map((category, index) => (
               <motion.div
-                key={category.title}
+                key={category.titleKey}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -220,10 +224,10 @@ export default function HomePage() {
                         : 'bg-blue-500'
                     }`}
                   />
-                  <h3 className="font-semibold text-white">{category.title}</h3>
+                  <h3 className="font-semibold text-white">{t(category.titleKey)}</h3>
                 </div>
                 <ul className="space-y-2.5">
-                  {category.items.map((item) => (
+                  {(t.raw(category.itemsKey) as string[]).map((item: string) => (
                     <li key={item} className="text-sm text-zinc-400 flex items-center gap-3">
                       <div className="w-1 h-1 rounded-full bg-zinc-600" />
                       {item}
@@ -249,16 +253,16 @@ export default function HomePage() {
               <Shield className="w-10 h-10 text-emerald-400 shield-glow" />
             </div>
             <h2 className="font-display text-4xl md:text-5xl mb-4">
-              ¿Listo para proteger tu app?
+              {t('cta.title')}
             </h2>
             <p className="text-zinc-400 text-lg mb-8 max-w-md mx-auto">
-              No esperes a que alguien descubra tus vulnerabilidades. Escanea ahora.
+              {t('cta.subtitle')}
             </p>
             <a
               href="#top"
               className="inline-flex items-center gap-2 px-8 py-4 btn-primary rounded-xl text-lg"
             >
-              Escanear mi sitio gratis
+              {t('cta.button')}
               <ArrowRight className="w-5 h-5" />
             </a>
           </motion.div>
@@ -275,10 +279,10 @@ export default function HomePage() {
             className="text-center mb-16"
           >
             <h2 className="font-display text-4xl md:text-5xl mb-4">
-              Preguntas frecuentes
+              {t('faq.title')}
             </h2>
             <p className="text-zinc-400 text-lg">
-              Todo lo que necesitas saber sobre SecureScan
+              {t('faq.subtitle')}
             </p>
           </motion.div>
 

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 
 interface ScoreCircleProps {
   score: number;
@@ -10,6 +11,7 @@ interface ScoreCircleProps {
 
 export function ScoreCircle({ score, size = 200 }: ScoreCircleProps) {
   const [animatedScore, setAnimatedScore] = useState(0);
+  const t = useTranslations('results');
 
   // Determine color based on score
   const getColor = (s: number) => {
@@ -21,11 +23,11 @@ export function ScoreCircle({ score, size = 200 }: ScoreCircleProps) {
   };
 
   const getLabel = (s: number) => {
-    if (s >= 80) return 'Excelente';
-    if (s >= 60) return 'Bueno';
-    if (s >= 40) return 'Moderado';
-    if (s >= 20) return 'En Riesgo';
-    return 'Crítico';
+    if (s >= 80) return t('scoreExcellent');
+    if (s >= 60) return t('scoreGood');
+    if (s >= 40) return t('scoreModerate');
+    if (s >= 20) return t('scoreAtRisk');
+    return t('scoreCritical');
   };
 
   const color = getColor(score);
@@ -111,7 +113,7 @@ export function ScoreCircle({ score, size = 200 }: ScoreCircleProps) {
         >
           {animatedScore}
         </motion.span>
-        <span className="text-gray-400 text-sm mt-1">de 100</span>
+        <span className="text-gray-400 text-sm mt-1">{t('score')}</span>
         <motion.span
           className="mt-2 px-3 py-1 rounded-full text-sm font-medium"
           style={{

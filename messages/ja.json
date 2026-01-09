@@ -1,0 +1,214 @@
+{
+  "common": {
+    "scan": "スキャン",
+    "scanning": "スキャン中...",
+    "loading": "読み込み中...",
+    "error": "エラー",
+    "success": "成功",
+    "cancel": "キャンセル",
+    "close": "閉じる",
+    "copy": "コピー",
+    "copied": "コピーしました！",
+    "download": "ダウンロード",
+    "unlock": "ロック解除",
+    "learnMore": "詳細を見る",
+    "scanAnother": "他のサイトをスキャン"
+  },
+  "nav": {
+    "howItWorks": "使い方",
+    "faq": "よくある質問",
+    "newScan": "新規スキャン"
+  },
+  "hero": {
+    "badge": "73%のアプリが機密認証情報を漏洩しています",
+    "title1": "あなたのアプリは",
+    "titleHighlight": "APIキー",
+    "title2": "を漏洩しています。ハッカーより先に発見しましょう。",
+    "subtitle": "公開されたAPIキー、機密ファイル、安全でない設定についてウェブサイトをスキャンします。",
+    "subtitleHighlight": "30秒で無料。",
+    "inputPlaceholder": "yourapp.vercel.app",
+    "inputHelper": "ウェブサイトまたはアプリケーションのURLを入力",
+    "trust1": "登録不要",
+    "trust2": "即座に結果",
+    "trust3": "100%プライベート"
+  },
+  "providers": {
+    "title": "主要プロバイダーのキーを検出"
+  },
+  "stats": {
+    "scans": "実行されたスキャン",
+    "keysFound": "検出されたAPIキー",
+    "providers": "対応プロバイダー"
+  },
+  "features": {
+    "badge": "シンプルで高速",
+    "title": "使い方",
+    "subtitle": "URLからセキュリティレポートまで1分以内",
+    "step1Title": "URLを入力",
+    "step1Desc": "ウェブサイトまたはアプリケーションのURLを貼り付け",
+    "step2Title": "自動分析",
+    "step2Desc": "ソースコード、スクリプト、ネットワークリクエストをスキャン",
+    "step3Title": "詳細レポート",
+    "step3Desc": "脆弱性と修正方法を含むレポートを受け取る"
+  },
+  "detection": {
+    "badge": "40種類以上の脆弱性",
+    "title": "検出対象",
+    "subtitle": "フロントエンドセキュリティの完全分析",
+    "apiKeys": {
+      "title": "公開されたAPIキー",
+      "items": ["OpenAI, Anthropic, Cohere", "Stripe (本番/テスト)", "AWS, Firebase, Google", "GitHub, Supabase, Vercel"]
+    },
+    "files": {
+      "title": "機密ファイル",
+      "items": [".env, .git公開", "config.js, settings.json", "credentials, secrets", "データベース設定"]
+    },
+    "headers": {
+      "title": "セキュリティヘッダー",
+      "items": ["Content-Security-Policy", "X-Frame-Options", "Strict-Transport-Security", "X-Content-Type-Options"]
+    },
+    "other": {
+      "title": "その他の脆弱性",
+      "items": ["公開されたソースマップ", "不正なCORS設定", "URLのトークン", "混合HTTPコンテンツ"]
+    }
+  },
+  "cta": {
+    "title": "アプリを保護する準備はできましたか？",
+    "subtitle": "誰かがあなたの脆弱性を発見するのを待たないでください。今すぐスキャン。",
+    "button": "無料でサイトをスキャン"
+  },
+  "faq": {
+    "title": "よくある質問",
+    "subtitle": "SecureScanについて知っておくべきこと",
+    "q1": "サイトをスキャンしても安全ですか？",
+    "a1": "はい、完全に安全です。訪問者と同様に、ウェブサイトの公開コンテンツのみを分析します。見つかった認証情報は保存しません。",
+    "q2": "どの種類のAPIキーを検出しますか？",
+    "a2": "OpenAI、Stripe、AWS、Firebase、GitHub、Supabaseなど、40種類以上のキーを検出します。一般的なトークンやシークレットパターンも識別します。",
+    "q3": "なぜ無料なのですか？",
+    "a3": "基本バージョンは開発者コミュニティを支援するために無料です。スケジュールスキャンや継続的監視などのプレミアム機能を提供しています。",
+    "q4": "脆弱性が見つかったらどうすればいいですか？",
+    "a4": "各問題の詳細な手順を提供します。最も重要なのは、公開されたキーを直ちにローテーションし、サーバー環境変数に移動することです。"
+  },
+  "footer": {
+    "privacy": "プライバシー",
+    "terms": "利用規約",
+    "contact": "お問い合わせ",
+    "copyright": "© 2026 SecureScan. All rights reserved.",
+    "tagline": "一つのAPIキーずつ、あなたのコードを保護します。"
+  },
+  "scan": {
+    "progress": {
+      "title": "スキャン中",
+      "completed": "完了",
+      "progress": "進捗",
+      "inProgress": "処理中...",
+      "estimatedTime": "推定時間：約30秒",
+      "generating": "結果を生成中...",
+      "step1": "ウェブページを読み込み中",
+      "step2": "ソースコードを分析中",
+      "step3": "公開されたAPIキーを検索中",
+      "step4": "セキュリティヘッダーを確認中",
+      "step5": "機密ファイルを確認中"
+    },
+    "error": {
+      "invalidUrl": "スキャンするURLを入力してください",
+      "connectionError": "接続エラー。もう一度お試しください。",
+      "scanError": "スキャン開始エラー"
+    }
+  },
+  "results": {
+    "title": "結果：",
+    "score": "/ 100",
+    "scoreExcellent": "優秀",
+    "scoreGood": "良好",
+    "scoreFair": "普通",
+    "scorePoor": "不良",
+    "scoreModerate": "中程度",
+    "scoreAtRisk": "リスクあり",
+    "scoreCritical": "危険",
+    "problemsFound": "{count}件の問題が見つかりました",
+    "noProblems": "脆弱性は見つかりませんでした",
+    "vulnerabilities": "発見された脆弱性",
+    "downloadPdf": "PDFをダウンロード",
+    "severity": {
+      "critical": "重大",
+      "high": "高",
+      "medium": "中",
+      "low": "低"
+    },
+    "labels": {
+      "critical": "重大",
+      "high": "高",
+      "medium": "中",
+      "low": "低"
+    },
+    "vulnerability": {
+      "location": "場所",
+      "foundValue": "検出された値",
+      "howToFix": "修正方法",
+      "line": "{number}行目",
+      "unlockForSolution": "完全なレポートをロック解除して解決策を表示",
+      "incorrect": "不正解",
+      "correct": "正解"
+    },
+    "paywall": {
+      "recommended": "おすすめ",
+      "title": "完全なレポートをロック解除",
+      "subtitle": "各脆弱性を修正するための詳細を取得",
+      "feature1": "各脆弱性を詳細に表示",
+      "feature2": "問題の正確な場所",
+      "feature3": "修正のためのステップバイステップガイド",
+      "feature4": "各修正のコード例",
+      "price": "150",
+      "currency": "¥",
+      "priceNote": "1回払い",
+      "button": "今すぐロック解除",
+      "processing": "処理中...",
+      "securePayment": "Stripeで安全な支払い",
+      "errorPayment": "支払い処理エラー",
+      "errorConnection": "接続エラー"
+    },
+    "ai": {
+      "title": "AIですべてを修正",
+      "subtitle": "このプロンプトをClaudeまたはChatGPTに貼り付け",
+      "copyButton": "AIプロンプトをコピー",
+      "promptHeader": "# セキュリティ分析 - {url}",
+      "promptScore": "スコア: {score}/100",
+      "promptVulns": "脆弱性: 合計{total}件 (重大{critical}件, 高{high}件)",
+      "promptDetected": "## 検出された脆弱性:",
+      "promptNeed": "## 必要なもの:",
+      "promptNeed1": "1. 各脆弱性を修正する正確なコードまたは設定",
+      "promptNeed2": "2. プラットフォーム別の例 (Vercel, Netlify, Apache, Nginx等)",
+      "promptNeed3": "3. 各ソリューションが機能する理由の簡単な説明",
+      "promptPriority": "重大および高の脆弱性を優先してください。"
+    },
+    "blurred": {
+      "moreVulnerabilities": "他に{count}件の脆弱性",
+      "unlockToSee": "すべての詳細を表示するにはロック解除"
+    },
+    "loading": "結果を読み込み中..."
+  },
+  "patterns": {
+    "openai": "OpenAI APIキー",
+    "anthropic": "Anthropic APIキー",
+    "stripe_secret": "Stripeシークレットキー",
+    "stripe_publishable": "Stripe公開キー",
+    "aws_access": "AWSアクセスキー",
+    "github": "GitHubアクセストークン",
+    "google_api": "Google APIキー",
+    "firebase": "Firebase APIキー",
+    "supabase": "Supabase APIキー",
+    "jwt": "公開されたJWTトークン",
+    "private_key": "公開された秘密鍵",
+    "password": "ハードコードされたパスワード",
+    "database_url": "認証情報付きデータベースURL"
+  },
+  "headers": {
+    "csp": "Content-Security-Policyがありません",
+    "xframe": "X-Frame-Optionsがありません",
+    "hsts": "Strict-Transport-Securityがありません",
+    "xcontent": "X-Content-Type-Optionsがありません",
+    "referrer": "Referrer-Policyがありません",
+    "permissions": "Permissions-Policyがありません"
+  }
+}

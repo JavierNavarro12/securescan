@@ -1,0 +1,214 @@
+{
+  "common": {
+    "scan": "Escanear",
+    "scanning": "Escaneando...",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "cancel": "Cancelar",
+    "close": "Cerrar",
+    "copy": "Copiar",
+    "copied": "¡Copiado!",
+    "download": "Descargar",
+    "unlock": "Desbloquear",
+    "learnMore": "Saber más",
+    "scanAnother": "Escanear otro sitio"
+  },
+  "nav": {
+    "howItWorks": "Cómo funciona",
+    "faq": "FAQ",
+    "newScan": "Nuevo escaneo"
+  },
+  "hero": {
+    "badge": "El 73% de las apps filtran credenciales sensibles",
+    "title1": "Tu app está filtrando",
+    "titleHighlight": "API keys",
+    "title2": "Descúbrelo antes que un hacker.",
+    "subtitle": "Escaneamos tu sitio web en busca de API keys expuestas, archivos sensibles y configuraciones inseguras.",
+    "subtitleHighlight": "Gratis en 30 segundos.",
+    "inputPlaceholder": "tuapp.vercel.app",
+    "inputHelper": "Introduce la URL de tu sitio web o aplicación",
+    "trust1": "Sin registro",
+    "trust2": "Resultados inmediatos",
+    "trust3": "100% privado"
+  },
+  "providers": {
+    "title": "Detectamos claves de los principales proveedores"
+  },
+  "stats": {
+    "scans": "Escaneos realizados",
+    "keysFound": "API keys detectadas",
+    "providers": "Proveedores soportados"
+  },
+  "features": {
+    "badge": "Simple y rápido",
+    "title": "Cómo funciona",
+    "subtitle": "De URL a reporte de seguridad en menos de un minuto",
+    "step1Title": "Introduce tu URL",
+    "step1Desc": "Pega la URL de tu sitio web o aplicación",
+    "step2Title": "Análisis automático",
+    "step2Desc": "Escaneamos el código fuente, scripts y peticiones de red",
+    "step3Title": "Reporte detallado",
+    "step3Desc": "Recibe un informe con vulnerabilidades y cómo solucionarlas"
+  },
+  "detection": {
+    "badge": "+40 tipos de vulnerabilidades",
+    "title": "Qué detectamos",
+    "subtitle": "Un análisis completo de tu seguridad frontend",
+    "apiKeys": {
+      "title": "API Keys Expuestas",
+      "items": ["OpenAI, Anthropic, Cohere", "Stripe (live/test)", "AWS, Firebase, Google", "GitHub, Supabase, Vercel"]
+    },
+    "files": {
+      "title": "Archivos Sensibles",
+      "items": [".env, .git expuestos", "config.js, settings.json", "credentials, secrets", "database configs"]
+    },
+    "headers": {
+      "title": "Headers de Seguridad",
+      "items": ["Content-Security-Policy", "X-Frame-Options", "Strict-Transport-Security", "X-Content-Type-Options"]
+    },
+    "other": {
+      "title": "Otras Vulnerabilidades",
+      "items": ["Source maps expuestos", "CORS mal configurado", "Tokens en URLs", "Mixed content HTTP"]
+    }
+  },
+  "cta": {
+    "title": "¿Listo para proteger tu app?",
+    "subtitle": "No esperes a que alguien descubra tus vulnerabilidades. Escanea ahora.",
+    "button": "Escanear mi sitio gratis"
+  },
+  "faq": {
+    "title": "Preguntas frecuentes",
+    "subtitle": "Todo lo que necesitas saber sobre SecureScan",
+    "q1": "¿Es seguro escanear mi sitio?",
+    "a1": "Sí, completamente. Solo analizamos el contenido público de tu web, igual que lo haría cualquier visitante. No almacenamos ninguna credencial encontrada.",
+    "q2": "¿Qué tipos de API keys detectan?",
+    "a2": "Detectamos más de 40 tipos de claves: OpenAI, Stripe, AWS, Firebase, GitHub, Supabase, y muchas más. También identificamos patrones genéricos de tokens y secrets.",
+    "q3": "¿Por qué es gratis?",
+    "a3": "La versión básica es gratuita para ayudar a la comunidad de desarrolladores. Ofrecemos funcionalidades premium como escaneos programados y monitorización continua.",
+    "q4": "¿Qué hago si encuentran vulnerabilidades?",
+    "a4": "Te proporcionamos instrucciones detalladas para cada problema. Lo más importante: rota inmediatamente las claves expuestas y muévelas a variables de entorno del servidor."
+  },
+  "footer": {
+    "privacy": "Privacidad",
+    "terms": "Términos",
+    "contact": "Contacto",
+    "copyright": "© 2026 SecureScan. Todos los derechos reservados.",
+    "tagline": "Protegiendo tu código, una API key a la vez."
+  },
+  "scan": {
+    "progress": {
+      "title": "Escaneando",
+      "completed": "Completado",
+      "progress": "Progreso",
+      "inProgress": "en progreso...",
+      "estimatedTime": "Tiempo estimado: ~30 segundos",
+      "generating": "Generando resultados...",
+      "step1": "Cargando página web",
+      "step2": "Analizando código fuente",
+      "step3": "Buscando API keys expuestas",
+      "step4": "Verificando headers de seguridad",
+      "step5": "Comprobando archivos sensibles"
+    },
+    "error": {
+      "invalidUrl": "Introduce una URL para escanear",
+      "connectionError": "Error de conexión. Inténtalo de nuevo.",
+      "scanError": "Error al iniciar el escaneo"
+    }
+  },
+  "results": {
+    "title": "Resultados para",
+    "score": "de 100",
+    "scoreExcellent": "Excelente",
+    "scoreGood": "Bueno",
+    "scoreFair": "Regular",
+    "scorePoor": "Deficiente",
+    "scoreModerate": "Moderado",
+    "scoreAtRisk": "En Riesgo",
+    "scoreCritical": "Crítico",
+    "problemsFound": "Encontramos {count} problemas",
+    "noProblems": "No encontramos vulnerabilidades",
+    "vulnerabilities": "Vulnerabilidades encontradas",
+    "downloadPdf": "Descargar PDF",
+    "severity": {
+      "critical": "Críticos",
+      "high": "Altos",
+      "medium": "Medios",
+      "low": "Bajos"
+    },
+    "labels": {
+      "critical": "Crítico",
+      "high": "Alto",
+      "medium": "Medio",
+      "low": "Bajo"
+    },
+    "vulnerability": {
+      "location": "Ubicación",
+      "foundValue": "Valor encontrado",
+      "howToFix": "Cómo solucionarlo",
+      "line": "línea {number}",
+      "unlockForSolution": "Desbloquea el reporte completo para ver la solución",
+      "incorrect": "Incorrecto",
+      "correct": "Correcto"
+    },
+    "paywall": {
+      "recommended": "RECOMENDADO",
+      "title": "Desbloquear Reporte Completo",
+      "subtitle": "Obtén todos los detalles para solucionar cada vulnerabilidad",
+      "feature1": "Ver cada vulnerabilidad en detalle",
+      "feature2": "Ubicación exacta del problema",
+      "feature3": "Guía paso a paso para solucionarlas",
+      "feature4": "Código de ejemplo para cada fix",
+      "price": "0,99",
+      "currency": "€",
+      "priceNote": "pago único",
+      "button": "Desbloquear Ahora",
+      "processing": "Procesando...",
+      "securePayment": "Pago seguro con Stripe",
+      "errorPayment": "Error al procesar el pago",
+      "errorConnection": "Error de conexión"
+    },
+    "ai": {
+      "title": "Soluciona todo con IA",
+      "subtitle": "Copia este prompt y pégalo en Claude o ChatGPT",
+      "copyButton": "Copiar prompt para IA",
+      "promptHeader": "# Análisis de Seguridad - {url}",
+      "promptScore": "Puntuación: {score}/100",
+      "promptVulns": "Vulnerabilidades: {total} total ({critical} críticas, {high} altas)",
+      "promptDetected": "## Vulnerabilidades detectadas:",
+      "promptNeed": "## Necesito:",
+      "promptNeed1": "1. Código o configuración exacta para solucionar cada vulnerabilidad",
+      "promptNeed2": "2. Ejemplos para mi plataforma (Vercel, Netlify, Apache, Nginx, etc.)",
+      "promptNeed3": "3. Explicación breve de por qué cada solución funciona",
+      "promptPriority": "Prioriza las vulnerabilidades críticas y altas."
+    },
+    "blurred": {
+      "moreVulnerabilities": "+{count} vulnerabilidades más",
+      "unlockToSee": "Desbloquea para ver todos los detalles"
+    },
+    "loading": "Cargando resultados..."
+  },
+  "patterns": {
+    "openai": "Clave API de OpenAI",
+    "anthropic": "Clave API de Anthropic",
+    "stripe_secret": "Clave Secreta de Stripe",
+    "stripe_publishable": "Clave Publicable de Stripe",
+    "aws_access": "Clave de Acceso de AWS",
+    "github": "Token de Acceso de GitHub",
+    "google_api": "Clave API de Google",
+    "firebase": "Clave API de Firebase",
+    "supabase": "Clave API de Supabase",
+    "jwt": "Token JWT Expuesto",
+    "private_key": "Clave Privada Expuesta",
+    "password": "Contraseña Hardcodeada",
+    "database_url": "URL de Base de Datos con Credenciales"
+  },
+  "headers": {
+    "csp": "Falta Content-Security-Policy",
+    "xframe": "Falta X-Frame-Options",
+    "hsts": "Falta Strict-Transport-Security",
+    "xcontent": "Falta X-Content-Type-Options",
+    "referrer": "Falta Referrer-Policy",
+    "permissions": "Falta Permissions-Policy"
+  }
+}

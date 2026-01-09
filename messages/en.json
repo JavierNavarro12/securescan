@@ -1,0 +1,214 @@
+{
+  "common": {
+    "scan": "Scan",
+    "scanning": "Scanning...",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "close": "Close",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "download": "Download",
+    "unlock": "Unlock",
+    "learnMore": "Learn more",
+    "scanAnother": "Scan another site"
+  },
+  "nav": {
+    "howItWorks": "How it works",
+    "faq": "FAQ",
+    "newScan": "New scan"
+  },
+  "hero": {
+    "badge": "73% of apps leak sensitive credentials",
+    "title1": "Your app is leaking",
+    "titleHighlight": "API keys",
+    "title2": "Find out before a hacker does.",
+    "subtitle": "We scan your website for exposed API keys, sensitive files, and insecure configurations.",
+    "subtitleHighlight": "Free in 30 seconds.",
+    "inputPlaceholder": "yourapp.vercel.app",
+    "inputHelper": "Enter your website or application URL",
+    "trust1": "No registration",
+    "trust2": "Instant results",
+    "trust3": "100% private"
+  },
+  "providers": {
+    "title": "We detect keys from major providers"
+  },
+  "stats": {
+    "scans": "Scans performed",
+    "keysFound": "API keys detected",
+    "providers": "Supported providers"
+  },
+  "features": {
+    "badge": "Simple and fast",
+    "title": "How it works",
+    "subtitle": "From URL to security report in under a minute",
+    "step1Title": "Enter your URL",
+    "step1Desc": "Paste your website or application URL",
+    "step2Title": "Automatic analysis",
+    "step2Desc": "We scan source code, scripts, and network requests",
+    "step3Title": "Detailed report",
+    "step3Desc": "Get a report with vulnerabilities and how to fix them"
+  },
+  "detection": {
+    "badge": "+40 types of vulnerabilities",
+    "title": "What we detect",
+    "subtitle": "A complete analysis of your frontend security",
+    "apiKeys": {
+      "title": "Exposed API Keys",
+      "items": ["OpenAI, Anthropic, Cohere", "Stripe (live/test)", "AWS, Firebase, Google", "GitHub, Supabase, Vercel"]
+    },
+    "files": {
+      "title": "Sensitive Files",
+      "items": [".env, .git exposed", "config.js, settings.json", "credentials, secrets", "database configs"]
+    },
+    "headers": {
+      "title": "Security Headers",
+      "items": ["Content-Security-Policy", "X-Frame-Options", "Strict-Transport-Security", "X-Content-Type-Options"]
+    },
+    "other": {
+      "title": "Other Vulnerabilities",
+      "items": ["Exposed source maps", "Misconfigured CORS", "Tokens in URLs", "Mixed HTTP content"]
+    }
+  },
+  "cta": {
+    "title": "Ready to protect your app?",
+    "subtitle": "Don't wait for someone to discover your vulnerabilities. Scan now.",
+    "button": "Scan my site for free"
+  },
+  "faq": {
+    "title": "Frequently asked questions",
+    "subtitle": "Everything you need to know about SecureScan",
+    "q1": "Is it safe to scan my site?",
+    "a1": "Yes, completely. We only analyze the public content of your website, just like any visitor would. We don't store any credentials found.",
+    "q2": "What types of API keys do you detect?",
+    "a2": "We detect over 40 types of keys: OpenAI, Stripe, AWS, Firebase, GitHub, Supabase, and many more. We also identify generic token and secret patterns.",
+    "q3": "Why is it free?",
+    "a3": "The basic version is free to help the developer community. We offer premium features like scheduled scans and continuous monitoring.",
+    "q4": "What do I do if vulnerabilities are found?",
+    "a4": "We provide detailed instructions for each issue. Most importantly: immediately rotate exposed keys and move them to server environment variables."
+  },
+  "footer": {
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "contact": "Contact",
+    "copyright": "© 2026 SecureScan. All rights reserved.",
+    "tagline": "Protecting your code, one API key at a time."
+  },
+  "scan": {
+    "progress": {
+      "title": "Scanning",
+      "completed": "Completed",
+      "progress": "Progress",
+      "inProgress": "in progress...",
+      "estimatedTime": "Estimated time: ~30 seconds",
+      "generating": "Generating results...",
+      "step1": "Loading web page",
+      "step2": "Analyzing source code",
+      "step3": "Searching for exposed API keys",
+      "step4": "Checking security headers",
+      "step5": "Checking sensitive files"
+    },
+    "error": {
+      "invalidUrl": "Enter a URL to scan",
+      "connectionError": "Connection error. Please try again.",
+      "scanError": "Error starting scan"
+    }
+  },
+  "results": {
+    "title": "Results for",
+    "score": "out of 100",
+    "scoreExcellent": "Excellent",
+    "scoreGood": "Good",
+    "scoreFair": "Fair",
+    "scorePoor": "Poor",
+    "scoreModerate": "Moderate",
+    "scoreAtRisk": "At Risk",
+    "scoreCritical": "Critical",
+    "problemsFound": "We found {count} issues",
+    "noProblems": "No vulnerabilities found",
+    "vulnerabilities": "Vulnerabilities found",
+    "downloadPdf": "Download PDF",
+    "severity": {
+      "critical": "Critical",
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low"
+    },
+    "labels": {
+      "critical": "Critical",
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low"
+    },
+    "vulnerability": {
+      "location": "Location",
+      "foundValue": "Found value",
+      "howToFix": "How to fix",
+      "line": "line {number}",
+      "unlockForSolution": "Unlock the full report to see the solution",
+      "incorrect": "Incorrect",
+      "correct": "Correct"
+    },
+    "paywall": {
+      "recommended": "RECOMMENDED",
+      "title": "Unlock Full Report",
+      "subtitle": "Get all the details to fix each vulnerability",
+      "feature1": "View each vulnerability in detail",
+      "feature2": "Exact location of the problem",
+      "feature3": "Step-by-step guide to fix them",
+      "feature4": "Code examples for each fix",
+      "price": "0.99",
+      "currency": "$",
+      "priceNote": "one-time payment",
+      "button": "Unlock Now",
+      "processing": "Processing...",
+      "securePayment": "Secure payment with Stripe",
+      "errorPayment": "Error processing payment",
+      "errorConnection": "Connection error"
+    },
+    "ai": {
+      "title": "Fix everything with AI",
+      "subtitle": "Copy this prompt and paste it in Claude or ChatGPT",
+      "copyButton": "Copy prompt for AI",
+      "promptHeader": "# Security Analysis - {url}",
+      "promptScore": "Score: {score}/100",
+      "promptVulns": "Vulnerabilities: {total} total ({critical} critical, {high} high)",
+      "promptDetected": "## Detected vulnerabilities:",
+      "promptNeed": "## I need:",
+      "promptNeed1": "1. Exact code or configuration to fix each vulnerability",
+      "promptNeed2": "2. Examples for my platform (Vercel, Netlify, Apache, Nginx, etc.)",
+      "promptNeed3": "3. Brief explanation of why each solution works",
+      "promptPriority": "Prioritize critical and high vulnerabilities."
+    },
+    "blurred": {
+      "moreVulnerabilities": "+{count} more vulnerabilities",
+      "unlockToSee": "Unlock to see all details"
+    },
+    "loading": "Loading results..."
+  },
+  "patterns": {
+    "openai": "OpenAI API Key",
+    "anthropic": "Anthropic API Key",
+    "stripe_secret": "Stripe Secret Key",
+    "stripe_publishable": "Stripe Publishable Key",
+    "aws_access": "AWS Access Key",
+    "github": "GitHub Access Token",
+    "google_api": "Google API Key",
+    "firebase": "Firebase API Key",
+    "supabase": "Supabase API Key",
+    "jwt": "Exposed JWT Token",
+    "private_key": "Exposed Private Key",
+    "password": "Hardcoded Password",
+    "database_url": "Database URL with Credentials"
+  },
+  "headers": {
+    "csp": "Missing Content-Security-Policy",
+    "xframe": "Missing X-Frame-Options",
+    "hsts": "Missing Strict-Transport-Security",
+    "xcontent": "Missing X-Content-Type-Options",
+    "referrer": "Missing Referrer-Policy",
+    "permissions": "Missing Permissions-Policy"
+  }
+}

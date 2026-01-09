@@ -2,20 +2,22 @@
 
 import { useState } from 'react';
 import { Search, ArrowRight, Loader2, AlertCircle } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/i18n/routing';
+import { useTranslations } from 'next-intl';
 
 export function ScanInput() {
   const [url, setUrl] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const router = useRouter();
+  const t = useTranslations();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
     if (!url.trim()) {
-      setError('Introduce una URL para escanear');
+      setError(t('scan.error.invalidUrl'));
       return;
     }
 
@@ -31,14 +33,14 @@ export function ScanInput() {
       const data = await response.json();
 
       if (!data.success) {
-        setError(data.error || 'Error al iniciar el escaneo');
+        setError(data.error || t('scan.error.scanError'));
         setIsLoading(false);
         return;
       }
 
       router.push(`/scan/${data.scanId}`);
     } catch (err) {
-      setError('Error de conexión. Inténtalo de nuevo.');
+      setError(t('scan.error.connectionError'));
       setIsLoading(false);
     }
   };
@@ -61,7 +63,7 @@ export function ScanInput() {
             type="text"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            placeholder="tuapp.vercel.app"
+            placeholder={t('hero.inputPlaceholder')}
             disabled={isLoading}
             className="flex-1 py-4 bg-transparent text-white placeholder-zinc-500 focus:outline-none font-medium text-lg font-mono disabled:opacity-50"
           />
@@ -75,11 +77,11 @@ export function ScanInput() {
             {isLoading ? (
               <>
                 <Loader2 className="w-5 h-5 animate-spin" />
-                <span className="hidden sm:inline">Escaneando...</span>
+                <span className="hidden sm:inline">{t('common.scanning')}</span>
               </>
             ) : (
               <>
-                <span>Escanear</span>
+                <span>{t('common.scan')}</span>
                 <ArrowRight className="w-5 h-5" />
               </>
             )}
@@ -97,7 +99,7 @@ export function ScanInput() {
 
       {/* Helper text */}
       <p className="mt-4 text-center text-zinc-500 text-sm">
-        Introduce la URL de tu sitio web o aplicación
+        {t('hero.inputHelper')}
       </p>
     </form>
   );

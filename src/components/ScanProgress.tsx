@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Check, Loader2, Shield, Code, FileSearch, Lock, Globe } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 
 interface ScanProgressProps {
   status: 'pending' | 'scanning' | 'completed' | 'failed';
@@ -10,33 +11,30 @@ interface ScanProgressProps {
   isCompleting?: boolean;
 }
 
-const scanSteps = [
-  { id: 'fetch', label: 'Cargando página web', icon: Globe },
-  { id: 'source', label: 'Analizando código fuente', icon: Code },
-  { id: 'keys', label: 'Buscando API keys expuestas', icon: FileSearch },
-  { id: 'headers', label: 'Verificando headers de seguridad', icon: Lock },
-  { id: 'files', label: 'Comprobando archivos sensibles', icon: Shield },
-];
-
 export function ScanProgress({ status, url, isCompleting = false }: ScanProgressProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [progress, setProgress] = useState(0);
+  const t = useTranslations('scan.progress');
 
-  // Handle completing animation - animate to 100%
+  const scanSteps = [
+    { id: 'fetch', label: t('step1'), icon: Globe },
+    { id: 'source', label: t('step2'), icon: Code },
+    { id: 'keys', label: t('step3'), icon: FileSearch },
+    { id: 'headers', label: t('step4'), icon: Lock },
+    { id: 'files', label: t('step5'), icon: Shield },
+  ];
+
   useEffect(() => {
     if (isCompleting) {
       setCurrentStep(scanSteps.length);
       setProgress(100);
     }
-  }, [isCompleting]);
+  }, [isCompleting, scanSteps.length]);
 
   useEffect(() => {
-    // Don't run normal animation if completing
     if (isCompleting) return;
 
-    // Start animation for both pending and scanning status
     if (status === 'scanning' || status === 'pending') {
-      // Simulate step progression
       const stepInterval = setInterval(() => {
         setCurrentStep((prev) => {
           if (prev < scanSteps.length - 1) {
@@ -46,7 +44,6 @@ export function ScanProgress({ status, url, isCompleting = false }: ScanProgress
         });
       }, 2500);
 
-      // Simulate progress
       const progressInterval = setInterval(() => {
         setProgress((prev) => {
           if (prev < 95) {
@@ -64,7 +61,7 @@ export function ScanProgress({ status, url, isCompleting = false }: ScanProgress
       setCurrentStep(scanSteps.length);
       setProgress(100);
     }
-  }, [status, isCompleting]);
+  }, [status, isCompleting, scanSteps.length]);
 
   return (
     <div className="w-full max-w-xl mx-auto">
@@ -86,7 +83,7 @@ export function ScanProgress({ status, url, isCompleting = false }: ScanProgress
             <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
           )}
           <span className={`text-sm font-medium ${isCompleting ? 'text-green-400' : 'text-emerald-400'}`}>
-            {isCompleting ? 'Completado' : 'Escaneando'}
+            {isCompleting ? t('completed') : t('title')}
           </span>
         </motion.div>
 
@@ -109,7 +106,7 @@ export function ScanProgress({ status, url, isCompleting = false }: ScanProgress
           />
         </div>
         <div className="flex justify-between mt-2 text-sm">
-          <span className="text-gray-500">Progreso</span>
+          <span className="text-gray-500">{t('progress')}</span>
           <span className="text-emerald-400 font-mono">{Math.round(progress)}%</span>
         </div>
       </div>
@@ -171,7 +168,7 @@ export function ScanProgress({ status, url, isCompleting = false }: ScanProgress
                     animate={{ opacity: 1 }}
                     className="ml-auto text-xs text-emerald-400 font-mono"
                   >
-                    en progreso...
+                    {t('inProgress')}
                   </motion.span>
                 )}
               </motion.div>
@@ -182,7 +179,7 @@ export function ScanProgress({ status, url, isCompleting = false }: ScanProgress
 
       {/* Estimated time / Completing message */}
       <p className="text-center text-gray-500 text-sm mt-6">
-        {isCompleting ? 'Generando resultados...' : 'Tiempo estimado: ~30 segundos'}
+        {isCompleting ? t('generating') : t('estimatedTime')}
       </p>
     </div>
   );

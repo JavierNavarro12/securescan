@@ -1,44 +1,38 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Link2, Search, Shield, FileCheck } from 'lucide-react';
-
-const steps = [
-  {
-    icon: Link2,
-    title: 'Ingresa tu URL',
-    description: 'Introduce la URL de tu sitio web o aplicación. Funciona con cualquier sitio público.',
-    accent: 'emerald',
-  },
-  {
-    icon: Search,
-    title: 'Analizamos tu código',
-    description: 'Escaneamos HTML, JavaScript bundles y archivos de configuración en busca de vulnerabilidades.',
-    accent: 'emerald',
-  },
-  {
-    icon: Shield,
-    title: 'Recibe tu puntuación',
-    description: 'Obtienes una puntuación de seguridad de 0-100 y un resumen de vulnerabilidades encontradas.',
-    accent: 'emerald',
-  },
-  {
-    icon: FileCheck,
-    title: 'Desbloquea el detalle',
-    description: 'Por solo €0.99, accede al reporte completo con guías paso a paso para solucionar cada problema.',
-    accent: 'emerald',
-  },
-];
+import { Link2, Search, Shield } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 export function Features() {
+  const t = useTranslations('features');
+
+  const steps = [
+    {
+      icon: Link2,
+      title: t('step1Title'),
+      description: t('step1Desc'),
+    },
+    {
+      icon: Search,
+      title: t('step2Title'),
+      description: t('step2Desc'),
+    },
+    {
+      icon: Shield,
+      title: t('step3Title'),
+      description: t('step3Desc'),
+    },
+  ];
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {steps.map((step, index) => {
         const Icon = step.icon;
 
         return (
           <motion.div
-            key={step.title}
+            key={index}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -47,7 +41,7 @@ export function Features() {
           >
             {/* Connector line (except last) */}
             {index < steps.length - 1 && (
-              <div className="hidden lg:block absolute top-12 left-[60%] w-[80%] h-px">
+              <div className="hidden md:block absolute top-12 left-[60%] w-[80%] h-px">
                 <div className="w-full h-full bg-gradient-to-r from-emerald-500/30 to-transparent" />
                 <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-emerald-500/50" />
               </div>

@@ -3,14 +3,15 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Lock, Check, ArrowRight, Loader2, Sparkles } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface PaywallCardProps {
   scanId: string;
-  price?: string;
 }
 
-export function PaywallCard({ scanId, price = '0,99' }: PaywallCardProps) {
+export function PaywallCard({ scanId }: PaywallCardProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const t = useTranslations('results.paywall');
 
   const handleUnlock = async () => {
     setIsLoading(true);
@@ -27,20 +28,20 @@ export function PaywallCard({ scanId, price = '0,99' }: PaywallCardProps) {
       if (data.success && data.checkoutUrl) {
         window.location.href = data.checkoutUrl;
       } else {
-        alert(data.error || 'Error al procesar el pago');
+        alert(data.error || t('errorPayment'));
         setIsLoading(false);
       }
-    } catch (error) {
-      alert('Error de conexión');
+    } catch {
+      alert(t('errorConnection'));
       setIsLoading(false);
     }
   };
 
   const benefits = [
-    'Ver cada vulnerabilidad en detalle',
-    'Ubicación exacta del problema',
-    'Guía paso a paso para solucionarlas',
-    'Código de ejemplo para cada fix',
+    t('feature1'),
+    t('feature2'),
+    t('feature3'),
+    t('feature4'),
   ];
 
   return (
@@ -59,7 +60,7 @@ export function PaywallCard({ scanId, price = '0,99' }: PaywallCardProps) {
           <div className="px-4 py-1 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-b-lg">
             <span className="text-xs font-semibold text-white flex items-center gap-1">
               <Sparkles className="w-3 h-3" />
-              RECOMENDADO
+              {t('recommended')}
             </span>
           </div>
         </div>
@@ -70,10 +71,10 @@ export function PaywallCard({ scanId, price = '0,99' }: PaywallCardProps) {
             <Lock className="w-8 h-8 text-cyan-400" />
           </div>
           <h3 className="text-2xl font-bold text-white mb-2">
-            Desbloquear Reporte Completo
+            {t('title')}
           </h3>
           <p className="text-gray-400">
-            Obtén todos los detalles para solucionar cada vulnerabilidad
+            {t('subtitle')}
           </p>
         </div>
 
@@ -98,8 +99,8 @@ export function PaywallCard({ scanId, price = '0,99' }: PaywallCardProps) {
         {/* Price and CTA */}
         <div className="text-center">
           <div className="mb-4">
-            <span className="text-4xl font-bold text-white">€{price}</span>
-            <span className="text-gray-500 ml-2">pago único</span>
+            <span className="text-4xl font-bold text-white">{t('currency')}{t('price')}</span>
+            <span className="text-gray-500 ml-2">{t('priceNote')}</span>
           </div>
 
           <button
@@ -110,11 +111,11 @@ export function PaywallCard({ scanId, price = '0,99' }: PaywallCardProps) {
             {isLoading ? (
               <>
                 <Loader2 className="w-5 h-5 animate-spin" />
-                Procesando...
+                {t('processing')}
               </>
             ) : (
               <>
-                Desbloquear Ahora
+                {t('button')}
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </>
             )}
@@ -122,7 +123,7 @@ export function PaywallCard({ scanId, price = '0,99' }: PaywallCardProps) {
 
           <p className="mt-4 text-xs text-gray-500 flex items-center justify-center gap-2">
             <Lock className="w-3 h-3" />
-            Pago seguro con Stripe
+            {t('securePayment')}
           </p>
         </div>
       </div>

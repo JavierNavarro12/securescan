@@ -2,29 +2,30 @@
 
 import { Logo } from './Logo';
 import { Github, Twitter } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/routing';
 
 export function Footer() {
+  const t = useTranslations('footer');
+
   return (
     <footer className="border-t border-[var(--border-subtle)]">
       <div className="max-w-6xl mx-auto px-4 py-12">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-          {/* Logo */}
           <Logo size="sm" />
 
-          {/* Links */}
           <nav className="flex items-center gap-8 text-sm text-zinc-400">
-            <a href="/privacidad" className="hover:text-white transition-colors">
-              Privacidad
-            </a>
-            <a href="/terminos" className="hover:text-white transition-colors">
-              Términos
-            </a>
+            <Link href="/privacidad" className="hover:text-white transition-colors">
+              {t('privacy')}
+            </Link>
+            <Link href="/terminos" className="hover:text-white transition-colors">
+              {t('terms')}
+            </Link>
             <a href="mailto:navarrojavi107@gmail.com" className="hover:text-white transition-colors">
-              Contacto
+              {t('contact')}
             </a>
           </nav>
 
-          {/* Social */}
           <div className="flex items-center gap-3">
             <a
               href="#"
@@ -45,10 +46,10 @@ export function Footer() {
 
         <div className="mt-10 pt-8 border-t border-[var(--border-subtle)] text-center">
           <p className="text-zinc-500 text-sm">
-            © {new Date().getFullYear()} SecureScan. Todos los derechos reservados.
+            {t('copyright')}
           </p>
           <p className="mt-2 text-zinc-600 text-sm">
-            Protegiendo tu código, una API key a la vez.
+            {t('tagline')}
           </p>
         </div>
       </div>

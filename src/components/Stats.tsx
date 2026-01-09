@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Scan, Bug, Shield } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface StatsProps {
   initialScans?: number;
@@ -17,9 +18,9 @@ export function Stats({
     scans: initialScans,
     vulnerabilities: initialVulnerabilities,
   });
+  const t = useTranslations('stats');
 
   useEffect(() => {
-    // Fetch real stats
     fetch('/api/stats')
       .then((res) => res.json())
       .then((data) => {
@@ -30,9 +31,7 @@ export function Stats({
           });
         }
       })
-      .catch(() => {
-        // Keep initial values on error
-      });
+      .catch(() => {});
   }, [initialScans, initialVulnerabilities]);
 
   const formatNumber = (num: number) => {
@@ -49,21 +48,21 @@ export function Stats({
     {
       icon: Scan,
       value: formatNumber(stats.scans),
-      label: 'Sitios escaneados',
+      label: t('scans'),
       color: 'var(--accent-primary)',
       bgColor: 'var(--accent-muted)',
     },
     {
       icon: Bug,
       value: formatNumber(stats.vulnerabilities),
-      label: 'Vulnerabilidades encontradas',
+      label: t('keysFound'),
       color: 'var(--severity-critical)',
       bgColor: 'rgba(239, 68, 68, 0.1)',
     },
     {
       icon: Shield,
       value: '40+',
-      label: 'Tipos de API keys',
+      label: t('providers'),
       color: 'var(--accent-secondary)',
       bgColor: 'var(--accent-muted)',
     },
@@ -83,7 +82,6 @@ export function Stats({
             transition={{ delay: index * 0.1 }}
             className="group relative text-center p-8 card hover:glow-subtle"
           >
-            {/* Decorative corner */}
             <div className="absolute top-0 right-0 w-16 h-16 overflow-hidden rounded-tr-2xl">
               <div
                 className="absolute top-0 right-0 w-32 h-32 -translate-y-1/2 translate-x-1/2 opacity-20 group-hover:opacity-40 transition-opacity"

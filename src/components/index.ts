@@ -10,3 +10,4 @@ export { Features } from './Features';
 export { Stats } from './Stats';
 export { ProviderLogos } from './ProviderLogos';
 export { Footer } from './Footer';
+export { LanguageSelector } from './LanguageSelector';
