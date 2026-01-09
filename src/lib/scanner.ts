@@ -445,11 +445,12 @@ export class SecurityScanner {
   private async checkSensitiveFiles(): Promise<void> {
     const filesToCheck = SENSITIVE_FILES.slice(0, 10);
 
-    for (const file of filesToCheck) {
+    // Ejecutar todas las peticiones en paralelo para mayor velocidad
+    const checkFile = async (file: typeof filesToCheck[0]) => {
       try {
         const fileUrl = this.ctx.baseUrl + file.path;
         const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 5000);
+        const timeout = setTimeout(() => controller.abort(), 3000); // 3 segundos max
 
         const response = await fetch(fileUrl, {
           method: 'GET',
@@ -492,7 +493,13 @@ export class SecurityScanner {
       } catch {
         // File not accessible - good
       }
-    }
+    };
+
+    // Ejecutar todas en paralelo con timeout global de 10 segundos
+    await Promise.race([
+      Promise.all(filesToCheck.map(checkFile)),
+      new Promise(resolve => setTimeout(resolve, 10000))
+    ]);
   }
 
   private checkHttpsSecurity(): void {
