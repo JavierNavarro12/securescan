@@ -457,27 +457,10 @@ export class SecurityScanner {
 
   private checkCorsPolicy(): void {
     const corsHeader = this.ctx.responseHeaders['access-control-allow-origin'];
-
-    if (corsHeader === '*') {
-      this.addVulnerability({
-        id: uuidv4(),
-        type: 'cors_misconfiguration',
-        severity: 'medium',
-        title: 'CORS Permisivo Detectado',
-        description: 'Tu sitio permite peticiones desde cualquier origen (Access-Control-Allow-Origin: *). Esto puede permitir que sitios maliciosos hagan peticiones a tu API y lean las respuestas.',
-        remediation: {
-          steps: [
-            'Configura CORS para solo permitir origenes especificos',
-            'Usa una lista blanca de dominios de confianza',
-            'En Next.js, configura los headers en next.config.js',
-            'En Express, usa el middleware cors con origin especifico',
-          ],
-        },
-      });
-    }
-
-    // Check for credentials with wildcard (very dangerous)
     const corsCredentials = this.ctx.responseHeaders['access-control-allow-credentials'];
+
+    // Solo reportamos CORS * cuando se combina con credentials - eso SÍ es peligroso
+    // CORS * solo, sin credentials, es normal para sitios estáticos y CDNs
     if (corsHeader === '*' && corsCredentials === 'true') {
       this.addVulnerability({
         id: uuidv4(),

@@ -795,34 +795,212 @@ const s3 = new AWS.S3({
     },
   },
 
-  // Mistral API Key
+  // Nota: Mistral y Cohere no tienen prefijos distintivos en sus API keys,
+  // por lo que no se pueden detectar de forma fiable sin generar falsos positivos.
+
+  // ============================================
+  // TOKENS Y CREDENCIALES GENERICAS
+  // ============================================
+
+  // JWT Token
   {
-    name: 'Clave API de Mistral',
-    provider: 'Mistral',
-    pattern: /[a-zA-Z0-9]{32}/g,
+    name: 'JWT Token Expuesto',
+    provider: 'JWT',
+    pattern: /eyJ[a-zA-Z0-9_-]{10,}\.eyJ[a-zA-Z0-9_-]{10,}\.[a-zA-Z0-9_-]{10,}/g,
     severity: 'high',
-    description: 'Posible clave de Mistral AI. Permite acceso a la API de Mistral.',
+    description: 'Token JWT expuesto en el código. Los JWT pueden contener información sensible y permitir suplantación de identidad.',
     remediation: {
       steps: [
-        'Verifica si es una clave de Mistral',
-        'Rota la clave si es necesario',
-        'Usa solo desde el backend',
+        'Nunca expongas JWT en el frontend',
+        'Usa httpOnly cookies para almacenar tokens',
+        'Implementa rotación de tokens',
+        'Revoca el token si contiene datos sensibles',
       ],
     },
   },
 
-  // Cohere API Key
+  // ============================================
+  // PRIVATE KEYS
+  // ============================================
+
+  // RSA Private Key
   {
-    name: 'Clave API de Cohere',
-    provider: 'Cohere',
-    pattern: /[a-zA-Z0-9]{40}/g,
-    severity: 'high',
-    description: 'Posible clave de Cohere. Permite acceso a modelos de lenguaje.',
+    name: 'RSA Private Key Expuesta',
+    provider: 'RSA',
+    pattern: /-----BEGIN RSA PRIVATE KEY-----[\s\S]{50,}-----END RSA PRIVATE KEY-----/g,
+    severity: 'critical',
+    description: 'Clave privada RSA expuesta. Permite descifrar datos, firmar código malicioso y suplantar identidad.',
     remediation: {
       steps: [
-        'Verifica si es una clave de Cohere',
-        'Rota la clave en Cohere Dashboard',
-        'Implementa llamadas desde el servidor',
+        'Elimina la clave privada del código inmediatamente',
+        'Genera un nuevo par de claves',
+        'Nunca commits claves privadas a repositorios',
+        'Usa variables de entorno o gestores de secretos',
+      ],
+    },
+  },
+
+  // Generic Private Key
+  {
+    name: 'Private Key Expuesta',
+    provider: 'Crypto',
+    pattern: /-----BEGIN (?:EC |OPENSSH |DSA |ENCRYPTED )?PRIVATE KEY-----[\s\S]{50,}-----END (?:EC |OPENSSH |DSA |ENCRYPTED )?PRIVATE KEY-----/g,
+    severity: 'critical',
+    description: 'Clave privada criptográfica expuesta. Compromete completamente la seguridad de cualquier sistema que use esta clave.',
+    remediation: {
+      steps: [
+        'Elimina la clave privada inmediatamente',
+        'Genera nuevas claves',
+        'Revoca certificados asociados',
+        'Audita accesos con la clave comprometida',
+      ],
+    },
+  },
+
+  // PGP Private Key
+  {
+    name: 'PGP Private Key Expuesta',
+    provider: 'PGP',
+    pattern: /-----BEGIN PGP PRIVATE KEY BLOCK-----[\s\S]{50,}-----END PGP PRIVATE KEY BLOCK-----/g,
+    severity: 'critical',
+    description: 'Clave privada PGP expuesta. Permite descifrar mensajes cifrados y firmar como el propietario.',
+    remediation: {
+      steps: [
+        'Revoca esta clave PGP inmediatamente',
+        'Genera un nuevo par de claves',
+        'Notifica a contactos sobre el compromiso',
+        'Actualiza tu clave pública en servidores de claves',
+      ],
+    },
+  },
+
+  // ============================================
+  // CREDENCIALES EN URLs
+  // ============================================
+
+  // Basic Auth in URL
+  {
+    name: 'Credenciales en URL',
+    provider: 'HTTP Auth',
+    pattern: /https?:\/\/[^:]+:[^@]+@[a-zA-Z0-9.-]+/g,
+    severity: 'high',
+    description: 'Usuario y contraseña expuestos en URL. Las credenciales en URLs aparecen en logs, historial y pueden ser interceptadas.',
+    remediation: {
+      steps: [
+        'Elimina las credenciales de la URL',
+        'Usa headers de Authorization en su lugar',
+        'Cambia la contraseña expuesta',
+        'Revisa logs por posibles accesos no autorizados',
+      ],
+    },
+  },
+
+  // ============================================
+  // PASSWORDS HARDCODEADOS
+  // ============================================
+
+  // Hardcoded Password (con contexto)
+  {
+    name: 'Contraseña Hardcodeada',
+    provider: 'Password',
+    pattern: /(?:password|passwd|pwd|pass)\s*[:=]\s*["'][^"']{8,}["']/gi,
+    severity: 'high',
+    description: 'Contraseña hardcodeada en el código. Las contraseñas en código fuente son fácilmente extraíbles.',
+    remediation: {
+      steps: [
+        'Elimina la contraseña del código',
+        'Usa variables de entorno',
+        'Cambia la contraseña inmediatamente',
+        'Implementa un gestor de secretos',
+      ],
+    },
+  },
+
+  // Hardcoded Secret (con contexto)
+  {
+    name: 'Secret Hardcodeado',
+    provider: 'Secret',
+    pattern: /(?:secret|api_secret|apiSecret|client_secret|clientSecret)\s*[:=]\s*["'][a-zA-Z0-9_-]{16,}["']/gi,
+    severity: 'high',
+    description: 'Secret hardcodeado en el código. Los secrets expuestos pueden comprometer integraciones y APIs.',
+    remediation: {
+      steps: [
+        'Elimina el secret del código',
+        'Rota el secret en el servicio correspondiente',
+        'Usa variables de entorno del servidor',
+        'Nunca expongas secrets en el frontend',
+      ],
+    },
+  },
+
+  // ============================================
+  // DATABASE CONNECTION STRINGS
+  // ============================================
+
+  // MongoDB Connection String with Password
+  {
+    name: 'MongoDB Connection String con Password',
+    provider: 'MongoDB',
+    pattern: /mongodb(?:\+srv)?:\/\/[^:]+:[^@]+@[a-zA-Z0-9.-]+/g,
+    severity: 'critical',
+    description: 'Cadena de conexión MongoDB con credenciales expuestas. Permite acceso completo a tu base de datos.',
+    remediation: {
+      steps: [
+        'Cambia la contraseña de MongoDB inmediatamente',
+        'Usa variables de entorno para connection strings',
+        'Restringe IPs permitidas en MongoDB Atlas',
+        'Revisa logs de acceso a la base de datos',
+      ],
+    },
+  },
+
+  // PostgreSQL Connection String with Password
+  {
+    name: 'PostgreSQL Connection String con Password',
+    provider: 'PostgreSQL',
+    pattern: /postgres(?:ql)?:\/\/[^:]+:[^@]+@[a-zA-Z0-9.-]+/g,
+    severity: 'critical',
+    description: 'Cadena de conexión PostgreSQL con credenciales expuestas. Permite acceso completo a tu base de datos.',
+    remediation: {
+      steps: [
+        'Cambia la contraseña de PostgreSQL inmediatamente',
+        'Usa variables de entorno para connection strings',
+        'Configura SSL y restricciones de IP',
+        'Audita accesos recientes a la base de datos',
+      ],
+    },
+  },
+
+  // MySQL Connection String with Password
+  {
+    name: 'MySQL Connection String con Password',
+    provider: 'MySQL',
+    pattern: /mysql:\/\/[^:]+:[^@]+@[a-zA-Z0-9.-]+/g,
+    severity: 'critical',
+    description: 'Cadena de conexión MySQL con credenciales expuestas. Permite acceso completo a tu base de datos.',
+    remediation: {
+      steps: [
+        'Cambia la contraseña de MySQL inmediatamente',
+        'Usa variables de entorno para connection strings',
+        'Configura firewall y restricciones de acceso',
+        'Revisa logs de acceso a la base de datos',
+      ],
+    },
+  },
+
+  // Redis Connection String with Password
+  {
+    name: 'Redis Connection String con Password',
+    provider: 'Redis',
+    pattern: /redis:\/\/[^:]*:[^@]+@[a-zA-Z0-9.-]+/g,
+    severity: 'critical',
+    description: 'Cadena de conexión Redis con credenciales expuestas. Permite acceso a caché y datos en memoria.',
+    remediation: {
+      steps: [
+        'Cambia la contraseña de Redis inmediatamente',
+        'Usa variables de entorno',
+        'Configura Redis para no ser accesible públicamente',
+        'Habilita autenticación ACL en Redis 6+',
       ],
     },
   },
