@@ -13,7 +13,7 @@ const faqs: FAQItem[] = [
   {
     question: '¿Qué tipos de API keys detecta SecureScan?',
     answer:
-      'Detectamos más de 15 tipos de API keys incluyendo OpenAI, Anthropic, Stripe (live y test), AWS, Firebase, Google Cloud, GitHub, Twilio, SendGrid, Mailgun, Slack, Discord, Supabase, Vercel y más. Nuestros patrones de detección se actualizan constantemente.',
+      'Detectamos más de 40 tipos de API keys y credenciales incluyendo OpenAI, Anthropic, Stripe, AWS, MongoDB, PostgreSQL, MySQL, Redis, Firebase, Google Cloud, GitHub, Azure, Shopify, Cloudinary, PlanetScale, Supabase, Vercel, Twilio, SendGrid, Slack, Discord, Sentry, NPM, Mapbox y muchos más. También detectamos tokens JWT, cadenas de conexión a bases de datos y credenciales en URLs.',
   },
   {
     question: '¿El escaneo es seguro? ¿Guardan mis API keys?',
@@ -57,11 +57,11 @@ export function FAQ() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className={`rounded-xl border transition-all duration-300 ${
+              transition={{ delay: index * 0.08 }}
+              className={`rounded-2xl border transition-all duration-300 ${
                 isOpen
-                  ? 'bg-[#12121a] border-cyan-500/30'
-                  : 'bg-[#12121a]/50 border-white/5 hover:border-white/10'
+                  ? 'bg-[var(--bg-secondary)] border-emerald-500/30 shadow-lg shadow-emerald-500/5'
+                  : 'bg-[var(--bg-secondary)]/50 border-[var(--border-subtle)] hover:border-[var(--border-default)]'
               }`}
             >
               <button
@@ -69,8 +69,8 @@ export function FAQ() {
                 className="w-full p-5 flex items-center justify-between text-left"
               >
                 <span
-                  className={`font-medium transition-colors ${
-                    isOpen ? 'text-white' : 'text-gray-300'
+                  className={`font-medium transition-colors pr-4 ${
+                    isOpen ? 'text-white' : 'text-zinc-300'
                   }`}
                 >
                   {faq.question}
@@ -78,8 +78,8 @@ export function FAQ() {
                 <div
                   className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
                     isOpen
-                      ? 'bg-cyan-500/20 text-cyan-400'
-                      : 'bg-white/5 text-gray-500'
+                      ? 'bg-emerald-500/20 text-emerald-400 rotate-0'
+                      : 'bg-white/5 text-zinc-500'
                   }`}
                 >
                   {isOpen ? (
@@ -96,12 +96,12 @@ export function FAQ() {
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3 }}
+                    transition={{ duration: 0.3, ease: 'easeInOut' }}
                     className="overflow-hidden"
                   >
                     <div className="px-5 pb-5">
-                      <div className="h-px bg-white/10 mb-4" />
-                      <p className="text-gray-400 leading-relaxed">{faq.answer}</p>
+                      <div className="h-px bg-[var(--border-subtle)] mb-4" />
+                      <p className="text-zinc-400 leading-relaxed text-[15px]">{faq.answer}</p>
                     </div>
                   </motion.div>
                 )}

@@ -40,7 +40,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className="dark">
-      <body className="min-h-screen bg-[#0a0a0f] text-white antialiased noise-overlay">
+      <body className="min-h-screen bg-[#09090b] text-white antialiased grain-overlay">
         {/* Scan line effect */}
         <div className="scan-line" />
 

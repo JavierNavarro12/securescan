@@ -16,7 +16,13 @@ export type VulnerabilityType =
   | 'credential_in_request'
   | 'credential_in_url'
   | 'api_key_in_url'
-  | 'api_key_in_request';
+  | 'api_key_in_request'
+  | 'cors_misconfiguration'
+  | 'admin_panel_exposed'
+  | 'debug_endpoint_exposed'
+  | 'database_exposed'
+  | 'backup_exposed'
+  | 'log_exposed';
 
 // Detected vulnerability
 export interface Vulnerability {

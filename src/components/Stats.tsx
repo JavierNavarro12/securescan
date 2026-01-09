@@ -50,19 +50,22 @@ export function Stats({
       icon: Scan,
       value: formatNumber(stats.scans),
       label: 'Sitios escaneados',
-      color: '#00d4ff',
+      color: 'var(--accent-primary)',
+      bgColor: 'var(--accent-muted)',
     },
     {
       icon: Bug,
       value: formatNumber(stats.vulnerabilities),
       label: 'Vulnerabilidades encontradas',
-      color: '#ef4444',
+      color: 'var(--severity-critical)',
+      bgColor: 'rgba(239, 68, 68, 0.1)',
     },
     {
       icon: Shield,
-      value: '15+',
+      value: '40+',
       label: 'Tipos de API keys',
-      color: '#10b981',
+      color: 'var(--accent-secondary)',
+      bgColor: 'var(--accent-muted)',
     },
   ];
 
@@ -78,24 +81,35 @@ export function Stats({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: index * 0.1 }}
-            className="text-center p-6 bg-[#12121a]/50 border border-white/5 rounded-2xl"
+            className="group relative text-center p-8 card hover:glow-subtle"
           >
-            <div
-              className="inline-flex items-center justify-center w-12 h-12 rounded-xl mb-4"
-              style={{ background: `${item.color}15` }}
-            >
-              <Icon className="w-6 h-6" style={{ color: item.color }} />
+            {/* Decorative corner */}
+            <div className="absolute top-0 right-0 w-16 h-16 overflow-hidden rounded-tr-2xl">
+              <div
+                className="absolute top-0 right-0 w-32 h-32 -translate-y-1/2 translate-x-1/2 opacity-20 group-hover:opacity-40 transition-opacity"
+                style={{
+                  background: `radial-gradient(circle, ${item.color} 0%, transparent 70%)`
+                }}
+              />
             </div>
+
             <div
-              className="text-4xl font-bold mb-2"
-              style={{
-                color: item.color,
-                fontFamily: "'JetBrains Mono', monospace",
-              }}
+              className="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-5 transition-transform group-hover:scale-110"
+              style={{ background: item.bgColor }}
+            >
+              <Icon className="w-7 h-7" style={{ color: item.color }} />
+            </div>
+
+            <div
+              className="text-5xl font-bold mb-3 font-mono tracking-tight"
+              style={{ color: item.color }}
             >
               {item.value}
             </div>
-            <p className="text-gray-400 text-sm">{item.label}</p>
+
+            <p className="text-zinc-500 text-sm font-medium uppercase tracking-wider">
+              {item.label}
+            </p>
           </motion.div>
         );
       })}

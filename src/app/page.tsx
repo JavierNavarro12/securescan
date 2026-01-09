@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Shield, AlertTriangle, Check, ArrowRight } from 'lucide-react';
+import { Shield, AlertTriangle, Check, ArrowRight, Sparkles } from 'lucide-react';
 import {
   Logo,
   ScanInput,
@@ -20,47 +20,53 @@ export default function HomePage() {
       <div className="fixed inset-0 radial-gradient-top pointer-events-none" />
 
       {/* Header */}
-      <header className="sticky top-0 z-50 py-4 px-4 bg-[#0a0a0f]/80 backdrop-blur-md border-b border-white/5">
+      <header className="sticky top-0 z-50 py-4 px-4 glass border-b border-white/5">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <Logo />
-          <a
-            href="#faq"
-            className="text-sm text-gray-400 hover:text-white transition-colors"
-          >
-            FAQ
-          </a>
+          <nav className="flex items-center gap-6">
+            <a
+              href="#features"
+              className="text-sm text-zinc-400 hover:text-white transition-colors hidden sm:block"
+            >
+              Cómo funciona
+            </a>
+            <a
+              href="#faq"
+              className="text-sm text-zinc-400 hover:text-white transition-colors"
+            >
+              FAQ
+            </a>
+          </nav>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="relative z-10 px-4 pt-16 pb-24">
+      <section className="relative z-10 px-4 pt-20 pb-28">
         <div className="max-w-4xl mx-auto text-center">
           {/* Badge */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-red-500/10 border border-red-500/20 rounded-full mb-8"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-red-500/10 border border-red-500/20 rounded-full mb-10"
           >
             <AlertTriangle className="w-4 h-4 text-red-400" />
-            <span className="text-sm text-red-400">
+            <span className="text-sm text-red-300 font-medium">
               El 73% de las apps filtran credenciales sensibles
             </span>
           </motion.div>
 
-          {/* Main headline */}
+          {/* Main headline - Serif display font */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="hero-title text-4xl md:text-6xl font-bold mb-6 leading-tight"
+            className="hero-title font-display text-5xl md:text-7xl mb-6 leading-[1.1] tracking-tight"
           >
             Tu app está filtrando{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
-              API keys
-            </span>
-            .
+            <span className="gradient-text">API keys</span>
+            <span className="text-emerald-400">.</span>
             <br />
-            <span className="text-gray-400">Descúbrelo antes que un hacker.</span>
+            <span className="text-zinc-500 italic">Descúbrelo antes que un hacker.</span>
           </motion.h1>
 
           {/* Subheadline */}
@@ -68,7 +74,7 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-xl text-gray-400 mb-12 max-w-2xl mx-auto"
+            className="text-lg md:text-xl text-zinc-400 mb-12 max-w-2xl mx-auto leading-relaxed"
           >
             Escaneamos tu sitio web en busca de API keys expuestas, archivos sensibles
             y configuraciones inseguras.{' '}
@@ -89,18 +95,18 @@ export default function HomePage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
-            className="mt-12 flex flex-wrap items-center justify-center gap-6 text-sm text-gray-500"
+            className="mt-12 flex flex-wrap items-center justify-center gap-8 text-sm text-zinc-500"
           >
             <div className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-green-400" />
+              <Check className="w-4 h-4 text-emerald-500" />
               <span>Sin registro</span>
             </div>
             <div className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-green-400" />
+              <Check className="w-4 h-4 text-emerald-500" />
               <span>Resultados inmediatos</span>
             </div>
             <div className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-green-400" />
+              <Check className="w-4 h-4 text-emerald-500" />
               <span>100% privado</span>
             </div>
           </motion.div>
@@ -108,21 +114,21 @@ export default function HomePage() {
       </section>
 
       {/* Provider logos */}
-      <section className="relative z-10 px-4 py-12 border-y border-white/5">
-        <div className="max-w-4xl mx-auto">
+      <section className="relative z-10 px-4 py-16 border-y border-white/5">
+        <div className="max-w-5xl mx-auto">
           <ProviderLogos />
         </div>
       </section>
 
       {/* Stats */}
-      <section className="relative z-10 px-4 py-20">
+      <section className="relative z-10 px-4 py-24">
         <div className="max-w-4xl mx-auto">
           <Stats />
         </div>
       </section>
 
       {/* How it works */}
-      <section className="relative z-10 px-4 py-20 bg-[#12121a]/30">
+      <section id="features" className="relative z-10 px-4 py-24 bg-[var(--bg-secondary)]/50">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -130,8 +136,12 @@ export default function HomePage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Cómo funciona</h2>
-            <p className="text-gray-400 text-lg">
+            <span className="badge badge-accent mb-4 inline-block">
+              <Sparkles className="w-3 h-3 inline mr-1" />
+              Simple y rápido
+            </span>
+            <h2 className="font-display text-4xl md:text-5xl mb-4">Cómo funciona</h2>
+            <p className="text-zinc-400 text-lg max-w-xl mx-auto">
               De URL a reporte de seguridad en menos de un minuto
             </p>
           </motion.div>
@@ -141,16 +151,20 @@ export default function HomePage() {
       </section>
 
       {/* What we detect */}
-      <section className="relative z-10 px-4 py-20">
+      <section className="relative z-10 px-4 py-24">
         <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Qué detectamos</h2>
-            <p className="text-gray-400 text-lg">
+            <span className="badge badge-warning mb-4 inline-block">
+              <AlertTriangle className="w-3 h-3 inline mr-1" />
+              +40 tipos de vulnerabilidades
+            </span>
+            <h2 className="font-display text-4xl md:text-5xl mb-4">Qué detectamos</h2>
+            <p className="text-zinc-400 text-lg max-w-xl mx-auto">
               Un análisis completo de tu seguridad frontend
             </p>
           </motion.div>
@@ -159,12 +173,12 @@ export default function HomePage() {
             {[
               {
                 title: 'API Keys Expuestas',
-                items: ['OpenAI, Anthropic', 'Stripe (live/test)', 'AWS, Firebase, Google', 'GitHub, Supabase, Vercel'],
+                items: ['OpenAI, Anthropic, Cohere', 'Stripe (live/test)', 'AWS, Firebase, Google', 'GitHub, Supabase, Vercel'],
                 severity: 'critical',
               },
               {
                 title: 'Archivos Sensibles',
-                items: ['.env, .git', 'config.js, settings.json', 'credentials, secrets', 'database configs'],
+                items: ['.env, .git expuestos', 'config.js, settings.json', 'credentials, secrets', 'database configs'],
                 severity: 'high',
               },
               {
@@ -174,7 +188,7 @@ export default function HomePage() {
               },
               {
                 title: 'Otras Vulnerabilidades',
-                items: ['Source maps expuestos', 'Mixed content', 'Protocolo HTTP', 'Tokens en URLs'],
+                items: ['Source maps expuestos', 'CORS mal configurado', 'Tokens en URLs', 'Mixed content HTTP'],
                 severity: 'low',
               },
             ].map((category, index) => (
@@ -184,31 +198,34 @@ export default function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className={`p-6 rounded-xl border ${
+                className={`p-6 rounded-2xl border transition-all duration-300 hover:scale-[1.02] ${
                   category.severity === 'critical'
-                    ? 'bg-red-500/5 border-red-500/20'
+                    ? 'bg-red-500/5 border-red-500/20 hover:border-red-500/40'
                     : category.severity === 'high'
-                    ? 'bg-orange-500/5 border-orange-500/20'
+                    ? 'bg-orange-500/5 border-orange-500/20 hover:border-orange-500/40'
                     : category.severity === 'medium'
-                    ? 'bg-yellow-500/5 border-yellow-500/20'
-                    : 'bg-blue-500/5 border-blue-500/20'
+                    ? 'bg-yellow-500/5 border-yellow-500/20 hover:border-yellow-500/40'
+                    : 'bg-blue-500/5 border-blue-500/20 hover:border-blue-500/40'
                 }`}
               >
-                <h3 className="font-semibold text-white mb-3">{category.title}</h3>
-                <ul className="space-y-2">
+                <div className="flex items-center gap-3 mb-4">
+                  <div
+                    className={`w-2 h-2 rounded-full ${
+                      category.severity === 'critical'
+                        ? 'bg-red-500'
+                        : category.severity === 'high'
+                        ? 'bg-orange-500'
+                        : category.severity === 'medium'
+                        ? 'bg-yellow-500'
+                        : 'bg-blue-500'
+                    }`}
+                  />
+                  <h3 className="font-semibold text-white">{category.title}</h3>
+                </div>
+                <ul className="space-y-2.5">
                   {category.items.map((item) => (
-                    <li key={item} className="text-sm text-gray-400 flex items-center gap-2">
-                      <div
-                        className={`w-1.5 h-1.5 rounded-full ${
-                          category.severity === 'critical'
-                            ? 'bg-red-400'
-                            : category.severity === 'high'
-                            ? 'bg-orange-400'
-                            : category.severity === 'medium'
-                            ? 'bg-yellow-400'
-                            : 'bg-blue-400'
-                        }`}
-                      />
+                    <li key={item} className="text-sm text-zinc-400 flex items-center gap-3">
+                      <div className="w-1 h-1 rounded-full bg-zinc-600" />
                       {item}
                     </li>
                   ))}
@@ -220,25 +237,26 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="relative z-10 px-4 py-20 bg-gradient-to-b from-transparent via-cyan-500/5 to-transparent">
+      <section className="relative z-10 px-4 py-24">
         <div className="max-w-2xl mx-auto text-center">
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
+            className="p-12 rounded-3xl bg-gradient-to-b from-emerald-500/10 to-transparent border border-emerald-500/20"
           >
-            <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-2xl flex items-center justify-center">
-              <Shield className="w-10 h-10 text-cyan-400 shield-glow" />
+            <div className="w-20 h-20 mx-auto mb-8 bg-emerald-500/20 rounded-2xl flex items-center justify-center glow-accent">
+              <Shield className="w-10 h-10 text-emerald-400 shield-glow" />
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="font-display text-4xl md:text-5xl mb-4">
               ¿Listo para proteger tu app?
             </h2>
-            <p className="text-gray-400 text-lg mb-8">
+            <p className="text-zinc-400 text-lg mb-8 max-w-md mx-auto">
               No esperes a que alguien descubra tus vulnerabilidades. Escanea ahora.
             </p>
             <a
               href="#top"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-semibold rounded-xl hover:from-cyan-400 hover:to-blue-400 transition-all duration-300 btn-glow"
+              className="inline-flex items-center gap-2 px-8 py-4 btn-primary rounded-xl text-lg"
             >
               Escanear mi sitio gratis
               <ArrowRight className="w-5 h-5" />
@@ -248,18 +266,18 @@ export default function HomePage() {
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="relative z-10 px-4 py-20">
+      <section id="faq" className="relative z-10 px-4 py-24 bg-[var(--bg-secondary)]/30">
         <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="font-display text-4xl md:text-5xl mb-4">
               Preguntas frecuentes
             </h2>
-            <p className="text-gray-400 text-lg">
+            <p className="text-zinc-400 text-lg">
               Todo lo que necesitas saber sobre SecureScan
             </p>
           </motion.div>

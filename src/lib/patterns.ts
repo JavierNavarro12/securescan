@@ -352,6 +352,480 @@ const s3 = new AWS.S3({
       revokeUrl: 'https://vercel.com/account/tokens',
     },
   },
+
+  // MongoDB Connection String
+  {
+    name: 'Cadena de conexion MongoDB',
+    provider: 'MongoDB',
+    pattern: /mongodb(\+srv)?:\/\/[a-zA-Z0-9._-]+:[^@\s]+@[a-zA-Z0-9.-]+/g,
+    severity: 'critical',
+    description: 'Credenciales de MongoDB expuestas. Un atacante puede acceder, modificar o eliminar toda tu base de datos.',
+    remediation: {
+      steps: [
+        'Cambia la contraseña del usuario de MongoDB INMEDIATAMENTE',
+        'Revisa los logs de acceso en MongoDB Atlas',
+        'Usa variables de entorno para la cadena de conexion',
+        'Configura IP whitelisting en MongoDB Atlas',
+        'Nunca expongas credenciales de base de datos en el frontend',
+      ],
+      revokeUrl: 'https://cloud.mongodb.com/',
+    },
+  },
+
+  // PostgreSQL Connection String
+  {
+    name: 'Cadena de conexion PostgreSQL',
+    provider: 'PostgreSQL',
+    pattern: /postgres(ql)?:\/\/[a-zA-Z0-9._-]+:[^@\s]+@[a-zA-Z0-9.-]+/g,
+    severity: 'critical',
+    description: 'Credenciales de PostgreSQL expuestas. Acceso completo a tu base de datos.',
+    remediation: {
+      steps: [
+        'Cambia la contraseña del usuario de PostgreSQL',
+        'Mueve la cadena de conexion a variables de entorno del servidor',
+        'Usa conexiones SSL/TLS',
+        'Configura reglas de firewall para la base de datos',
+      ],
+    },
+  },
+
+  // MySQL Connection String
+  {
+    name: 'Cadena de conexion MySQL',
+    provider: 'MySQL',
+    pattern: /mysql:\/\/[a-zA-Z0-9._-]+:[^@\s]+@[a-zA-Z0-9.-]+/g,
+    severity: 'critical',
+    description: 'Credenciales de MySQL expuestas. Acceso completo a tu base de datos.',
+    remediation: {
+      steps: [
+        'Cambia la contraseña del usuario de MySQL',
+        'Usa variables de entorno para credenciales',
+        'Nunca expongas credenciales de BD en codigo cliente',
+      ],
+    },
+  },
+
+  // Redis URL with password
+  {
+    name: 'URL de Redis con contraseña',
+    provider: 'Redis',
+    pattern: /redis:\/\/[^:]+:[^@\s]+@[a-zA-Z0-9.-]+/g,
+    severity: 'critical',
+    description: 'Credenciales de Redis expuestas. Permite acceso a cache y datos almacenados.',
+    remediation: {
+      steps: [
+        'Rota las credenciales de Redis',
+        'Usa variables de entorno',
+        'Configura Redis para solo aceptar conexiones locales o de IPs especificas',
+      ],
+    },
+  },
+
+  // Heroku API Key
+  {
+    name: 'Clave API de Heroku',
+    provider: 'Heroku',
+    pattern: /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/g,
+    severity: 'high',
+    description: 'Posible clave API de Heroku (formato UUID). Puede permitir gestionar apps y acceder a configuracion.',
+    remediation: {
+      steps: [
+        'Verifica si es una clave de Heroku',
+        'Regenera la clave en Heroku Dashboard',
+        'Usa variables de entorno para CI/CD',
+      ],
+      revokeUrl: 'https://dashboard.heroku.com/account',
+    },
+  },
+
+  // DigitalOcean Token
+  {
+    name: 'Token de DigitalOcean',
+    provider: 'DigitalOcean',
+    pattern: /dop_v1_[a-f0-9]{64}/g,
+    severity: 'critical',
+    description: 'Token de DigitalOcean expuesto. Permite crear/eliminar droplets, acceder a bases de datos y gestionar infraestructura.',
+    remediation: {
+      steps: [
+        'Revoca este token en DigitalOcean',
+        'Revisa recursos creados recientemente',
+        'Crea un nuevo token con permisos minimos',
+      ],
+      revokeUrl: 'https://cloud.digitalocean.com/account/api/tokens',
+    },
+  },
+
+  // Algolia API Key
+  {
+    name: 'Clave API de Algolia',
+    provider: 'Algolia',
+    pattern: /[a-f0-9]{32}/g,
+    severity: 'medium',
+    description: 'Posible clave de Algolia. Si es la Admin API Key, permite acceso completo al indice de busqueda.',
+    remediation: {
+      steps: [
+        'Verifica si es la Admin Key o Search-Only Key',
+        'Las Search-Only keys son seguras para el frontend',
+        'Las Admin keys NUNCA deben estar en codigo cliente',
+        'Rota la clave si es la Admin Key',
+      ],
+      revokeUrl: 'https://dashboard.algolia.com/account/api-keys/',
+    },
+  },
+
+  // Cloudinary URL
+  {
+    name: 'URL de Cloudinary',
+    provider: 'Cloudinary',
+    pattern: /cloudinary:\/\/[0-9]+:[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+/g,
+    severity: 'critical',
+    description: 'Credenciales de Cloudinary expuestas. Permite subir, modificar y eliminar archivos multimedia.',
+    remediation: {
+      steps: [
+        'Rota el API Secret en Cloudinary Dashboard',
+        'Usa upload presets para subidas desde el frontend',
+        'Las operaciones de administracion deben ser desde el backend',
+      ],
+      revokeUrl: 'https://console.cloudinary.com/settings/api-keys',
+    },
+  },
+
+  // NPM Token
+  {
+    name: 'Token de NPM',
+    provider: 'NPM',
+    pattern: /npm_[a-zA-Z0-9]{36}/g,
+    severity: 'critical',
+    description: 'Token de NPM expuesto. Permite publicar paquetes maliciosos bajo tu cuenta.',
+    remediation: {
+      steps: [
+        'Revoca este token INMEDIATAMENTE en npmjs.com',
+        'Revisa paquetes publicados recientemente',
+        'Habilita 2FA en tu cuenta de NPM',
+        'Usa tokens de solo lectura para CI cuando sea posible',
+      ],
+      revokeUrl: 'https://www.npmjs.com/settings/tokens',
+    },
+  },
+
+  // Mapbox Public Token
+  {
+    name: 'Token publico de Mapbox',
+    provider: 'Mapbox',
+    pattern: /pk\.eyJ[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+/g,
+    severity: 'low',
+    description: 'Token publico de Mapbox detectado. Es seguro para el frontend pero debe estar restringido por dominio.',
+    remediation: {
+      steps: [
+        'Configura restricciones de URL en Mapbox Dashboard',
+        'Limita el token a solo tu dominio de produccion',
+        'Monitorea el uso para detectar abusos',
+      ],
+      revokeUrl: 'https://account.mapbox.com/access-tokens/',
+    },
+  },
+
+  // Mapbox Secret Token
+  {
+    name: 'Token secreto de Mapbox',
+    provider: 'Mapbox',
+    pattern: /sk\.eyJ[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+/g,
+    severity: 'critical',
+    description: 'Token SECRETO de Mapbox expuesto. Permite acceso completo a tu cuenta y APIs privadas.',
+    remediation: {
+      steps: [
+        'Elimina este token INMEDIATAMENTE',
+        'Los tokens sk.* son secretos y NUNCA deben estar en el frontend',
+        'Usa tokens pk.* (publicos) para el lado del cliente',
+      ],
+      revokeUrl: 'https://account.mapbox.com/access-tokens/',
+    },
+  },
+
+  // Azure Connection String
+  {
+    name: 'Cadena de conexion de Azure',
+    provider: 'Azure',
+    pattern: /DefaultEndpointsProtocol=https;AccountName=[^;]+;AccountKey=[^;]+/g,
+    severity: 'critical',
+    description: 'Cadena de conexion de Azure Storage expuesta. Acceso completo a blobs, colas y tablas.',
+    remediation: {
+      steps: [
+        'Rota las claves de acceso en Azure Portal',
+        'Usa Managed Identities cuando sea posible',
+        'Implementa SAS tokens con permisos minimos para el frontend',
+      ],
+      revokeUrl: 'https://portal.azure.com/',
+    },
+  },
+
+  // Datadog API Key
+  {
+    name: 'Clave API de Datadog',
+    provider: 'Datadog',
+    pattern: /dd[a-f0-9]{32}/g,
+    severity: 'high',
+    description: 'Clave API de Datadog expuesta. Permite enviar metricas y eventos a tu cuenta.',
+    remediation: {
+      steps: [
+        'Rota esta clave en Datadog',
+        'Usa variables de entorno',
+        'Las claves de Datadog deben estar solo en el backend',
+      ],
+      revokeUrl: 'https://app.datadoghq.com/organization-settings/api-keys',
+    },
+  },
+
+  // Linear API Key
+  {
+    name: 'Clave API de Linear',
+    provider: 'Linear',
+    pattern: /lin_api_[a-zA-Z0-9]{40}/g,
+    severity: 'high',
+    description: 'Clave API de Linear expuesta. Permite acceso a issues, proyectos y datos del equipo.',
+    remediation: {
+      steps: [
+        'Revoca esta clave en Linear Settings',
+        'Crea una nueva clave con permisos minimos',
+        'Usa la API solo desde el backend',
+      ],
+      revokeUrl: 'https://linear.app/settings/api',
+    },
+  },
+
+  // Notion API Key
+  {
+    name: 'Clave API de Notion',
+    provider: 'Notion',
+    pattern: /secret_[a-zA-Z0-9]{43}/g,
+    severity: 'high',
+    description: 'Clave API de Notion expuesta. Permite acceso a paginas y bases de datos de Notion.',
+    remediation: {
+      steps: [
+        'Revoca esta integracion en Notion',
+        'Crea una nueva integracion',
+        'Limita el acceso a solo las paginas necesarias',
+      ],
+      revokeUrl: 'https://www.notion.so/my-integrations',
+    },
+  },
+
+  // Airtable API Key
+  {
+    name: 'Clave API de Airtable',
+    provider: 'Airtable',
+    pattern: /key[a-zA-Z0-9]{14}/g,
+    severity: 'high',
+    description: 'Clave API de Airtable expuesta. Permite acceso a todas tus bases de Airtable.',
+    remediation: {
+      steps: [
+        'Regenera tu clave API en Airtable',
+        'Usa tokens de acceso personal con permisos limitados',
+        'Implementa la API desde el backend',
+      ],
+      revokeUrl: 'https://airtable.com/account',
+    },
+  },
+
+  // Shopify API Key
+  {
+    name: 'Clave API de Shopify',
+    provider: 'Shopify',
+    pattern: /shpat_[a-fA-F0-9]{32}/g,
+    severity: 'critical',
+    description: 'Token de acceso de Shopify expuesto. Permite acceso a la tienda, productos, ordenes y clientes.',
+    remediation: {
+      steps: [
+        'Revoca este token en Shopify Admin',
+        'Crea una nueva app privada con permisos minimos',
+        'Nunca expongas tokens de Shopify en el frontend',
+      ],
+      revokeUrl: 'https://admin.shopify.com/',
+    },
+  },
+
+  // Sentry DSN
+  {
+    name: 'DSN de Sentry',
+    provider: 'Sentry',
+    pattern: /https:\/\/[a-f0-9]+@[a-z0-9]+\.ingest\.sentry\.io\/[0-9]+/g,
+    severity: 'low',
+    description: 'DSN de Sentry detectado. Es normal que este en el frontend para reportar errores, pero un atacante podria enviar errores falsos.',
+    remediation: {
+      steps: [
+        'Configura rate limiting en Sentry',
+        'Usa allowed domains para limitar origenes',
+        'Considera usar Sentry Relay para mayor control',
+      ],
+    },
+  },
+
+  // PlanetScale Password
+  {
+    name: 'Credenciales de PlanetScale',
+    provider: 'PlanetScale',
+    pattern: /pscale_pw_[a-zA-Z0-9_-]{32,}/g,
+    severity: 'critical',
+    description: 'Contraseña de PlanetScale expuesta. Acceso directo a tu base de datos MySQL serverless.',
+    remediation: {
+      steps: [
+        'Elimina estas credenciales en PlanetScale',
+        'Crea nuevas credenciales',
+        'Usa variables de entorno en el servidor',
+      ],
+      revokeUrl: 'https://app.planetscale.com/',
+    },
+  },
+
+  // Resend API Key
+  {
+    name: 'Clave API de Resend',
+    provider: 'Resend',
+    pattern: /re_[a-zA-Z0-9]{32}/g,
+    severity: 'critical',
+    description: 'Clave API de Resend expuesta. Permite enviar emails desde tu dominio.',
+    remediation: {
+      steps: [
+        'Revoca esta clave en Resend Dashboard',
+        'Crea una nueva clave',
+        'Envia emails solo desde el backend',
+      ],
+      revokeUrl: 'https://resend.com/api-keys',
+    },
+  },
+
+  // Clerk API Keys
+  {
+    name: 'Clave secreta de Clerk',
+    provider: 'Clerk',
+    pattern: /sk_live_[a-zA-Z0-9]{24,}/g,
+    severity: 'critical',
+    description: 'Clave secreta de Clerk expuesta. Acceso completo a autenticacion y usuarios.',
+    remediation: {
+      steps: [
+        'Rota esta clave en Clerk Dashboard',
+        'Las claves sk_ son secretas y solo para el backend',
+        'Usa NEXT_PUBLIC_CLERK_* solo para claves publicas',
+      ],
+      revokeUrl: 'https://dashboard.clerk.com/',
+    },
+  },
+
+  // Postmark API Token
+  {
+    name: 'Token de Postmark',
+    provider: 'Postmark',
+    pattern: /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/g,
+    severity: 'high',
+    description: 'Posible token de Postmark (formato UUID). Permite enviar emails.',
+    remediation: {
+      steps: [
+        'Verifica si es un token de Postmark',
+        'Rota el token si es necesario',
+        'Usa variables de entorno en el servidor',
+      ],
+    },
+  },
+
+  // Pusher Keys
+  {
+    name: 'Clave secreta de Pusher',
+    provider: 'Pusher',
+    pattern: /[a-f0-9]{20}/g,
+    severity: 'medium',
+    description: 'Posible clave de Pusher. La app key es publica, pero el secret debe ser privado.',
+    remediation: {
+      steps: [
+        'Verifica si es el app_secret (no app_key)',
+        'El app_secret NUNCA debe estar en codigo cliente',
+        'Rota credenciales en Pusher Dashboard',
+      ],
+      revokeUrl: 'https://dashboard.pusher.com/',
+    },
+  },
+
+  // Replicate API Token
+  {
+    name: 'Token API de Replicate',
+    provider: 'Replicate',
+    pattern: /r8_[a-zA-Z0-9]{37}/g,
+    severity: 'critical',
+    description: 'Token de Replicate expuesto. Permite ejecutar modelos de IA con cargos a tu cuenta.',
+    remediation: {
+      steps: [
+        'Revoca este token en Replicate',
+        'Los tokens de IA NUNCA deben estar en el frontend',
+        'Crea un proxy en tu backend',
+      ],
+      revokeUrl: 'https://replicate.com/account/api-tokens',
+    },
+  },
+
+  // Hugging Face Token
+  {
+    name: 'Token de Hugging Face',
+    provider: 'Hugging Face',
+    pattern: /hf_[a-zA-Z0-9]{34}/g,
+    severity: 'high',
+    description: 'Token de Hugging Face expuesto. Permite acceso a modelos privados y API de inferencia.',
+    remediation: {
+      steps: [
+        'Revoca este token en Hugging Face',
+        'Usa tokens solo desde el backend',
+        'Crea tokens con permisos minimos',
+      ],
+      revokeUrl: 'https://huggingface.co/settings/tokens',
+    },
+  },
+
+  // Groq API Key
+  {
+    name: 'Clave API de Groq',
+    provider: 'Groq',
+    pattern: /gsk_[a-zA-Z0-9]{52}/g,
+    severity: 'critical',
+    description: 'Clave API de Groq expuesta. Permite usar LLMs con cargos a tu cuenta.',
+    remediation: {
+      steps: [
+        'Revoca esta clave en Groq Console',
+        'Las claves de IA son para el backend',
+        'Implementa un proxy server',
+      ],
+      revokeUrl: 'https://console.groq.com/keys',
+    },
+  },
+
+  // Mistral API Key
+  {
+    name: 'Clave API de Mistral',
+    provider: 'Mistral',
+    pattern: /[a-zA-Z0-9]{32}/g,
+    severity: 'high',
+    description: 'Posible clave de Mistral AI. Permite acceso a la API de Mistral.',
+    remediation: {
+      steps: [
+        'Verifica si es una clave de Mistral',
+        'Rota la clave si es necesario',
+        'Usa solo desde el backend',
+      ],
+    },
+  },
+
+  // Cohere API Key
+  {
+    name: 'Clave API de Cohere',
+    provider: 'Cohere',
+    pattern: /[a-zA-Z0-9]{40}/g,
+    severity: 'high',
+    description: 'Posible clave de Cohere. Permite acceso a modelos de lenguaje.',
+    remediation: {
+      steps: [
+        'Verifica si es una clave de Cohere',
+        'Rota la clave en Cohere Dashboard',
+        'Implementa llamadas desde el servidor',
+      ],
+    },
+  },
 ];
 
 // Security headers to check
@@ -402,30 +876,144 @@ export const SECURITY_HEADERS: SecurityHeader[] = [
 
 // Sensitive files to check
 export const SENSITIVE_FILES: SensitiveFile[] = [
+  // Environment files
   { path: '/.env', severity: 'critical', description: 'Archivo de variables de entorno con secretos' },
   { path: '/.env.local', severity: 'critical', description: 'Archivo de entorno local' },
   { path: '/.env.production', severity: 'critical', description: 'Archivo de entorno de produccion' },
   { path: '/.env.development', severity: 'high', description: 'Archivo de entorno de desarrollo' },
+  { path: '/.env.backup', severity: 'critical', description: 'Backup de variables de entorno' },
+  { path: '/.env.example', severity: 'low', description: 'Ejemplo de variables de entorno (puede revelar estructura)' },
+
+  // Git
   { path: '/.git/config', severity: 'high', description: 'Configuracion del repositorio Git' },
   { path: '/.git/HEAD', severity: 'high', description: 'Referencia HEAD de Git' },
+  { path: '/.gitconfig', severity: 'medium', description: 'Configuracion global de Git' },
+
+  // Config files
   { path: '/config.js', severity: 'medium', description: 'Archivo de configuracion JavaScript' },
   { path: '/config.json', severity: 'medium', description: 'Archivo de configuracion JSON' },
+  { path: '/config.yml', severity: 'medium', description: 'Archivo de configuracion YAML' },
+  { path: '/config.yaml', severity: 'medium', description: 'Archivo de configuracion YAML' },
   { path: '/settings.json', severity: 'medium', description: 'Archivo de configuracion' },
+  { path: '/app.config.js', severity: 'medium', description: 'Configuracion de aplicacion' },
   { path: '/.htaccess', severity: 'low', description: 'Configuracion de Apache' },
+
+  // CMS
   { path: '/wp-config.php', severity: 'critical', description: 'Configuracion de WordPress' },
+  { path: '/wp-config.php.bak', severity: 'critical', description: 'Backup de configuracion WordPress' },
+  { path: '/configuration.php', severity: 'critical', description: 'Configuracion de Joomla' },
+  { path: '/sites/default/settings.php', severity: 'critical', description: 'Configuracion de Drupal' },
+
+  // PHP
   { path: '/phpinfo.php', severity: 'medium', description: 'Pagina de informacion PHP' },
+  { path: '/info.php', severity: 'medium', description: 'Pagina de informacion PHP' },
+  { path: '/test.php', severity: 'low', description: 'Archivo de prueba PHP' },
+
+  // Server
   { path: '/server.js', severity: 'medium', description: 'Archivo del servidor' },
+  { path: '/server.ts', severity: 'medium', description: 'Archivo del servidor TypeScript' },
+
+  // Database
   { path: '/database.yml', severity: 'critical', description: 'Configuracion de base de datos' },
+  { path: '/database.json', severity: 'critical', description: 'Configuracion de base de datos' },
+  { path: '/db.json', severity: 'high', description: 'Base de datos JSON' },
   { path: '/secrets.yml', severity: 'critical', description: 'Archivo de secretos' },
   { path: '/credentials.json', severity: 'critical', description: 'Archivo de credenciales' },
-  { path: '/.aws/credentials', severity: 'critical', description: 'Credenciales de AWS' },
-  { path: '/id_rsa', severity: 'critical', description: 'Clave privada SSH' },
-  { path: '/id_rsa.pub', severity: 'low', description: 'Clave publica SSH' },
-  { path: '/.npmrc', severity: 'high', description: 'Configuracion NPM (puede contener tokens)' },
-  { path: '/.dockerenv', severity: 'medium', description: 'Entorno Docker' },
-  { path: '/docker-compose.yml', severity: 'medium', description: 'Configuracion Docker Compose' },
   { path: '/backup.sql', severity: 'critical', description: 'Backup de base de datos' },
   { path: '/dump.sql', severity: 'critical', description: 'Dump de base de datos' },
+  { path: '/database.sql', severity: 'critical', description: 'Base de datos SQL' },
+  { path: '/data.sql', severity: 'critical', description: 'Datos SQL' },
+  { path: '/db.sqlite', severity: 'critical', description: 'Base de datos SQLite' },
+  { path: '/database.sqlite', severity: 'critical', description: 'Base de datos SQLite' },
+
+  // Cloud credentials
+  { path: '/.aws/credentials', severity: 'critical', description: 'Credenciales de AWS' },
+  { path: '/.aws/config', severity: 'high', description: 'Configuracion de AWS' },
+  { path: '/gcloud-credentials.json', severity: 'critical', description: 'Credenciales de Google Cloud' },
+  { path: '/service-account.json', severity: 'critical', description: 'Service account de Google Cloud' },
+  { path: '/firebase-adminsdk.json', severity: 'critical', description: 'Credenciales Firebase Admin' },
+  { path: '/firebase.json', severity: 'low', description: 'Configuracion de Firebase' },
+
+  // SSH/Keys
+  { path: '/id_rsa', severity: 'critical', description: 'Clave privada SSH' },
+  { path: '/id_rsa.pub', severity: 'low', description: 'Clave publica SSH' },
+  { path: '/id_ed25519', severity: 'critical', description: 'Clave privada SSH Ed25519' },
+  { path: '/.ssh/authorized_keys', severity: 'high', description: 'Claves SSH autorizadas' },
+  { path: '/private.key', severity: 'critical', description: 'Clave privada' },
+  { path: '/private.pem', severity: 'critical', description: 'Clave privada PEM' },
+  { path: '/server.key', severity: 'critical', description: 'Clave privada del servidor' },
+
+  // Package managers
+  { path: '/.npmrc', severity: 'high', description: 'Configuracion NPM (puede contener tokens)' },
+  { path: '/.yarnrc', severity: 'high', description: 'Configuracion Yarn' },
+  { path: '/yarn.lock', severity: 'low', description: 'Lockfile de Yarn (revela dependencias)' },
+  { path: '/package-lock.json', severity: 'low', description: 'Lockfile de NPM' },
+  { path: '/composer.lock', severity: 'low', description: 'Lockfile de Composer' },
+
+  // Docker
+  { path: '/.dockerenv', severity: 'medium', description: 'Entorno Docker' },
+  { path: '/docker-compose.yml', severity: 'medium', description: 'Configuracion Docker Compose' },
+  { path: '/docker-compose.yaml', severity: 'medium', description: 'Configuracion Docker Compose' },
+  { path: '/Dockerfile', severity: 'low', description: 'Dockerfile' },
+
+  // CI/CD
+  { path: '/.travis.yml', severity: 'medium', description: 'Configuracion Travis CI' },
+  { path: '/.gitlab-ci.yml', severity: 'medium', description: 'Configuracion GitLab CI' },
+  { path: '/.github/workflows', severity: 'low', description: 'GitHub Actions' },
+  { path: '/Jenkinsfile', severity: 'medium', description: 'Configuracion Jenkins' },
+  { path: '/bitbucket-pipelines.yml', severity: 'medium', description: 'Configuracion Bitbucket Pipelines' },
+
+  // Source maps (revelan codigo fuente)
+  { path: '/main.js.map', severity: 'medium', description: 'Source map - revela codigo fuente original' },
+  { path: '/bundle.js.map', severity: 'medium', description: 'Source map - revela codigo fuente original' },
+  { path: '/app.js.map', severity: 'medium', description: 'Source map - revela codigo fuente original' },
+  { path: '/_next/static/chunks/main.js.map', severity: 'medium', description: 'Source map de Next.js' },
+
+  // Admin panels
+  { path: '/admin', severity: 'high', description: 'Panel de administracion accesible' },
+  { path: '/admin/', severity: 'high', description: 'Panel de administracion accesible' },
+  { path: '/administrator', severity: 'high', description: 'Panel de administracion' },
+  { path: '/wp-admin', severity: 'high', description: 'Admin de WordPress' },
+  { path: '/wp-login.php', severity: 'medium', description: 'Login de WordPress' },
+  { path: '/phpmyadmin', severity: 'critical', description: 'phpMyAdmin accesible - acceso directo a BD' },
+  { path: '/pma', severity: 'critical', description: 'phpMyAdmin (alias)' },
+  { path: '/adminer.php', severity: 'critical', description: 'Adminer - gestor de BD accesible' },
+  { path: '/cpanel', severity: 'high', description: 'cPanel accesible' },
+  { path: '/webmail', severity: 'medium', description: 'Webmail accesible' },
+
+  // API Documentation
+  { path: '/swagger', severity: 'medium', description: 'Swagger UI - documentacion API publica' },
+  { path: '/swagger/', severity: 'medium', description: 'Swagger UI accesible' },
+  { path: '/swagger.json', severity: 'medium', description: 'Especificacion Swagger JSON' },
+  { path: '/swagger.yaml', severity: 'medium', description: 'Especificacion Swagger YAML' },
+  { path: '/api-docs', severity: 'medium', description: 'Documentacion de API accesible' },
+  { path: '/openapi.json', severity: 'medium', description: 'Especificacion OpenAPI' },
+  { path: '/graphql', severity: 'medium', description: 'Endpoint GraphQL (verificar introspection)' },
+  { path: '/graphiql', severity: 'high', description: 'GraphiQL IDE accesible publicamente' },
+  { path: '/playground', severity: 'high', description: 'GraphQL Playground accesible' },
+
+  // Debug/Dev
+  { path: '/debug', severity: 'high', description: 'Pagina de debug accesible' },
+  { path: '/debug/', severity: 'high', description: 'Pagina de debug accesible' },
+  { path: '/test', severity: 'low', description: 'Pagina de test' },
+  { path: '/dev', severity: 'medium', description: 'Pagina de desarrollo' },
+  { path: '/.well-known/security.txt', severity: 'low', description: 'Security.txt (informativo)' },
+  { path: '/robots.txt', severity: 'low', description: 'Robots.txt (puede revelar rutas ocultas)' },
+  { path: '/sitemap.xml', severity: 'low', description: 'Sitemap XML' },
+
+  // Logs
+  { path: '/error.log', severity: 'high', description: 'Log de errores accesible' },
+  { path: '/access.log', severity: 'high', description: 'Log de acceso' },
+  { path: '/debug.log', severity: 'high', description: 'Log de debug' },
+  { path: '/logs/error.log', severity: 'high', description: 'Log de errores' },
+  { path: '/var/log/apache2/error.log', severity: 'critical', description: 'Log de Apache' },
+
+  // Backups
+  { path: '/backup.zip', severity: 'critical', description: 'Backup comprimido' },
+  { path: '/backup.tar.gz', severity: 'critical', description: 'Backup comprimido' },
+  { path: '/site-backup.zip', severity: 'critical', description: 'Backup del sitio' },
+  { path: '/www.zip', severity: 'critical', description: 'Backup del sitio web' },
+  { path: '/public.zip', severity: 'critical', description: 'Backup del directorio publico' },
 ];
 
 // Utility function to sanitize found API keys (show only partial)

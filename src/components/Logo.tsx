@@ -21,21 +21,20 @@ export function Logo({ size = 'md', showText = true }: LogoProps) {
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2.5">
       <div className="relative">
         <Shield
-          className={`${sizeClasses[size]} text-cyan-400 shield-glow`}
+          className={`${sizeClasses[size]} text-emerald-400 shield-glow`}
           strokeWidth={2}
         />
-        <div className="absolute inset-0 bg-cyan-400/20 blur-xl rounded-full" />
+        <div className="absolute inset-0 bg-emerald-400/20 blur-xl rounded-full" />
       </div>
       {showText && (
         <span
-          className={`font-semibold ${textClasses[size]} tracking-tight`}
-          style={{ fontFamily: "'JetBrains Mono', monospace" }}
+          className={`font-semibold ${textClasses[size]} tracking-tight font-mono`}
         >
           <span className="text-white">Secure</span>
-          <span className="text-cyan-400">Scan</span>
+          <span className="text-emerald-400">Scan</span>
         </span>
       )}
     </div>

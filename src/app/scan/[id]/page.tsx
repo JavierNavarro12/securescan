@@ -171,21 +171,35 @@ export default function ScanResultsPage() {
 
   // Generar prompt para IA
   const generateAIPrompt = (results: ScanResults): string => {
-    const vulnList = results.vulnerabilities
-      .map((v, i) => `${i + 1}. **${v.title}**: ${v.description}`)
-      .join('\n');
+    const severityLabels: Record<string, string> = {
+      critical: 'CRÍTICO',
+      high: 'ALTO',
+      medium: 'MEDIO',
+      low: 'BAJO',
+    };
 
-    return `Necesito que me ayudes a solucionar las siguientes vulnerabilidades de seguridad encontradas en mi sitio web ${results.url}:
+    const vulnList = results.vulnerabilities
+      .map((v, i) => `${i + 1}. [${severityLabels[v.severity] || v.severity}] ${v.title}\n   ${v.description}`)
+      .join('\n\n');
+
+    const criticalCount = results.vulnerabilities.filter(v => v.severity === 'critical').length;
+    const highCount = results.vulnerabilities.filter(v => v.severity === 'high').length;
+
+    return `# Análisis de Seguridad - ${results.url}
+Puntuación: ${results.score}/100
+Vulnerabilidades: ${results.vulnerabilities.length} total (${criticalCount} críticas, ${highCount} altas)
+
+## Vulnerabilidades detectadas:
 
 ${vulnList}
 
-Por favor:
-1. Dame el codigo exacto o configuracion necesaria para solucionar cada vulnerabilidad
-2. Si es un proyecto Next.js/Vercel, dame la configuracion para next.config.js o vercel.json
-3. Si necesito modificar headers del servidor, dame ejemplos para diferentes plataformas (Vercel, Netlify, Apache, Nginx)
-4. Explica brevemente por que cada solucion funciona
+## Necesito:
 
-Mi stack tecnologico es: [COMPLETA CON TU STACK]`;
+1. Código o configuración exacta para solucionar cada vulnerabilidad
+2. Ejemplos para mi plataforma (Vercel, Netlify, Apache, Nginx, etc.)
+3. Explicación breve de por qué cada solución funciona
+
+Prioriza las vulnerabilidades críticas y altas.`;
   };
 
   const copyPrompt = () => {

@@ -8,25 +8,25 @@ const steps = [
     icon: Link2,
     title: 'Ingresa tu URL',
     description: 'Introduce la URL de tu sitio web o aplicación. Funciona con cualquier sitio público.',
-    color: '#00d4ff',
+    accent: 'emerald',
   },
   {
     icon: Search,
     title: 'Analizamos tu código',
     description: 'Escaneamos HTML, JavaScript bundles y archivos de configuración en busca de vulnerabilidades.',
-    color: '#3b82f6',
+    accent: 'emerald',
   },
   {
     icon: Shield,
     title: 'Recibe tu puntuación',
     description: 'Obtienes una puntuación de seguridad de 0-100 y un resumen de vulnerabilidades encontradas.',
-    color: '#8b5cf6',
+    accent: 'emerald',
   },
   {
     icon: FileCheck,
     title: 'Desbloquea el detalle',
     description: 'Por solo €0.99, accede al reporte completo con guías paso a paso para solucionar cada problema.',
-    color: '#ec4899',
+    accent: 'emerald',
   },
 ];
 
@@ -47,31 +47,28 @@ export function Features() {
           >
             {/* Connector line (except last) */}
             {index < steps.length - 1 && (
-              <div className="hidden lg:block absolute top-10 left-[60%] w-[80%] h-px bg-gradient-to-r from-white/10 to-transparent" />
+              <div className="hidden lg:block absolute top-12 left-[60%] w-[80%] h-px">
+                <div className="w-full h-full bg-gradient-to-r from-emerald-500/30 to-transparent" />
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-emerald-500/50" />
+              </div>
             )}
 
-            <div className="relative p-6 bg-[#12121a] border border-white/5 rounded-2xl hover:border-white/10 transition-all duration-300 card-hover">
+            <div className="relative p-6 card group-hover:border-emerald-500/20 h-full">
               {/* Step number */}
-              <div className="absolute -top-3 -left-3 w-8 h-8 bg-[#0a0a0f] border border-white/10 rounded-lg flex items-center justify-center">
-                <span
-                  className="text-sm font-bold"
-                  style={{ color: step.color }}
-                >
+              <div className="absolute -top-3 -left-3 w-8 h-8 bg-[var(--bg-primary)] border border-emerald-500/30 rounded-lg flex items-center justify-center shadow-lg">
+                <span className="text-sm font-bold text-emerald-400 font-mono">
                   {index + 1}
                 </span>
               </div>
 
               {/* Icon */}
-              <div
-                className="w-14 h-14 rounded-xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110"
-                style={{ background: `${step.color}15` }}
-              >
-                <Icon className="w-7 h-7" style={{ color: step.color }} />
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5 bg-emerald-500/10 transition-all group-hover:bg-emerald-500/20 group-hover:scale-110">
+                <Icon className="w-7 h-7 text-emerald-400" />
               </div>
 
               {/* Content */}
               <h3 className="text-lg font-semibold text-white mb-2">{step.title}</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">
+              <p className="text-zinc-400 text-sm leading-relaxed">
                 {step.description}
               </p>
             </div>

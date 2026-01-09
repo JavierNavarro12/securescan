@@ -122,10 +122,16 @@ export class SecurityScanner {
     // Step 5: Check security headers
     this.checkSecurityHeaders();
 
-    // Step 6: Check for sensitive files
+    // Step 6: Check CORS policy
+    this.checkCorsPolicy();
+
+    // Step 7: Check for sensitive files
     await this.checkSensitiveFiles();
 
-    // Step 7: Check HTTPS
+    // Step 8: Check for exposed source maps
+    await this.checkSourceMaps();
+
+    // Step 9: Check HTTPS
     this.checkHttpsSecurity();
   }
 
@@ -449,15 +455,143 @@ export class SecurityScanner {
     }
   }
 
+  private checkCorsPolicy(): void {
+    const corsHeader = this.ctx.responseHeaders['access-control-allow-origin'];
+
+    if (corsHeader === '*') {
+      this.addVulnerability({
+        id: uuidv4(),
+        type: 'cors_misconfiguration',
+        severity: 'medium',
+        title: 'CORS Permisivo Detectado',
+        description: 'Tu sitio permite peticiones desde cualquier origen (Access-Control-Allow-Origin: *). Esto puede permitir que sitios maliciosos hagan peticiones a tu API y lean las respuestas.',
+        remediation: {
+          steps: [
+            'Configura CORS para solo permitir origenes especificos',
+            'Usa una lista blanca de dominios de confianza',
+            'En Next.js, configura los headers en next.config.js',
+            'En Express, usa el middleware cors con origin especifico',
+          ],
+        },
+      });
+    }
+
+    // Check for credentials with wildcard (very dangerous)
+    const corsCredentials = this.ctx.responseHeaders['access-control-allow-credentials'];
+    if (corsHeader === '*' && corsCredentials === 'true') {
+      this.addVulnerability({
+        id: uuidv4(),
+        type: 'cors_misconfiguration',
+        severity: 'critical',
+        title: 'CORS Critico: Wildcard con Credentials',
+        description: 'Tu API permite credenciales (cookies, auth headers) desde cualquier origen. Esto es EXTREMADAMENTE peligroso y permite robo de sesiones.',
+        remediation: {
+          steps: [
+            'NUNCA uses Access-Control-Allow-Origin: * con credentials',
+            'Especifica dominios exactos cuando uses credentials',
+            'Revisa tu configuracion de CORS inmediatamente',
+          ],
+        },
+      });
+    }
+  }
+
+  private async checkSourceMaps(): Promise<void> {
+    console.log('[Scanner] Checking for exposed source maps...');
+
+    // Get all JS files that were loaded
+    const jsUrls = Array.from(this.ctx.jsContents.keys());
+    const mapUrlsToCheck: string[] = [];
+
+    // Generate potential source map URLs
+    for (const jsUrl of jsUrls) {
+      if (jsUrl.endsWith('.js')) {
+        mapUrlsToCheck.push(jsUrl + '.map');
+      }
+    }
+
+    // Also check common source map locations
+    const commonMaps = [
+      '/main.js.map',
+      '/bundle.js.map',
+      '/app.js.map',
+      '/vendor.js.map',
+      '/_next/static/chunks/main.js.map',
+      '/_next/static/chunks/webpack.js.map',
+    ];
+
+    for (const map of commonMaps) {
+      mapUrlsToCheck.push(this.ctx.baseUrl + map);
+    }
+
+    // Check up to 5 source maps to save time
+    const mapsToCheck = mapUrlsToCheck.slice(0, 5);
+
+    const checkMap = async (mapUrl: string): Promise<boolean> => {
+      try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 2000);
+
+        const response = await fetch(mapUrl, {
+          method: 'HEAD',
+          headers: { 'User-Agent': 'Mozilla/5.0 SecureScan' },
+          signal: controller.signal,
+        });
+
+        clearTimeout(timeout);
+
+        if (response.status === 200) {
+          const contentType = response.headers.get('content-type') || '';
+          // Check if it's actually a source map
+          if (contentType.includes('json') || contentType.includes('sourcemap') || mapUrl.endsWith('.map')) {
+            return true;
+          }
+        }
+        return false;
+      } catch {
+        return false;
+      }
+    };
+
+    // Check all maps in parallel
+    const results = await Promise.all(mapsToCheck.map(async (url) => ({ url, found: await checkMap(url) })));
+    const exposedMaps = results.filter(r => r.found);
+
+    if (exposedMaps.length > 0) {
+      this.addVulnerability({
+        id: uuidv4(),
+        type: 'source_map_exposed',
+        severity: 'medium',
+        title: 'Source Maps Expuestos',
+        description: `Se encontraron ${exposedMaps.length} source map(s) accesibles publicamente. Los source maps revelan tu codigo fuente original, incluyendo comentarios, nombres de variables y logica de negocio.`,
+        location: exposedMaps[0].url,
+        remediation: {
+          steps: [
+            'Deshabilita la generacion de source maps en produccion',
+            'En Next.js: productionBrowserSourceMaps: false en next.config.js',
+            'En Webpack: devtool: false para produccion',
+            'Si necesitas source maps para debugging, usa source-map-loader con autenticacion',
+          ],
+        },
+      });
+    }
+  }
+
   private async checkSensitiveFiles(): Promise<void> {
-    const filesToCheck = SENSITIVE_FILES.slice(0, 10);
+    // Check more files - prioritize critical and high severity
+    const criticalFiles = SENSITIVE_FILES.filter(f => f.severity === 'critical').slice(0, 15);
+    const highFiles = SENSITIVE_FILES.filter(f => f.severity === 'high').slice(0, 10);
+    const mediumFiles = SENSITIVE_FILES.filter(f => f.severity === 'medium').slice(0, 5);
+    const filesToCheck = [...criticalFiles, ...highFiles, ...mediumFiles];
+
+    console.log(`[Scanner] Checking ${filesToCheck.length} sensitive files...`);
 
     // Ejecutar todas las peticiones en paralelo para mayor velocidad
     const checkFile = async (file: typeof filesToCheck[0]) => {
       try {
         const fileUrl = this.ctx.baseUrl + file.path;
         const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 3000); // 3 segundos max
+        const timeout = setTimeout(() => controller.abort(), 2000); // 2 segundos max
 
         const response = await fetch(fileUrl, {
           method: 'GET',
@@ -472,26 +606,51 @@ export class SecurityScanner {
           const text = await response.text();
 
           // Check if it's real content (not error page)
-          if (!text.includes('<!DOCTYPE') && !text.includes('<!doctype') &&
-              !text.toLowerCase().includes('not found') && text.length > 10) {
+          const isErrorPage = text.includes('<!DOCTYPE') || text.includes('<!doctype') ||
+              text.toLowerCase().includes('not found') ||
+              text.toLowerCase().includes('404') ||
+              text.toLowerCase().includes('error') ||
+              text.length < 10;
 
+          if (!isErrorPage) {
+            // Determine vulnerability type based on file
             let vulnType: VulnerabilityType = 'config_exposed';
-            if (file.path.includes('.env')) vulnType = 'env_file_exposed';
-            else if (file.path.includes('.git')) vulnType = 'git_exposed';
+            let title = `Archivo sensible accesible: ${file.path}`;
+
+            if (file.path.includes('.env')) {
+              vulnType = 'env_file_exposed';
+            } else if (file.path.includes('.git')) {
+              vulnType = 'git_exposed';
+            } else if (file.path.includes('admin') || file.path.includes('phpmyadmin') || file.path.includes('cpanel')) {
+              vulnType = 'admin_panel_exposed';
+              title = `Panel de admin accesible: ${file.path}`;
+            } else if (file.path.includes('debug') || file.path.includes('phpinfo')) {
+              vulnType = 'debug_endpoint_exposed';
+              title = `Endpoint de debug accesible: ${file.path}`;
+            } else if (file.path.includes('.sql') || file.path.includes('database') || file.path.includes('.sqlite')) {
+              vulnType = 'database_exposed';
+              title = `Base de datos accesible: ${file.path}`;
+            } else if (file.path.includes('backup') || file.path.includes('.zip') || file.path.includes('.tar')) {
+              vulnType = 'backup_exposed';
+              title = `Backup accesible: ${file.path}`;
+            } else if (file.path.includes('.log') || file.path.includes('log/')) {
+              vulnType = 'log_exposed';
+              title = `Log accesible: ${file.path}`;
+            }
 
             this.addVulnerability({
               id: uuidv4(),
               type: vulnType,
               severity: file.severity,
-              title: `Sensitive File Accessible: ${file.path}`,
-              description: `${file.description} is publicly accessible.`,
+              title,
+              description: `${file.description} esta accesible publicamente.`,
               location: fileUrl,
               remediation: {
                 steps: [
-                  `Block access to ${file.path} in your web server config`,
-                  'Add to .gitignore and remove from version control',
-                  'Use environment variables instead of config files',
-                  'Configure hosting platform to deny access to sensitive files',
+                  `Bloquea el acceso a ${file.path} en la configuracion del servidor`,
+                  'Añade a .gitignore y elimina del control de versiones',
+                  'Usa variables de entorno en lugar de archivos de configuracion',
+                  'Configura tu plataforma de hosting para denegar acceso a archivos sensibles',
                 ],
               },
             });
@@ -502,10 +661,10 @@ export class SecurityScanner {
       }
     };
 
-    // Ejecutar todas en paralelo con timeout global de 10 segundos
+    // Ejecutar todas en paralelo con timeout global de 15 segundos
     await Promise.race([
       Promise.all(filesToCheck.map(checkFile)),
-      new Promise(resolve => setTimeout(resolve, 10000))
+      new Promise(resolve => setTimeout(resolve, 15000))
     ]);
   }
 
