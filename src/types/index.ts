@@ -12,7 +12,11 @@ export type VulnerabilityType =
   | 'insecure_protocol'
   | 'mixed_content'
   | 'bearer_token_exposed'
-  | 'credentials_in_url';
+  | 'credentials_in_url'
+  | 'credential_in_request'
+  | 'credential_in_url'
+  | 'api_key_in_url'
+  | 'api_key_in_request';
 
 // Detected vulnerability
 export interface Vulnerability {
