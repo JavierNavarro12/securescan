@@ -22,7 +22,8 @@ export function ScanProgress({ status, url }: ScanProgressProps) {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    if (status === 'scanning') {
+    // Start animation for both pending and scanning status
+    if (status === 'scanning' || status === 'pending') {
       // Simulate step progression
       const stepInterval = setInterval(() => {
         setCurrentStep((prev) => {
@@ -96,8 +97,7 @@ export function ScanProgress({ status, url }: ScanProgressProps) {
         <AnimatePresence mode="wait">
           {scanSteps.map((step, index) => {
             const isCompleted = index < currentStep;
-            const isCurrent = index === currentStep && status === 'scanning';
-            const isPending = index > currentStep;
+            const isCurrent = index === currentStep && (status === 'scanning' || status === 'pending');
             const Icon = step.icon;
 
             return (

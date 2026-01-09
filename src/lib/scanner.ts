@@ -318,24 +318,24 @@ export class SecurityScanner {
               id: uuidv4(),
               type: 'credential_in_url',
               severity: isHighRisk ? 'critical' : 'medium',
-              title: `Sensitive Parameter "${param}" in URL`,
+              title: `Parametro sensible "${param}" en URL`,
               description: isHighRisk
-                ? `A sensitive value is passed in URL query parameters. URLs are logged in browser history, server logs, and leaked via Referer headers.`
-                : `A potentially sensitive value is passed in URL query parameters. This might be a public client-side API key (which is acceptable) or a secret key (which is dangerous). Verify if this key should be public.`,
+                ? `Se esta pasando un valor sensible en los parametros de la URL. Las URLs se guardan en el historial del navegador, logs del servidor y se filtran via cabeceras Referer.`
+                : `Se detecto un parametro potencialmente sensible en la URL. Podria ser una clave publica de cliente (aceptable) o una clave secreta (peligroso). Verifica si esta clave deberia ser publica.`,
               location: req.url.split('?')[0],
               foundValue: `${param}=${sanitizeKey(value)}`,
               fullValue: `${param}=${value}`,
               remediation: {
                 steps: isHighRisk ? [
-                  'Never pass sensitive data in URL query parameters',
-                  'Use POST requests with body data instead',
-                  'Move authentication to server-side',
-                  'Use secure headers for authentication',
+                  'Nunca pases datos sensibles en parametros de URL',
+                  'Usa peticiones POST con datos en el body',
+                  'Mueve la autenticacion al lado del servidor',
+                  'Usa cabeceras seguras para autenticacion',
                 ] : [
-                  'Verify if this is a public client-side key (acceptable) or a secret key (dangerous)',
-                  'Public keys for frontend APIs are okay to expose',
-                  'Secret keys should NEVER be in URLs - use server-side requests instead',
-                  'If this is a secret, move the API call to your backend',
+                  'Verifica si es una clave publica de cliente (aceptable) o una clave secreta (peligroso)',
+                  'Las claves publicas para APIs de frontend son seguras de exponer',
+                  'Las claves secretas NUNCA deben estar en URLs - usa peticiones del servidor',
+                  'Si es una clave secreta, mueve la llamada a la API a tu backend',
                 ],
               },
             });

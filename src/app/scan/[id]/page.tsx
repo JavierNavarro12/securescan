@@ -459,16 +459,24 @@ Mi stack tecnologico es: [COMPLETA CON TU STACK]`;
                       <p className="text-white font-medium">
                         {results.summary.total} vulnerabilidades detectadas
                       </p>
-                      <p className="text-gray-400 text-sm">
+                      <p className="text-gray-400 text-sm mb-3">
                         Desbloquea para ver los detalles
                       </p>
+                      <button
+                        onClick={() => document.getElementById('paywall')?.scrollIntoView({ behavior: 'smooth' })}
+                        className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-sm font-medium rounded-lg hover:from-cyan-400 hover:to-blue-400 transition-all"
+                      >
+                        Desbloquear
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Paywall */}
-              <PaywallCard scanId={scanId} />
+              <div id="paywall">
+                <PaywallCard scanId={scanId} />
+              </div>
             </div>
           ) : results.summary.total > 0 ? (
             <div className="space-y-4">

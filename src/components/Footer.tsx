@@ -13,13 +13,13 @@ export function Footer() {
 
           {/* Links */}
           <div className="flex items-center gap-6 text-sm text-gray-400">
-            <a href="#" className="hover:text-white transition-colors">
+            <a href="/privacidad" className="hover:text-white transition-colors">
               Privacidad
             </a>
-            <a href="#" className="hover:text-white transition-colors">
+            <a href="/terminos" className="hover:text-white transition-colors">
               Términos
             </a>
-            <a href="#" className="hover:text-white transition-colors">
+            <a href="mailto:navarrojavi107@gmail.com" className="hover:text-white transition-colors">
               Contacto
             </a>
           </div>
