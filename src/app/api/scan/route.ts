@@ -76,8 +76,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Start scanning in background
-    performScan(scanRecord.id, normalizedUrl);
+    // Perform scan synchronously (serverless doesn't support background tasks)
+    await performScan(scanRecord.id, normalizedUrl);
 
     return NextResponse.json({
       success: true,
