@@ -215,6 +215,7 @@ Mi stack tecnologico es: [COMPLETA CON TU STACK]`;
           const resultsData = await resultsResponse.json();
           if (resultsData.success) {
             setResults(resultsData.results);
+            setLoading(false); // Skip progress screen after payment
           }
         }
       } catch (err) {
@@ -261,8 +262,8 @@ Mi stack tecnologico es: [COMPLETA CON TU STACK]`;
     fetchResults();
   }, [scanId]);
 
-  // Show scanning progress
-  if (loading || results?.status === 'scanning' || results?.status === 'pending') {
+  // Show scanning progress (but not when returning from payment)
+  if (!isSuccess && (loading || results?.status === 'scanning' || results?.status === 'pending')) {
     return (
       <div className="min-h-screen relative">
         <div className="fixed inset-0 grid-bg pointer-events-none" />
@@ -323,7 +324,18 @@ Mi stack tecnologico es: [COMPLETA CON TU STACK]`;
     );
   }
 
-  if (!results) return null;
+  // Show loading state when returning from payment
+  if (!results || (isSuccess && loading)) {
+    return (
+      <div className="min-h-screen relative flex items-center justify-center">
+        <div className="fixed inset-0 grid-bg pointer-events-none" />
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-cyan-500/30 border-t-cyan-500 rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-gray-400">Cargando resultados...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen relative">
