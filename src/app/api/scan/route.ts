@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { after } from 'next/server';
 import { z } from 'zod';
 import { SecurityScanner, isValidUrl } from '@/lib/scanner';
 import { db } from '@/lib/supabase';
@@ -76,9 +77,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Perform scan synchronously (serverless doesn't support background tasks)
-    await performScan(scanRecord.id, normalizedUrl);
+    // Schedule scan to run after response is sent (Next.js 15+ feature)
+    after(async () => {
+      await performScan(scanRecord.id, normalizedUrl);
+    });
 
+    // Return immediately so user sees progress screen
     return NextResponse.json({
       success: true,
       scanId: scanRecord.id,

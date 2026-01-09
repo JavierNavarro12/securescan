@@ -263,7 +263,7 @@ Mi stack tecnologico es: [COMPLETA CON TU STACK]`;
         <div className="fixed inset-0 grid-bg pointer-events-none" />
         <div className="fixed inset-0 radial-gradient-center pointer-events-none" />
 
-        <header className="relative z-10 py-6 px-4">
+        <header className="sticky top-0 z-50 py-4 px-4 bg-[#0a0a0f]/80 backdrop-blur-md border-b border-white/5">
           <div className="max-w-6xl mx-auto">
             <Link href="/" className="inline-block">
               <Logo />
@@ -287,7 +287,7 @@ Mi stack tecnologico es: [COMPLETA CON TU STACK]`;
       <div className="min-h-screen relative">
         <div className="fixed inset-0 grid-bg pointer-events-none" />
 
-        <header className="relative z-10 py-6 px-4">
+        <header className="sticky top-0 z-50 py-4 px-4 bg-[#0a0a0f]/80 backdrop-blur-md border-b border-white/5">
           <div className="max-w-6xl mx-auto">
             <Link href="/" className="inline-block">
               <Logo />
@@ -325,7 +325,7 @@ Mi stack tecnologico es: [COMPLETA CON TU STACK]`;
       <div className="fixed inset-0 radial-gradient-top pointer-events-none" />
 
       {/* Header */}
-      <header className="relative z-10 py-6 px-4 border-b border-white/5">
+      <header className="sticky top-0 z-50 py-4 px-4 bg-[#0a0a0f]/80 backdrop-blur-md border-b border-white/5">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <Link href="/" className="inline-block">
             <Logo />
