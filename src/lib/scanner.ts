@@ -1,5 +1,4 @@
-import puppeteerCore, { Browser, HTTPRequest, HTTPResponse } from 'puppeteer-core';
-import chromium from '@sparticuz/chromium';
+import puppeteer, { Browser, HTTPRequest, HTTPResponse } from 'puppeteer-core';
 import { v4 as uuidv4 } from 'uuid';
 import { rm } from 'fs/promises';
 import type { Vulnerability, VulnerabilityType, ScanResults } from '@/types';
@@ -12,8 +11,8 @@ import {
 } from './patterns';
 import { calculateScore } from './scoring';
 
-const TOTAL_SCAN_TIMEOUT = 55000; // 55 segundos max (Vercel Pro permite hasta 60s)
-const PAGE_LOAD_TIMEOUT = 15000; // 15 segundos para cargar la página
+const TOTAL_SCAN_TIMEOUT = 55000;
+const PAGE_LOAD_TIMEOUT = 15000;
 const IS_PRODUCTION = process.env.NODE_ENV === 'production' || process.env.VERCEL === '1';
 
 interface NetworkRequest {
@@ -134,20 +133,22 @@ export class SecurityScanner {
     console.log('[Scanner] Launching browser... IS_PRODUCTION:', IS_PRODUCTION);
 
     if (IS_PRODUCTION) {
-      // Vercel serverless - usar @sparticuz/chromium
-      const executablePath = await chromium.executablePath();
-      this.browser = await puppeteerCore.launch({
-        args: chromium.args,
-        defaultViewport: { width: 1920, height: 1080 },
-        executablePath,
-        headless: true,
+      // Producción: conectar a Browserless.io (evita límite de 50MB de Vercel)
+      const browserlessToken = process.env.BROWSERLESS_TOKEN;
+      if (!browserlessToken) {
+        throw new Error('BROWSERLESS_TOKEN is required in production');
+      }
+
+      console.log('[Scanner] Connecting to Browserless.io...');
+      this.browser = await puppeteer.connect({
+        browserWSEndpoint: `wss://chrome.browserless.io?token=${browserlessToken}`,
       });
     } else {
       // Desarrollo local - usar Chrome instalado
       this.tmpDir = `/tmp/puppeteer-${Date.now()}-${Math.random().toString(36).slice(2)}`;
       console.log('[Scanner] Using temp dir:', this.tmpDir);
 
-      this.browser = await puppeteerCore.launch({
+      this.browser = await puppeteer.launch({
         headless: true,
         userDataDir: this.tmpDir,
         executablePath: process.platform === 'darwin'
@@ -170,14 +171,12 @@ export class SecurityScanner {
           '--disable-extensions',
           '--disable-sync',
           '--no-first-run',
-          '--blink-settings=imagesEnabled=true',
         ],
       });
     }
 
-    // Usar contexto incognito para maximo aislamiento
-    const context = await this.browser.createBrowserContext();
-    const page = await context.newPage();
+    // Crear página (en Browserless usamos el contexto por defecto)
+    const page = await this.browser!.newPage();
 
     // Deshabilitar cache completamente
     await page.setCacheEnabled(false);
