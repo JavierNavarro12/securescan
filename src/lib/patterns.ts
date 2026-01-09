@@ -878,11 +878,11 @@ const s3 = new AWS.S3({
   // CREDENCIALES EN URLs
   // ============================================
 
-  // Basic Auth in URL
+  // Basic Auth in URL (requiere formato user:pass@domain)
   {
     name: 'Credenciales en URL',
     provider: 'HTTP Auth',
-    pattern: /https?:\/\/[^:]+:[^@]+@[a-zA-Z0-9.-]+/g,
+    pattern: /https?:\/\/[a-zA-Z0-9_.-]+:[a-zA-Z0-9_!#$%^&*.-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g,
     severity: 'high',
     description: 'Usuario y contraseña expuestos en URL. Las credenciales en URLs aparecen en logs, historial y pueden ser interceptadas.',
     remediation: {

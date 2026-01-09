@@ -77,15 +77,15 @@ export function ScanProgress({ status, url, isCompleting = false }: ScanProgress
           className={`inline-flex items-center gap-3 px-4 py-2 rounded-full mb-4 ${
             isCompleting
               ? 'bg-green-500/10 border border-green-500/20'
-              : 'bg-cyan-500/10 border border-cyan-500/20'
+              : 'bg-emerald-500/10 border border-emerald-500/20'
           }`}
         >
           {isCompleting ? (
             <Check className="w-4 h-4 text-green-400" />
           ) : (
-            <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
+            <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
           )}
-          <span className={`text-sm font-medium ${isCompleting ? 'text-green-400' : 'text-cyan-400'}`}>
+          <span className={`text-sm font-medium ${isCompleting ? 'text-green-400' : 'text-emerald-400'}`}>
             {isCompleting ? 'Completado' : 'Escaneando'}
           </span>
         </motion.div>
@@ -110,7 +110,7 @@ export function ScanProgress({ status, url, isCompleting = false }: ScanProgress
         </div>
         <div className="flex justify-between mt-2 text-sm">
           <span className="text-gray-500">Progreso</span>
-          <span className="text-cyan-400 font-mono">{Math.round(progress)}%</span>
+          <span className="text-emerald-400 font-mono">{Math.round(progress)}%</span>
         </div>
       </div>
 
@@ -130,9 +130,9 @@ export function ScanProgress({ status, url, isCompleting = false }: ScanProgress
                 transition={{ delay: index * 0.1 }}
                 className={`flex items-center gap-4 p-4 rounded-xl border transition-all duration-300 ${
                   isStepCompleted
-                    ? 'bg-cyan-500/5 border-cyan-500/20'
+                    ? 'bg-emerald-500/5 border-emerald-500/20'
                     : isCurrent
-                    ? 'bg-[#12121a] border-cyan-500/30 glow-cyan-subtle'
+                    ? 'bg-[#12121a] border-emerald-500/30 glow-subtle'
                     : 'bg-[#12121a]/50 border-white/5'
                 }`}
               >
@@ -140,9 +140,9 @@ export function ScanProgress({ status, url, isCompleting = false }: ScanProgress
                 <div
                   className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${
                     isStepCompleted
-                      ? 'bg-cyan-500/20 text-cyan-400'
+                      ? 'bg-emerald-500/20 text-emerald-400'
                       : isCurrent
-                      ? 'bg-cyan-500/10 text-cyan-400'
+                      ? 'bg-emerald-500/10 text-emerald-400'
                       : 'bg-white/5 text-gray-500'
                   }`}
                 >
@@ -169,7 +169,7 @@ export function ScanProgress({ status, url, isCompleting = false }: ScanProgress
                   <motion.span
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    className="ml-auto text-xs text-cyan-400 font-mono"
+                    className="ml-auto text-xs text-emerald-400 font-mono"
                   >
                     en progreso...
                   </motion.span>

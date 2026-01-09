@@ -344,7 +344,7 @@ Prioriza las vulnerabilidades críticas y altas.`;
       <div className="min-h-screen relative flex items-center justify-center">
         <div className="fixed inset-0 grid-bg pointer-events-none" />
         <div className="text-center">
-          <div className="w-12 h-12 border-4 border-cyan-500/30 border-t-cyan-500 rounded-full animate-spin mx-auto mb-4" />
+          <div className="w-12 h-12 border-4 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin mx-auto mb-4" />
           <p className="text-gray-400">Cargando resultados...</p>
         </div>
       </div>
@@ -425,7 +425,7 @@ Prioriza las vulnerabilidades críticas y altas.`;
                 href={results.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-500 hover:text-cyan-400 transition-colors"
+                className="text-gray-500 hover:text-emerald-400 transition-colors"
               >
                 <ExternalLink className="w-4 h-4" />
               </a>
@@ -504,7 +504,7 @@ Prioriza las vulnerabilidades críticas y altas.`;
                             window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
                           }
                         }}
-                        className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-sm font-medium rounded-lg hover:from-cyan-400 hover:to-blue-400 transition-all"
+                        className="px-4 py-2 bg-emerald-500 text-white text-sm font-medium rounded-lg hover:bg-emerald-400 transition-all"
                       >
                         Desbloquear
                       </button>
@@ -547,11 +547,11 @@ Prioriza las vulnerabilidades críticas y altas.`;
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="mt-8 p-6 bg-gradient-to-br from-purple-500/10 to-cyan-500/10 border border-purple-500/20 rounded-2xl"
+                className="mt-8 p-6 bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-500/20 rounded-2xl"
               >
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
-                    <Sparkles className="w-5 h-5 text-purple-400" />
+                  <div className="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center">
+                    <Sparkles className="w-5 h-5 text-emerald-400" />
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-white">Soluciona todo con IA</h3>
@@ -567,7 +567,7 @@ Prioriza las vulnerabilidades críticas y altas.`;
 
                 <button
                   onClick={copyPrompt}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 rounded-lg transition-all font-medium"
+                  className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 rounded-lg transition-all font-medium"
                 >
                   {promptCopied ? (
                     <>
@@ -611,7 +611,7 @@ Prioriza las vulnerabilidades críticas y altas.`;
           >
             <Link
               href="/"
-              className="inline-flex items-center gap-2 text-gray-400 hover:text-cyan-400 transition-colors"
+              className="inline-flex items-center gap-2 text-gray-400 hover:text-emerald-400 transition-colors"
             >
               <RefreshCw className="w-4 h-4" />
               Escanear otro sitio

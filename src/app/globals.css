@@ -340,6 +340,23 @@ body {
   animation: shieldPulse 3s ease-in-out infinite;
 }
 
+/* Progress bar shimmer */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--accent-primary) 0%,
+    var(--accent-secondary) 50%,
+    var(--accent-primary) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s linear infinite;
+}
+
 /* Typing cursor */
 @keyframes blink {
   0%, 50% { opacity: 1; }
