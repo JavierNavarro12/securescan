@@ -47,14 +47,22 @@ CREATE POLICY "Allow public read access to scans" ON scans
 
 -- Only service role can insert/update scans
 CREATE POLICY "Service role can insert scans" ON scans
-  FOR INSERT WITH CHECK (true);
+  FOR INSERT WITH CHECK (auth.role() = 'service_role');
 
 CREATE POLICY "Service role can update scans" ON scans
-  FOR UPDATE USING (true);
+  FOR UPDATE USING (auth.role() = 'service_role');
 
 -- Policies for payments (only service role)
 CREATE POLICY "Service role can manage payments" ON payments
-  FOR ALL USING (true);
+  FOR ALL USING (auth.role() = 'service_role');
+
+-- Aggregate function: total vulnerabilities across all completed scans
+CREATE OR REPLACE FUNCTION get_total_vulnerabilities()
+RETURNS INTEGER AS $$
+  SELECT COALESCE(SUM(jsonb_array_length(results)), 0)::INTEGER
+  FROM scans
+  WHERE status = 'completed' AND results IS NOT NULL;
+$$ LANGUAGE sql;
 
 -- Function to clean up old incomplete scans (optional cron job)
 CREATE OR REPLACE FUNCTION cleanup_old_scans()

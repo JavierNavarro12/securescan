@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
     const clientIp = getClientIp(request.headers);
 
     // Check rate limit
-    const rateLimit = checkRateLimit(clientIp, MAX_SCANS_PER_HOUR);
+    const rateLimit = await checkRateLimit(clientIp, MAX_SCANS_PER_HOUR);
     if (!rateLimit.success) {
       const resetMinutes = Math.ceil((rateLimit.resetAt - Date.now()) / 60000);
       return NextResponse.json(

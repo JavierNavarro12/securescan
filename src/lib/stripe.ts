@@ -1,16 +1,16 @@
 import Stripe from 'stripe';
 
-// Initialize Stripe with secret key
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+const stripeKey = process.env.STRIPE_SECRET_KEY;
+if (!stripeKey) throw new Error('STRIPE_SECRET_KEY is not configured');
+
+export const stripe = new Stripe(stripeKey, {
   apiVersion: '2023-10-16',
   typescript: true,
 });
 
-// Price in cents (€0.99 = 99 cents)
 export const REPORT_PRICE = 99;
 export const CURRENCY = 'eur';
 
-// Create a checkout session for unlocking a scan report
 export async function createCheckoutSession(
   scanId: string,
   scanUrl: string
@@ -26,7 +26,6 @@ export async function createCheckoutSession(
           product_data: {
             name: 'Reporte de Seguridad Completo',
             description: `Análisis detallado de vulnerabilidades para ${scanUrl}`,
-            images: [`${appUrl}/og-image.png`],
           },
           unit_amount: REPORT_PRICE,
         },
@@ -40,16 +39,11 @@ export async function createCheckoutSession(
       scanId,
       scanUrl,
     },
-    // Allow customer to enter email for receipt
-    customer_creation: 'if_required',
-    // Expire session after 30 minutes
-    expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
   });
 
   return session;
 }
 
-// Verify Stripe webhook signature
 export function constructWebhookEvent(
   payload: string | Buffer,
   signature: string
@@ -61,14 +55,12 @@ export function constructWebhookEvent(
   );
 }
 
-// Get payment intent details
 export async function getPaymentIntent(
   paymentIntentId: string
 ): Promise<Stripe.PaymentIntent> {
   return stripe.paymentIntents.retrieve(paymentIntentId);
 }
 
-// Format price for display
 export function formatPrice(amount: number = REPORT_PRICE): string {
   return new Intl.NumberFormat('es-ES', {
     style: 'currency',

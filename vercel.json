@@ -3,7 +3,7 @@
     "src/app/api/scan/route.ts": {
       "maxDuration": 60
     },
-    "src/app/api/scan/[id]/route.ts": {
+    "src/app/api/results/[id]/route.ts": {
       "maxDuration": 10
     }
   },

@@ -182,19 +182,11 @@ export const db = {
 
   // Get total vulnerabilities found (for social proof)
   async getTotalVulnerabilitiesCount(): Promise<number> {
-    const { data, error } = await getSupabaseAdmin()
-      .from('scans')
-      .select('results')
-      .eq('status', 'completed')
-      .not('results', 'is', null);
+    const { data, error } = await getSupabaseAdmin().rpc('get_total_vulnerabilities');
 
-    if (error || !data) {
+    if (error) {
       return 0;
     }
-
-    return data.reduce((total, scan) => {
-      const results = scan.results as any[];
-      return total + (results?.length || 0);
-    }, 0);
+    return (data as number) || 0;
   },
 };

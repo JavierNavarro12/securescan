@@ -34,10 +34,9 @@ export async function GET() {
   } catch (error) {
     console.error('Stats API error:', error);
 
-    // Return fallback stats on error
     return NextResponse.json({
       success: true,
-      stats: { scans: 1000, vulnerabilities: 5000 },
+      stats: { scans: 0, vulnerabilities: 0 },
     });
   }
 }

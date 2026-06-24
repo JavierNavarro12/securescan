@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
 
     // Search for completed checkout sessions with this scanId
     const sessions = await stripe.checkout.sessions.list({
-      limit: 10,
+      limit: 100,
     });
 
     // Find a completed session for this scan
